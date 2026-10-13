@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LuArrowLeft, LuArrowRight, LuDownload, LuPlus, LuTrash2 } from "react-icons/lu";
 import { LogoMark } from "@/components/logo";
@@ -117,7 +117,7 @@ export default function DocsPage() {
                     0123456789 $ % & ( ) ! ?
                   </p>
                   <p className="mono text-small text-muted" style={{ marginTop: 8 }}>
-                    Geist Mono â€” 0123456789 {"{ }"} =&gt;
+                    Geist Mono — 0123456789 {"{ }"} =&gt;
                   </p>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function DocsPage() {
                     <div className={styles.typeMeta}>
                       <code className="mono text-label">.text-{style.name}</code>
                       <span className="text-caption text-muted">
-                        {style.size}px / {style.lineHeight} Â· {style.weight} Â· {style.tracking}
+                        {style.size}px / {style.lineHeight} · {style.weight} · {style.tracking}
                       </span>
                     </div>
                     <p className={`text-${style.name}`}>
@@ -184,7 +184,7 @@ export default function DocsPage() {
                   </Button>
                 ))}
               </div>
-              <p className="text-caption text-muted">Heights: sm 34px Â· md 44px Â· lg 54px</p>
+              <p className="text-caption text-muted">Heights: sm 34px · md 44px · lg 54px</p>
             </div>
 
             <div className={styles.panel}>
@@ -240,7 +240,7 @@ export default function DocsPage() {
                 </Button>
               </div>
               <p className="text-caption text-muted">
-                Hover, active (pressed) and keyboard focus styles are built in â€” tab to a button to see the focus ring.
+                Hover, active (pressed) and keyboard focus styles are built in — tab to a button to see the focus ring.
               </p>
             </div>
           </section>

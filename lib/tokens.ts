@@ -1,5 +1,5 @@
-﻿/**
- * Sanova design tokens â€” the single source of truth.
+/**
+ * Sanova design tokens — the single source of truth.
  *
  * `buildThemeCss()` turns these into CSS custom properties and type classes
  * (injected by <ThemeStyle />), the /docs page renders them, and charts read
@@ -120,7 +120,7 @@ export const semantic = [
   { name: "text-subtle", value: "#94A3B8", usage: "Hints, axis labels, placeholders" },
 ] as const;
 
-/** Typography scale â€” emitted as `.text-<name>` classes. */
+/** Typography scale — emitted as `.text-<name>` classes. */
 export const typeScale = [
   { name: "display", size: 36, lineHeight: 1.1, weight: 700, tracking: "-0.03em", usage: "Welcome headline" },
   { name: "h1", size: 28, lineHeight: 1.2, weight: 700, tracking: "-0.02em", usage: "Page titles" },

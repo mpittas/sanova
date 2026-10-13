@@ -38,8 +38,8 @@ const sections: { label: string; items: NavEntry[] }[] = [
     label: "Main",
     items: [
       { label: "Dashboard", icon: LuLayoutDashboard, href: "/" },
-      { label: "Appointments", icon: LuCalendarDays, badge: 28 },
-      { label: "Patients", icon: LuUsers },
+      { label: "Appointments", icon: LuCalendarDays, href: "/appointments", badge: 28 },
+      { label: "Patients", icon: LuUsers, href: "/patients" },
       { label: "Doctors", icon: LuStethoscope },
       { label: "Departments", icon: LuBuilding2 },
     ],
@@ -58,7 +58,7 @@ const sections: { label: string; items: NavEntry[] }[] = [
     items: [
       { label: "Billing", icon: LuReceipt },
       { label: "Reports", icon: LuChartColumn },
-      { label: "Messages", icon: LuMessageSquare, badge: 3 },
+      { label: "Messages", icon: LuMessageSquare, href: "/messages", badge: 3 },
       { label: "Settings", icon: LuSettings },
     ],
   },

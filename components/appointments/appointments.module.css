@@ -1,0 +1,393 @@
+.content {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 28px 32px 56px;
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 16px;
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Schedule ---------- */
+
+.schedule {
+  container-type: inline-size;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.stepper {
+  display: flex;
+  gap: 6px;
+}
+
+.toolbarTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px;
+}
+
+.toolbarTitle svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+}
+
+.list,
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list {
+  padding-top: 8px;
+}
+
+.group + .group {
+  margin-top: 8px;
+}
+
+.groupHeader {
+  padding: 12px 12px 6px;
+  color: var(--color-text-subtle);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 82px 10px 40px minmax(0, 1fr) minmax(0, 1.2fr) auto 32px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  transition: background-color 0.15s ease;
+}
+
+.row + .row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 12px;
+  left: 12px;
+  height: 1px;
+  background: var(--color-neutral-100);
+}
+
+.row:hover {
+  background: var(--color-neutral-50);
+}
+
+.row[data-selected] {
+  background: var(--color-primary-50);
+}
+
+.row[data-selected]::before,
+.row[data-selected] + .row::before {
+  display: none;
+}
+
+.rowSelect {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rowSelect:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: -2px;
+}
+
+.rowTime {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.rowPatient,
+.rowVisit {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.rowPatient > *,
+.rowVisit > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowMenu {
+  position: relative;
+  z-index: 1;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 56px 16px;
+  text-align: center;
+}
+
+.empty svg {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 8px;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- Mini calendar ---------- */
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  row-gap: 2px;
+  justify-items: center;
+}
+
+.weekday {
+  padding: 6px 0 8px;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.day:hover {
+  background: var(--color-neutral-100);
+}
+
+.day:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 1px;
+}
+
+.day[data-outside] {
+  color: var(--color-neutral-300);
+}
+
+.day[data-has-appointments]::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  transform: translateX(-50%);
+}
+
+.day[data-selected] {
+  background: var(--color-primary-500);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgb(47 107 242 / 0.3);
+}
+
+.day[data-selected]::after {
+  background: #fff;
+}
+
+/* ---------- Details ---------- */
+
+.detailsHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detailsPatient {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.detailList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.detailList li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  color: var(--color-neutral-700);
+}
+
+.detailList li[data-top] {
+  align-items: start;
+}
+
+.detailList svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+}
+
+.detailList li[data-top] svg {
+  margin-top: 2px;
+}
+
+.detailList li > span {
+  justify-self: start;
+}
+
+.detailTitle {
+  display: block;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.detailActions {
+  display: flex;
+  gap: 10px;
+}
+
+.detailActions > :first-child {
+  flex: 1;
+  min-width: 0;
+  padding: 0 12px;
+}
+
+/* ---------- Responsive ---------- */
+
+@container (max-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@container (max-width: 680px) {
+  .side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Schedule rows adapt to the width of the schedule card itself */
+@container (max-width: 760px) {
+  .row {
+    grid-template-columns: 78px 10px 40px minmax(0, 1fr) auto 32px;
+  }
+
+  .rowVisit {
+    display: none;
+  }
+}
+
+@container (max-width: 520px) {
+  .row {
+    grid-template-columns: 68px 10px 40px minmax(0, 1fr) 32px;
+    gap: 10px;
+  }
+
+  .rowMode {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .content {
+    padding: 20px 16px 32px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pageHeader,
+  .layout > *,
+  .side > * {
+    animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

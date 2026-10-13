@@ -250,6 +250,92 @@ select {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---------- Stat tile ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.stat-tile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-tile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.stat-tile-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--color-success-600);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-delta[data-tone="danger"] {
+  color: var(--color-coral-600);
+}
+
+.stat-delta svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Checkbox ---------- */
+
+.checkbox {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1.5px solid var(--color-neutral-300);
+  border-radius: 5px;
+  background: var(--color-surface) center / 12px no-repeat;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.checkbox:hover {
+  border-color: var(--color-primary-400);
+}
+
+.checkbox:checked,
+.checkbox:indeterminate {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-500);
+}
+
+.checkbox:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+}
+
+.checkbox:indeterminate {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M4 8h8'/%3E%3C/svg%3E");
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
 /* ---------- Select ---------- */
 
 .select {
@@ -284,6 +370,43 @@ select {
   pointer-events: none;
 }
 
+/* ---------- Segmented control ---------- */
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.segmented button {
+  height: 30px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: calc(var(--radius-md) - 3px);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.segmented button:hover {
+  color: var(--color-text);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.segmented button:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 1px;
+}
+
 /* ---------- Status chip ---------- */
 
 .chip {
@@ -306,8 +429,13 @@ select {
   background: currentColor;
 }
 
+/* Flat variant: no status dot, squarer corners — used for tags like "In Person". */
+.chip-flat::before { display: none; }
+.chip-flat { border-radius: 8px; }
+
 .chip-info { background: var(--color-primary-50); color: var(--color-primary-600); }
 .chip-neutral { background: var(--color-neutral-100); color: var(--color-neutral-600); }
+.chip-violet { background: var(--color-violet-50); color: var(--color-violet-700); }
 .chip-warning { background: var(--color-amber-50); color: var(--color-amber-700); }
 .chip-danger { background: var(--color-coral-50); color: var(--color-coral-600); }
 .chip-success { background: var(--color-success-50); color: var(--color-success-700); }
@@ -324,5 +452,19 @@ select {
   font-size: calc(var(--size, 48px) * 0.34);
   font-weight: 600;
   letter-spacing: 0.02em;
+  overflow: hidden;
   box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.7);
+}
+
+.avatar {
+  position: relative;
+}
+
+.avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
