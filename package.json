@@ -9,9 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "apexcharts": "^8.2.0",
+    "geist": "^1.7.2",
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-apexcharts": "^2.1.1",
+    "react-dom": "19.3.0",
+    "react-icons": "^5.7.0"
   },
   "devDependencies": {
     "@types/node": "^20",

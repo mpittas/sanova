@@ -1,0 +1,463 @@
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  --sidebar-width: 264px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  height: 100vh;
+  padding: 20px 14px 16px;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Floating toggle sitting on the sidebar's edge */
+.edgeToggle {
+  position: absolute;
+  top: 26px;
+  right: -14px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  box-shadow: 0 2px 6px rgb(15 23 42 / 0.08);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.edgeToggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.edgeToggle:hover {
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.edgeToggle:focus-visible,
+.item:focus-visible,
+.closeBtn:focus-visible,
+.logout:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0 6px;
+  margin-bottom: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.brand svg {
+  flex: none;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.brandName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brandSub {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.closeBtn {
+  display: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.closeBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- Navigation ---------- */
+
+.nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+  margin: 0 -14px;
+  padding: 0 14px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-200) transparent;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sectionLabel {
+  height: 20px;
+  padding: 0 12px;
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-neutral-600);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--color-neutral-500);
+  transition: color 0.15s ease;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.15s ease;
+}
+
+.item:hover {
+  background: var(--color-neutral-50);
+  color: var(--color-text);
+}
+
+.item:hover .icon {
+  color: var(--color-neutral-700);
+}
+
+.item[data-active] {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.item[data-active] .icon {
+  color: var(--color-primary-500);
+}
+
+.item[data-active]::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: -14px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--color-primary-500);
+}
+
+.badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.item[data-active] .badge {
+  background: var(--color-primary-500);
+  color: #fff;
+}
+
+/* ---------- Bottom ---------- */
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-50);
+}
+
+.profileText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.profileName {
+  overflow: hidden;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+.profileRole {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+}
+
+.logout {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.logout svg {
+  width: 18px;
+  height: 18px;
+}
+
+.logout:hover {
+  background: var(--color-coral-50);
+  color: var(--color-coral-600);
+}
+
+/* ---------- Tooltip (collapsed rail) ---------- */
+
+.tooltip {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--color-neutral-900);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transform: translateY(-50%);
+  pointer-events: none;
+  box-shadow: 0 6px 16px rgb(15 23 42 / 0.2);
+}
+
+.tooltipBadge {
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.2);
+  font-size: 0.6875rem;
+}
+
+.backdrop {
+  display: none;
+}
+
+/* ---------- Collapsed rail (desktop) ---------- */
+
+@media (min-width: 901px) {
+  .sidebar[data-collapsed] {
+    --sidebar-width: 78px;
+  }
+
+  .sidebar[data-collapsed] .top {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar[data-collapsed] .brandText,
+  .sidebar[data-collapsed] .label,
+  .sidebar[data-collapsed] .profileText,
+  .sidebar[data-collapsed] .logout {
+    display: none;
+  }
+
+  .sidebar[data-collapsed] .sectionLabel {
+    height: 1px;
+    margin: 8px 12px;
+    background: var(--color-border);
+  }
+
+  .sidebar[data-collapsed] .sectionLabel span {
+    display: none;
+  }
+
+  .sidebar[data-collapsed] .section:first-child .sectionLabel {
+    display: none;
+  }
+
+  .sidebar[data-collapsed] .item {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar[data-collapsed] .item[data-active]::before {
+    left: -14px;
+  }
+
+  .sidebar[data-collapsed] .badge {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    min-width: 0;
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 2px solid var(--color-surface);
+    background: var(--color-coral-500);
+    box-sizing: content-box;
+    font-size: 0;
+  }
+
+  .sidebar[data-collapsed] .profile {
+    justify-content: center;
+    padding: 6px 0;
+    background: transparent;
+  }
+}
+
+/* ---------- Mobile drawer ---------- */
+
+@media (max-width: 900px) {
+  .sidebar {
+    --sidebar-width: 288px;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 60;
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+  }
+
+  .sidebar[data-mobile-open] {
+    transform: none;
+    box-shadow: 0 0 60px rgb(15 23 42 / 0.25);
+  }
+
+  .edgeToggle,
+  .tooltip {
+    display: none;
+  }
+
+  .closeBtn {
+    display: grid;
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    background: rgb(15 23 42 / 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .backdrop[data-open] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .backdrop {
+    transition: none;
+  }
+}
