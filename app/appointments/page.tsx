@@ -4,8 +4,9 @@ import { AppointmentStats } from "@/components/appointments/appointment-stats";
 import { AppointmentsView } from "@/components/appointments/appointments-view";
 import { AppHeader } from "@/components/dashboard/app-header";
 import { AppShell } from "@/components/layout/app-shell";
+import { PageContent } from "@/components/layout/page-content";
+import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import styles from "@/components/appointments/appointments.module.css";
 
 export const metadata: Metadata = {
   title: "Appointments",
@@ -16,18 +17,15 @@ export default function AppointmentsPage() {
   return (
     <AppShell>
       <AppHeader />
-      <main className={styles.content}>
-        <div className={styles.pageHeader}>
-          <div>
-            <h1 className="text-h1">Appointments</h1>
-            <p className="text-body-lg text-muted">View and manage your schedule, appointments, and availability.</p>
-          </div>
-          <Button iconLeft={<LuPlus />}>Book Appointment</Button>
-        </div>
-
+      <PageContent>
+        <PageHeader
+          title="Appointments"
+          description="View and manage your schedule, appointments, and availability."
+          actions={<Button iconLeft={<LuPlus />}>Book Appointment</Button>}
+        />
         <AppointmentStats />
         <AppointmentsView />
-      </main>
+      </PageContent>
     </AppShell>
   );
 }

@@ -7,13 +7,13 @@ export type ButtonSize = "sm" | "md" | "lg";
 type CommonProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** `pill` is fully rounded, `rounded` is a squircle — matches the header icon buttons. */
-  shape?: "pill" | "rounded";
   iconLeft?: ReactNode;
   iconRight?: ReactNode;
   /** Square button that renders only its child icon. Provide an `aria-label`. */
   iconOnly?: boolean;
   loading?: boolean;
+  /** Turns the button into a toggle: sets `aria-pressed` and shows the "on" style. */
+  pressed?: boolean;
   className?: string;
   children?: ReactNode;
 };
@@ -30,11 +30,11 @@ export function Button(props: ButtonProps) {
   const {
     variant = "primary",
     size = "md",
-    shape = "pill",
     iconLeft,
     iconRight,
     iconOnly = false,
     loading = false,
+    pressed,
     className,
     children,
     ...rest
@@ -44,7 +44,6 @@ export function Button(props: ButtonProps) {
     "btn",
     `btn-${variant}`,
     `btn-${size}`,
-    shape === "rounded" && "btn-rounded",
     iconOnly && "btn-icon",
     className,
   ]
@@ -75,6 +74,7 @@ export function Button(props: ButtonProps) {
       className={classes}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
+      aria-pressed={pressed}
       {...buttonProps}
     >
       {content}

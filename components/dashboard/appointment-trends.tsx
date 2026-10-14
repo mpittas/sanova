@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import type { ApexOptions } from "apexcharts";
 import { Chart } from "@/components/charts/chart";
 import { Card } from "@/components/ui/card";
+import { Legend, LegendItem } from "@/components/ui/legend";
 import { Select } from "@/components/ui/select";
 import { palette } from "@/lib/tokens";
 import { appointmentTrends, trendRanges, type TrendRange } from "./data";
@@ -69,14 +70,11 @@ export function AppointmentTrends() {
           <p className="text-h2 num">{total.toLocaleString("en-US")}</p>
           <p className="text-small text-muted">Total appointments</p>
         </div>
-        <ul className={styles.legendInline}>
+        <Legend direction="row">
           {seriesNames.map((name, index) => (
-            <li key={name} className={styles.legendItem}>
-              <span className={styles.swatch} style={{ "--swatch": colors[index] } as CSSProperties} />
-              <span className="text-small">{name}</span>
-            </li>
+            <LegendItem key={name} color={colors[index]} label={name} />
           ))}
-        </ul>
+        </Legend>
       </div>
       <Chart type="bar" height={200} options={options} series={series} />
     </Card>

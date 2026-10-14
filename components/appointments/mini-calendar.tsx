@@ -27,13 +27,13 @@ export function MiniCalendar({
   return (
     <Card className={styles.calendar}>
       <div className={styles.calendarHeader}>
-        <Button variant="secondary" size="sm" shape="rounded" iconOnly aria-label="Previous month" onClick={() => onMonthChange(-1)}>
+        <Button variant="secondary" size="sm" iconOnly aria-label="Previous month" onClick={() => onMonthChange(-1)}>
           <LuChevronLeft />
         </Button>
         <h2 className="text-h4" aria-live="polite">
           {formatDate(month, { month: "long", year: "numeric" })}
         </h2>
-        <Button variant="secondary" size="sm" shape="rounded" iconOnly aria-label="Next month" onClick={() => onMonthChange(1)}>
+        <Button variant="secondary" size="sm" iconOnly aria-label="Next month" onClick={() => onMonthChange(1)}>
           <LuChevronRight />
         </Button>
       </div>

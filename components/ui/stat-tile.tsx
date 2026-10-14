@@ -1,6 +1,6 @@
 import type { IconType } from "react-icons";
-import { LuArrowUp } from "react-icons/lu";
 import { Card } from "./card";
+import { Delta } from "./delta";
 import { ToneTile, type Tone } from "./tone-tile";
 
 export type StatTileProps = {
@@ -26,11 +26,7 @@ export function StatTile({ label, value, change, period, icon: Icon, tone, delta
         <p className="text-label text-muted">{label}</p>
         <div className="stat-tile-line">
           <span className="text-stat num">{value}</span>
-          <span className="stat-delta" data-tone={deltaTone}>
-            <LuArrowUp aria-hidden />
-            <span className="sr-only">Up </span>
-            {change}
-          </span>
+          <Delta value={change} tone={deltaTone} />
         </div>
         <p className="text-small text-muted">{period}</p>
       </div>

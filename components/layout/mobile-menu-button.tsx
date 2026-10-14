@@ -11,7 +11,6 @@ export function MobileMenuButton({ className }: { className?: string }) {
   return (
     <Button
       variant="secondary"
-      shape="rounded"
       iconOnly
       className={className}
       aria-label="Open menu"

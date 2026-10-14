@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { LuBell, LuChevronDown, LuMic, LuSearch } from "react-icons/lu";
+import { LuBell, LuChevronDown, LuMic } from "react-icons/lu";
 import { LogoMark } from "@/components/logo";
 import { MobileMenuButton } from "@/components/layout/mobile-menu-button";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { SearchInput } from "@/components/ui/search-input";
 import { doctor } from "./data";
 import styles from "./dashboard.module.css";
 
@@ -17,13 +18,16 @@ export function AppHeader() {
         <span className={styles.brandName}>Sanova</span>
       </Link>
 
-      <div className={styles.search}>
-        <LuSearch className={styles.searchIcon} aria-hidden />
-        <input type="search" aria-label="Search patients and appointments" placeholder="Search patients, appointments..." />
-        <button type="button" className={styles.searchMic} aria-label="Search by voice">
-          <LuMic aria-hidden />
-        </button>
-      </div>
+      <SearchInput
+        label="Search patients and appointments"
+        placeholder="Search patients, appointments..."
+        wrapperClassName={styles.search}
+        trailing={
+          <Button variant="ghost" size="sm" iconOnly aria-label="Search by voice">
+            <LuMic />
+          </Button>
+        }
+      />
 
       <span className={styles.spacer} />
 

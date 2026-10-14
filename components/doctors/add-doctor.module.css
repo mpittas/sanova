@@ -1,0 +1,298 @@
+/* "Add doctor" wizard: layout of the dialog and its steps. Fields, stepper, chips and upload come from components/ui. */
+
+.shell {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  height: min(780px, calc(100dvh - 48px));
+}
+
+/* ---------- Left column: title, steps, illustration ---------- */
+
+.side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 0;
+  padding: 36px 28px 0;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 50% at 0% 100%, var(--color-primary-100), transparent 70%),
+    linear-gradient(180deg, var(--color-primary-50), var(--color-surface) 90%);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 4px;
+}
+
+.progress {
+  display: none;
+}
+
+/* A small illustration: a profile card with a green "add" badge. */
+.art {
+  position: relative;
+  flex: 1;
+  min-height: 150px;
+  margin: 0 -28px;
+}
+
+.artBack {
+  position: absolute;
+  left: 50%;
+  bottom: -70px;
+  width: 300px;
+  height: 230px;
+  border-radius: 90px 90px 0 0;
+  background: color-mix(in srgb, var(--color-primary-200) 55%, transparent);
+  transform: translateX(-46%);
+}
+
+.artCard {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 232px;
+  padding: 20px 20px 22px;
+  border-radius: 22px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-float);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.artLines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.artLines span {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--color-neutral-100);
+}
+
+.artLines span:last-child {
+  width: 60%;
+}
+
+.artPlus {
+  position: absolute;
+  left: 50%;
+  bottom: 96px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 4px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-primary-600);
+  color: #fff;
+  box-shadow: var(--shadow-primary);
+  transform: translateX(62px);
+}
+
+.artPlus svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ---------- Right column: heading, form, footer ---------- */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.panelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 32px 36px 20px;
+}
+
+.panelHead > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: 8px 36px 28px;
+  overflow-y: auto;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px 24px;
+  border-top: 1px solid var(--color-neutral-100);
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* ---------- Step content ---------- */
+
+.basic {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 196px;
+  gap: 28px;
+  align-items: start;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 18px;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.note {
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-50);
+  color: var(--color-text-muted);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.option:hover {
+  border-color: var(--color-neutral-200);
+  background: var(--color-neutral-50);
+}
+
+.option:has(:checked) {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+/* ---------- Review ---------- */
+
+.review {
+  padding: 18px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.review header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.review dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  margin: 0;
+}
+
+.review dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .side {
+    gap: 14px;
+    padding: 20px 24px 16px;
+  }
+
+  .intro p,
+  .stepper,
+  .art {
+    display: none;
+  }
+
+  .progress {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .panelHead,
+  .body,
+  .footer {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .basic {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The photo comes first on narrow screens so it is not lost below the fields. */
+  .basic > :last-child {
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    height: 100dvh;
+  }
+
+  .grid,
+  .options,
+  .review dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer {
+    flex-wrap: wrap;
+  }
+}

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Legend, LegendItem } from "@/components/ui/legend";
 import { Select } from "@/components/ui/select";
 import { patientStatistics, periods, type Period } from "./data";
 import styles from "./dashboard.module.css";
@@ -11,11 +12,6 @@ const number = new Intl.NumberFormat("en-US");
 export function PatientStatistics() {
   const [period, setPeriod] = useState<Period>("This Year");
   const { total, returning, newPatients, daily } = patientStatistics[period];
-
-  const split = [
-    { label: "Returning", share: Math.round((returning / total) * 100), color: "var(--color-primary-300)" },
-    { label: "New", share: Math.round((newPatients / total) * 100), color: "var(--color-primary-500)" },
-  ];
 
   return (
     <Card
@@ -42,15 +38,12 @@ export function PatientStatistics() {
         </div>
       </div>
 
-      <ul className={styles.split}>
-        {split.map((item) => (
-          <li key={item.label}>
-            <span className={styles.swatch} style={{ "--swatch": item.color } as CSSProperties} />
-            <span className="text-small text-muted">{item.label}</span>
-            <span className="text-label num">{item.share}%</span>
-          </li>
-        ))}
-      </ul>
+      <div className={styles.split}>
+        <Legend direction="row">
+          <LegendItem color="var(--color-primary-300)" label="Returning" value={`${Math.round((returning / total) * 100)}%`} />
+          <LegendItem color="var(--color-primary-500)" label="New" value={`${Math.round((newPatients / total) * 100)}%`} />
+        </Legend>
+      </div>
     </Card>
   );
 }

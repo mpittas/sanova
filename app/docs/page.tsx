@@ -3,13 +3,14 @@ import Link from "next/link";
 import { LuArrowLeft, LuArrowRight, LuDownload, LuPlus, LuTrash2 } from "react-icons/lu";
 import { LogoMark } from "@/components/logo";
 import { Button, type ButtonSize, type ButtonVariant } from "@/components/ui/button";
-import { palette, paletteMeta, semantic, typeScale, type PaletteName } from "@/lib/tokens";
+import { contrastRatio, lightness, palette, paletteMeta, semantic, typeScale, type PaletteName } from "@/lib/tokens";
+import { ComponentDocs, componentNav } from "./component-docs";
 import { CopySwatch } from "./copy-swatch";
 import styles from "./docs.module.css";
 
 export const metadata: Metadata = {
   title: "Design System",
-  description: "Sanova colors, typography and button components.",
+  description: "Sanova colors, typography, buttons and reusable components.",
 };
 
 const sections = [
@@ -29,6 +30,19 @@ const variants: { name: ButtonVariant; usage: string }[] = [
 const sizes: ButtonSize[] = ["sm", "md", "lg"];
 
 const paletteNames = Object.keys(palette) as PaletteName[];
+
+const primaryUsage: { step: keyof typeof palette.primary; use: string }[] = [
+  { step: "50", use: "Tinted surfaces: selected rows, active sidebar item, soft button background" },
+  { step: "100", use: "Hover on tinted surfaces, outgoing chat bubbles, unread highlights" },
+  { step: "200", use: "Borders on tinted surfaces, light chart series" },
+  { step: "300", use: "Secondary chart series, decorative accents" },
+  { step: "400", use: "Chart series, focus ring, illustrations" },
+  { step: "500", use: "Icons, progress bars, chart series, counters. Lowest step that passes for white text" },
+  { step: "600", use: "Solid buttons (resting), links, text on white and on tints" },
+  { step: "700", use: "Button hover and pressed, text on tinted backgrounds" },
+  { step: "800", use: "Headings on tints, dark surfaces" },
+  { step: "900", use: "Deepest text and dark surfaces" },
+];
 
 export default function DocsPage() {
   return (
@@ -51,6 +65,12 @@ export default function DocsPage() {
               {section.label}
             </a>
           ))}
+          <span className={styles.navGroup}>Components</span>
+          {componentNav.map((section) => (
+            <a key={section.id} href={`#${section.id}`}>
+              {section.label}
+            </a>
+          ))}
         </nav>
 
         <main className={styles.content}>
@@ -58,7 +78,8 @@ export default function DocsPage() {
             <h1 className="text-h1">Design System</h1>
             <p className="text-body-lg text-muted" style={{ marginTop: 8, maxWidth: 560 }}>
               The building blocks of the Sanova interface. Everything here is generated from{" "}
-              <code className="mono">lib/tokens.ts</code> and <code className="mono">app/globals.css</code>.
+              <code className="mono">lib/tokens.ts</code>, <code className="mono">app/globals.css</code> and{" "}
+              <code className="mono">app/ui.css</code>.
             </p>
           </div>
 
@@ -80,6 +101,48 @@ export default function DocsPage() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            <div className={styles.panel}>
+              <div className={styles.panelHeader}>
+                <h3 className="text-h4">Using the primary green</h3>
+                <span className="text-small text-muted">Which step to reach for, and how bright it is</span>
+              </div>
+              <div className={styles.usageTable} role="table" aria-label="Primary green usage guide">
+                <div className={styles.usageHead} role="row">
+                  <span role="columnheader">Step</span>
+                  <span role="columnheader">Brightness</span>
+                  <span role="columnheader">With white</span>
+                  <span role="columnheader">Use it for</span>
+                </div>
+                {primaryUsage.map(({ step, use }) => {
+                  const hex = palette.primary[step];
+                  const ratio = contrastRatio(hex, "#FFFFFF");
+                  return (
+                    <div key={step} className={styles.usageRow} role="row">
+                      <span className={styles.usageStep} role="cell">
+                        <span className={styles.usageChip} style={{ background: hex }} />
+                        <code className="mono text-label">{step}</code>
+                      </span>
+                      <span className="num text-small" role="cell">
+                        {lightness(hex).toFixed(2)}
+                      </span>
+                      <span className="num text-small" role="cell" data-pass={ratio >= 4.5 ? "" : undefined}>
+                        {ratio.toFixed(1)}:1
+                      </span>
+                      <span className="text-small text-muted" role="cell">
+                        {use}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="text-caption text-muted">
+                Rules of thumb: a solid fill with white text should be at least 4.5:1 (ideally 5–7:1); hover is one step
+                darker; use 500 and lighter for tints, charts and icons but never for small text on a tint; text on a tint
+                should use 600 or darker. Brightness is OKLab lightness (0 black, 1 white); steps about 0.07 apart look
+                clearly different.
+              </p>
             </div>
 
             {paletteNames.map((name) => (
@@ -184,7 +247,7 @@ export default function DocsPage() {
                   </Button>
                 ))}
               </div>
-              <p className="text-caption text-muted">Heights: sm 34px · md 44px · lg 54px</p>
+              <p className="text-caption text-muted">Heights: sm 32px · md 44px · lg 52px. Corner radius: 8px · 12px · 14px.</p>
             </div>
 
             <div className={styles.panel}>
@@ -211,9 +274,6 @@ export default function DocsPage() {
                 <Button variant="secondary" iconOnly aria-label="Add">
                   <LuPlus />
                 </Button>
-                <Button variant="secondary" iconOnly shape="rounded" aria-label="Add">
-                  <LuPlus />
-                </Button>
                 <Button variant="soft" iconOnly size="sm" aria-label="Add">
                   <LuPlus />
                 </Button>
@@ -222,8 +282,11 @@ export default function DocsPage() {
                 </Button>
               </div>
               <p className="text-caption text-muted">
-                Always give icon-only buttons an <code className="mono">aria-label</code>. Use{" "}
-                <code className="mono">shape=&quot;rounded&quot;</code> for the squircle variant.
+                Always give icon-only buttons an <code className="mono">aria-label</code>.
+              </p>
+              <p className="text-caption text-muted">
+                Every button on every page has the same slightly rounded corners (8px · 12px · 14px by size). There is no pill
+                option; round shapes are reserved for chips, counters and avatars.
               </p>
             </div>
 
@@ -244,6 +307,8 @@ export default function DocsPage() {
               </p>
             </div>
           </section>
+
+          <ComponentDocs />
         </main>
       </div>
     </div>

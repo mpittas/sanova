@@ -47,7 +47,7 @@ export const stats: {
     change: "8%",
     period: "vs last week",
     icon: LuCalendarCheck,
-    tone: "success",
+    tone: "blue",
     trend: [18, 20, 19, 24, 38, 22, 28, 40, 25, 30, 27, 34],
   },
   {
@@ -125,14 +125,14 @@ export const departments: Record<
     { name: "General Practice", patients: 420, share: 40, icon: LuUsers, tone: "primary" },
     { name: "Cardiology", patients: 310, share: 25, icon: LuHeartPulse, tone: "coral" },
     { name: "Dermatology", patients: 180, share: 15, icon: LuSparkles, tone: "amber" },
-    { name: "Pediatrics", patients: 130, share: 10, icon: LuBaby, tone: "success" },
+    { name: "Pediatrics", patients: 130, share: 10, icon: LuBaby, tone: "blue" },
     { name: "Orthopedics", patients: 110, share: 10, icon: LuBone, tone: "violet" },
   ],
   Monthly: [
     { name: "General Practice", patients: 1480, share: 38, icon: LuUsers, tone: "primary" },
     { name: "Cardiology", patients: 1040, share: 24, icon: LuHeartPulse, tone: "coral" },
     { name: "Dermatology", patients: 700, share: 16, icon: LuSparkles, tone: "amber" },
-    { name: "Pediatrics", patients: 520, share: 12, icon: LuBaby, tone: "success" },
+    { name: "Pediatrics", patients: 520, share: 12, icon: LuBaby, tone: "blue" },
     { name: "Orthopedics", patients: 410, share: 10, icon: LuBone, tone: "violet" },
   ],
 };
@@ -160,7 +160,7 @@ export const appointmentTrends: Record<
 
 export const quickActions: { label: string; icon: IconType; tone: Tone }[] = [
   { label: "Add Patient", icon: LuUserPlus, tone: "primary" },
-  { label: "Schedule Appointment", icon: LuCalendarPlus, tone: "success" },
+  { label: "Schedule Appointment", icon: LuCalendarPlus, tone: "blue" },
   { label: "View Medical Records", icon: LuFileText, tone: "violet" },
   { label: "Send Prescription", icon: LuPill, tone: "coral" },
 ];

@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import type { ApexOptions } from "apexcharts";
 import { Chart } from "@/components/charts/chart";
 import { Card } from "@/components/ui/card";
+import { Legend, LegendItem } from "@/components/ui/legend";
 import { Select } from "@/components/ui/select";
 import { palette } from "@/lib/tokens";
 import { demographics, periods, type Period } from "./data";
@@ -66,16 +67,17 @@ export function PatientDemographics() {
         <div className={styles.donut}>
           <Chart type="donut" height={190} width={190} options={options} series={series} />
         </div>
-        <ul className={styles.legend}>
+        <Legend className={styles.legend}>
           {groups.map((group, index) => (
-            <li key={group.label} className={styles.legendItem}>
-              <span className={styles.swatch} style={{ "--swatch": colors[index] } as CSSProperties} />
-              <span className={`text-small ${styles.legendLabel}`}>{group.label}</span>
-              <span className="text-small text-muted num">{Math.round((total * group.share) / 100).toLocaleString("en-US")}</span>
-              <span className={`text-label num ${styles.legendShare}`}>{group.share}%</span>
-            </li>
+            <LegendItem
+              key={group.label}
+              color={colors[index]}
+              label={group.label}
+              detail={Math.round((total * group.share) / 100).toLocaleString("en-US")}
+              value={`${group.share}%`}
+            />
           ))}
-        </ul>
+        </Legend>
       </div>
     </Card>
   );

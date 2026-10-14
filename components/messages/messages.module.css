@@ -1,20 +1,5 @@
-.content {
-  container-type: inline-size;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 1920px;
-  margin: 0 auto;
-  padding: 28px 32px 32px;
-}
-
-.pageHeader {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px 24px;
-}
+/* Messages page: only the layout and chat-specific styling.
+   Search, tabs, counters, avatars, chips, empty states, etc. come from components/ui. */
 
 /* ---------- Layout ---------- */
 
@@ -22,7 +7,7 @@
   display: grid;
   grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   gap: 16px;
-  height: clamp(520px, calc(100vh - 250px), 880px);
+  height: clamp(520px, calc(100vh - 270px), 880px);
 }
 
 .layout > .listPanel,
@@ -30,28 +15,6 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* ---------- Avatar + presence ---------- */
-
-.person {
-  position: relative;
-  display: inline-flex;
-  flex: none;
-}
-
-.presence {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 13px;
-  height: 13px;
-  border: 2px solid var(--color-surface);
-  border-radius: 50%;
-  background: var(--color-success-500);
-  box-sizing: border-box;
 }
 
 /* ---------- Conversation list ---------- */
@@ -63,120 +26,13 @@
 }
 
 .search {
-  position: relative;
   flex: 1;
-  min-width: 0;
 }
 
-.search svg {
-  position: absolute;
-  top: 50%;
-  left: 13px;
-  width: 18px;
-  height: 18px;
-  color: var(--color-text-subtle);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.search input {
-  width: 100%;
-  height: 40px;
-  padding: 0 12px 0 40px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-neutral-50);
-  font-size: 0.875rem;
-  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.search input::placeholder {
-  color: var(--color-text-subtle);
-}
-
-.search input:focus,
-.composer textarea:focus {
-  border-color: var(--color-primary-400);
-  background: var(--color-surface);
-  box-shadow: 0 0 0 3px rgb(47 107 242 / 0.12);
-  outline: none;
-}
-
-.filterButton {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.filterButton svg {
-  width: 18px;
-  height: 18px;
-}
-
-.filterButton:hover {
-  background: var(--color-neutral-50);
-}
-
-.filterButton[aria-pressed="true"] {
-  border-color: var(--color-primary-200);
-  background: var(--color-primary-50);
-  color: var(--color-primary-600);
-}
-
-.filterButton:focus-visible,
-.tabs button:focus-visible,
 .item:focus-visible,
-.back:focus-visible,
 .pending button:focus-visible {
   outline: 2px solid var(--color-primary-400);
   outline-offset: 2px;
-}
-
-.tabs {
-  display: flex;
-  gap: 4px;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.tabs button {
-  position: relative;
-  padding: 10px 12px 12px;
-  border: 0;
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.tabs button:hover {
-  color: var(--color-text);
-}
-
-.tabs button[aria-selected="true"] {
-  color: var(--color-primary-600);
-}
-
-.tabs button[aria-selected="true"]::after {
-  content: "";
-  position: absolute;
-  right: 12px;
-  bottom: -1px;
-  left: 12px;
-  height: 2px;
-  border-radius: 2px 2px 0 0;
-  background: var(--color-primary-500);
 }
 
 .listScroll {
@@ -272,37 +128,6 @@
   font-weight: 600;
 }
 
-.unread {
-  display: inline-grid;
-  flex: none;
-  place-items: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: var(--radius-pill);
-  background: var(--color-primary-500);
-  color: #fff;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.listEmpty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 56px 16px;
-  text-align: center;
-}
-
-.listEmpty svg {
-  width: 32px;
-  height: 32px;
-  margin-bottom: 8px;
-  color: var(--color-text-subtle);
-}
-
 /* ---------- Chat header ---------- */
 
 .chatHeader {
@@ -313,24 +138,10 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.back {
+/* Back arrow: only shown when a single pane is visible */
+.chatHeader .back {
   display: none;
-  place-items: center;
-  flex: none;
-  width: 36px;
-  height: 36px;
   margin-right: -4px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-}
-
-.back svg {
-  width: 20px;
-  height: 20px;
 }
 
 .chatWho {
@@ -349,12 +160,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 8px;
-}
-
-.chatSub .chip {
-  height: 22px;
-  padding: 0 8px;
-  font-size: 0.6875rem;
 }
 
 .headerAction {
@@ -513,9 +318,9 @@
 .composer textarea {
   flex: 1;
   min-width: 0;
-  min-height: 44px;
+  min-height: 40px;
   max-height: 140px;
-  padding: 11px 14px;
+  padding: 9px 14px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-neutral-50);
@@ -528,6 +333,13 @@
 
 .composer textarea::placeholder {
   color: var(--color-text-subtle);
+}
+
+.composer textarea:focus {
+  border-color: var(--color-primary-400);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgb(11 134 90 / 0.16);
+  outline: none;
 }
 
 .pending {
@@ -587,7 +399,6 @@
 /* ---------- Motion + responsive ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  .pageHeader,
   .layout > * {
     animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
@@ -615,8 +426,8 @@
     display: none;
   }
 
-  .back {
-    display: grid;
+  .chatHeader .back {
+    display: inline-flex;
   }
 }
 
@@ -631,11 +442,5 @@
 
   .thread {
     padding: 16px;
-  }
-}
-
-@media (max-width: 720px) {
-  .content {
-    padding: 20px 16px 24px;
   }
 }

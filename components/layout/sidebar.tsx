@@ -27,6 +27,8 @@ import {
 } from "react-icons/lu";
 import { LogoMark } from "@/components/logo";
 import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Counter } from "@/components/ui/counter";
 import { doctor } from "@/components/dashboard/data";
 import { useSidebar } from "./sidebar-context";
 import styles from "./sidebar.module.css";
@@ -40,7 +42,7 @@ const sections: { label: string; items: NavEntry[] }[] = [
       { label: "Dashboard", icon: LuLayoutDashboard, href: "/" },
       { label: "Appointments", icon: LuCalendarDays, href: "/appointments", badge: 28 },
       { label: "Patients", icon: LuUsers, href: "/patients" },
-      { label: "Doctors", icon: LuStethoscope },
+      { label: "Doctors", icon: LuStethoscope, href: "/doctors" },
       { label: "Departments", icon: LuBuilding2 },
     ],
   },
@@ -104,7 +106,11 @@ function NavItem({
     <>
       <Icon className={styles.icon} aria-hidden />
       <span className={styles.label}>{label}</span>
-      {badge !== undefined && <span className={styles.badge}>{badge}</span>}
+      {badge !== undefined && (
+        <Counter tone="soft" className={styles.badge}>
+          {badge}
+        </Counter>
+      )}
     </>
   );
 
@@ -164,9 +170,9 @@ export function Sidebar() {
               <span className={styles.brandSub}>Clinic Management</span>
             </span>
           </Link>
-          <button type="button" className={styles.closeBtn} onClick={closeMobile} aria-label="Close menu">
-            <LuX aria-hidden />
-          </button>
+          <Button variant="ghost" size="sm" iconOnly className={styles.closeBtn} onClick={closeMobile} aria-label="Close menu">
+            <LuX />
+          </Button>
         </div>
 
         <nav className={styles.nav} aria-label="Primary">

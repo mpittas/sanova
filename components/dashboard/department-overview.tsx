@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { Select } from "@/components/ui/select";
 import { ToneTile } from "@/components/ui/tone-tile";
 import { departmentRanges, departments, type DepartmentRange } from "./data";
@@ -18,7 +19,7 @@ export function DepartmentOverview() {
     >
       <ul className={styles.departmentList}>
         {departments[range].map(({ name, patients, share, icon: Icon, tone }) => (
-          <li key={name} className={styles.department} data-tone={tone}>
+          <li key={name} className={styles.department}>
             <ToneTile tone={tone} size={40}>
               <Icon />
             </ToneTile>
@@ -26,15 +27,8 @@ export function DepartmentOverview() {
               <span className="text-label">{name}</span>
               <span className="text-small text-muted">{patients.toLocaleString("en-US")} patients</span>
             </span>
-            <span
-              className={styles.track}
-              role="progressbar"
-              aria-label={`${name} share`}
-              aria-valuenow={share}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            >
-              <span className={styles.fill} style={{ display: "block", width: `${share}%` }} />
+            <span className={styles.bar}>
+              <ProgressBar value={share} tone={tone} aria-label={`${name} share`} />
             </span>
             <span className={`text-label num ${styles.percent}`}>{share}%</span>
           </li>

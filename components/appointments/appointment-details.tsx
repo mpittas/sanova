@@ -2,6 +2,7 @@ import { LuCalendar, LuClock, LuEllipsis, LuFileText, LuMapPin, LuStickyNote, Lu
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Chip } from "@/components/ui/chip";
 import type { Appointment } from "./data";
 import { addMinutes, formatDate, formatTime } from "./dates";
 import styles from "./appointments.module.css";
@@ -26,7 +27,7 @@ export function AppointmentDetails({ appointment }: { appointment: Appointment |
           <p className="text-h4">{patient}</p>
           <p className="text-small text-muted">MRN: {mrn}</p>
         </div>
-        <Button variant="secondary" size="sm" shape="rounded">
+        <Button variant="secondary" size="sm">
           Edit
         </Button>
       </div>
@@ -44,7 +45,9 @@ export function AppointmentDetails({ appointment }: { appointment: Appointment |
         </li>
         <li>
           <ModeIcon aria-hidden />
-          <span className={`chip chip-flat ${mode === "Telehealth" ? "chip-violet" : "chip-info"}`}>{mode}</span>
+          <Chip variant="tag" tone={mode === "Telehealth" ? "violet" : "info"}>
+            {mode}
+          </Chip>
         </li>
         <li data-top>
           <LuFileText aria-hidden />

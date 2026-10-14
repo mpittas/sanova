@@ -73,7 +73,7 @@ export function Composer({
             event.target.value = "";
           }}
         />
-        <Button variant="secondary" shape="rounded" iconOnly aria-label="Attach a file" onClick={() => fileInput.current?.click()}>
+        <Button variant="secondary" iconOnly aria-label="Attach a file" onClick={() => fileInput.current?.click()}>
           <LuPaperclip />
         </Button>
 
@@ -90,7 +90,7 @@ export function Composer({
           onKeyDown={onKeyDown}
         />
 
-        <Button shape="rounded" iconOnly aria-label="Send message" disabled={!canSend} type="submit">
+        <Button iconOnly aria-label="Send message" disabled={!canSend} type="submit">
           <LuSend />
         </Button>
       </div>

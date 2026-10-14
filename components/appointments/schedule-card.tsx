@@ -2,6 +2,8 @@ import { LuCalendar, LuCalendarOff, LuChevronLeft, LuChevronRight, LuEllipsis } 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Chip } from "@/components/ui/chip";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Segmented } from "@/components/ui/segmented";
 import { statusMeta, type Appointment } from "./data";
 import { formatDate, formatTime, type ISODate } from "./dates";
@@ -37,10 +39,10 @@ export function ScheduleCard({
     <Card className={styles.schedule}>
       <div className={styles.toolbar}>
         <div className={styles.stepper}>
-          <Button variant="secondary" size="sm" shape="rounded" iconOnly aria-label={`Previous ${unit}`} onClick={() => onStep(-1)}>
+          <Button variant="secondary" size="sm" iconOnly aria-label={`Previous ${unit}`} onClick={() => onStep(-1)}>
             <LuChevronLeft />
           </Button>
-          <Button variant="secondary" size="sm" shape="rounded" iconOnly aria-label={`Next ${unit}`} onClick={() => onStep(1)}>
+          <Button variant="secondary" size="sm" iconOnly aria-label={`Next ${unit}`} onClick={() => onStep(1)}>
             <LuChevronRight />
           </Button>
         </div>
@@ -50,7 +52,7 @@ export function ScheduleCard({
             {title}
           </h2>
         </div>
-        <Button variant="secondary" size="sm" shape="rounded" onClick={onToday}>
+        <Button variant="secondary" size="sm" onClick={onToday}>
           Today
         </Button>
         <span className={styles.spacer} />
@@ -58,11 +60,7 @@ export function ScheduleCard({
       </div>
 
       {groups.length === 0 ? (
-        <div className={styles.empty}>
-          <LuCalendarOff aria-hidden />
-          <p className="text-label">No appointments</p>
-          <p className="text-small text-muted">Nothing is scheduled for this {unit}.</p>
-        </div>
+        <EmptyState icon={LuCalendarOff} title="No appointments" description={`Nothing is scheduled for this ${unit}.`} />
       ) : (
         <ul className={styles.list}>
           {groups.map(({ date, items }) => (
@@ -94,7 +92,9 @@ export function ScheduleCard({
                         <span className="text-label">{visitTitle}</span>
                         <span className="text-small text-muted">{summary}</span>
                       </span>
-                      <span className={`chip chip-flat ${mode === "Telehealth" ? "chip-violet" : "chip-info"} ${styles.rowMode}`}>{mode}</span>
+                      <Chip variant="tag" tone={mode === "Telehealth" ? "violet" : "info"} className={styles.rowMode}>
+                        {mode}
+                      </Chip>
                       <Button variant="ghost" size="sm" iconOnly className={styles.rowMenu} aria-label={`More actions for ${patient}`}>
                         <LuEllipsis />
                       </Button>

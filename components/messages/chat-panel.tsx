@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useRef } from "react";
 import { LuArrowLeft, LuCheck, LuCheckCheck, LuEllipsisVertical, LuFileText, LuPhone, LuUser } from "react-icons/lu";
 import { formatTime } from "@/components/appointments/dates";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Chip } from "@/components/ui/chip";
 import { Composer } from "./composer";
 import { dayLabel, type Attachment, type ChatMessage, type Conversation } from "./data";
-import { PersonAvatar } from "./person-avatar";
 import styles from "./messages.module.css";
 
 type Row =
@@ -77,31 +78,31 @@ export function ChatPanel({
   }, [id, messages.length]);
 
   return (
-    <Card className={styles.chat}>
+    <Card padding="none" className={styles.chat}>
       <header className={styles.chatHeader}>
-        <button type="button" className={styles.back} aria-label="Back to conversations" onClick={onBack}>
-          <LuArrowLeft aria-hidden />
-        </button>
-        <PersonAvatar name={name} size={48} online={online} />
+        <Button variant="ghost" size="sm" iconOnly className={styles.back} aria-label="Back to conversations" onClick={onBack}>
+          <LuArrowLeft />
+        </Button>
+        <Avatar name={name} size={48} online={online} />
         <div className={styles.chatWho}>
           <h2 className="text-h4">{name}</h2>
           <p className={styles.chatSub}>
             <span className="text-small text-muted">{kind === "patient" ? `MRN: ${detail}` : detail}</span>
-            <span className={`chip chip-flat ${kind === "patient" ? "chip-success" : "chip-violet"}`}>
+            <Chip variant="tag" size="sm" tone={kind === "patient" ? "success" : "violet"}>
               {kind === "patient" ? "Active Patient" : "Care Team"}
-            </span>
+            </Chip>
           </p>
         </div>
         {kind === "patient" ? (
-          <Button href="/patients" variant="secondary" shape="rounded" iconLeft={<LuUser />} className={styles.headerAction}>
+          <Button href="/patients" variant="secondary" iconLeft={<LuUser />} className={styles.headerAction}>
             View Patient
           </Button>
         ) : (
-          <Button variant="secondary" shape="rounded" iconLeft={<LuPhone />} className={styles.headerAction}>
+          <Button variant="secondary" iconLeft={<LuPhone />} className={styles.headerAction}>
             Call
           </Button>
         )}
-        <Button variant="ghost" shape="rounded" iconOnly aria-label="More options">
+        <Button variant="ghost" iconOnly aria-label="More options">
           <LuEllipsisVertical />
         </Button>
       </header>
@@ -115,7 +116,7 @@ export function ChatPanel({
           ) : (
             <div key={row.key} className={styles.group} data-from={row.from}>
               <span className={styles.groupAvatar}>
-                <PersonAvatar name={row.from === "me" ? doctorName : name} size={36} />
+                <Avatar name={row.from === "me" ? doctorName : name} size={36} />
               </span>
               <div className={styles.stack}>
                 {row.messages.map((message, index) => (

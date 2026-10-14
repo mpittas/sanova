@@ -1,0 +1,1469 @@
+/*
+ * Sanova UI components — styles for everything in components/ui and components/layout.
+ * Tokens (colors, type scale) come from lib/tokens.ts, base styles from globals.css.
+ * Every component here is documented with its variants on the /docs page.
+ */
+
+@keyframes ui-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- Tones: colour pairs for tinted tiles, bars and chips ---------- */
+
+[data-tone="primary"] { --tone-bg: var(--color-primary-50); --tone-fg: var(--color-primary-500); --tone-strong: var(--color-primary-600); }
+[data-tone="blue"] { --tone-bg: var(--color-blue-50); --tone-fg: var(--color-blue-500); --tone-strong: var(--color-blue-600); }
+[data-tone="success"] { --tone-bg: var(--color-success-50); --tone-fg: var(--color-success-500); --tone-strong: var(--color-success-600); }
+[data-tone="violet"] { --tone-bg: var(--color-violet-50); --tone-fg: var(--color-violet-500); --tone-strong: var(--color-violet-600); }
+[data-tone="coral"] { --tone-bg: var(--color-coral-50); --tone-fg: var(--color-coral-500); --tone-strong: var(--color-coral-600); }
+[data-tone="amber"] { --tone-bg: var(--color-amber-50); --tone-fg: var(--color-amber-500); --tone-strong: var(--color-amber-600); }
+[data-tone="teal"] { --tone-bg: var(--color-teal-50); --tone-fg: var(--color-teal-500); --tone-strong: var(--color-teal-600); }
+
+.tone-tile {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--size, 48px);
+  height: var(--size, 48px);
+  border-radius: calc(var(--size, 48px) * 0.32);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+}
+
+.tone-tile svg {
+  width: 46%;
+  height: 46%;
+}
+
+/* ---------- Button ---------- */
+
+.btn {
+  --btn-height: 44px;
+  --btn-padding: 18px;
+  --btn-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--btn-height);
+  padding: 0 var(--btn-padding);
+  border: 1px solid transparent;
+  border-radius: var(--btn-radius);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease,
+    color 0.15s ease;
+}
+
+.btn svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.btn:active:not([disabled]):not([aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-sm { --btn-height: 32px; --btn-padding: 12px; --btn-radius: var(--radius-sm); font-size: 0.8125rem; gap: 6px; }
+.btn-md { --btn-height: 44px; --btn-padding: 18px; --btn-radius: 12px; }
+.btn-lg { --btn-height: 52px; --btn-padding: 24px; --btn-radius: 14px; font-size: 0.9375rem; }
+
+.btn-icon {
+  width: var(--btn-height);
+  padding: 0;
+}
+
+.btn-icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+/* Solid CTAs use primary-600 (6.3:1 with white), one step deeper than the 500 used for tints and charts, so they
+   stand out. Hover goes one step darker again. See "Using the primary green" on /docs. */
+.btn-primary {
+  background: var(--color-primary-600);
+  color: #fff;
+  box-shadow: var(--shadow-primary);
+}
+.btn-primary:hover { background: var(--color-primary-700); }
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+}
+.btn-secondary:hover { background: var(--color-neutral-50); border-color: var(--color-neutral-200); }
+
+/* A toggle button in its "on" state (Button `pressed` prop) */
+.btn-secondary[aria-pressed="true"] {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-200);
+  color: var(--color-primary-600);
+}
+
+.btn-soft {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+.btn-soft:hover { background: var(--color-primary-100); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+}
+.btn-ghost:hover { background: var(--color-neutral-100); color: var(--color-text); }
+
+.btn-danger {
+  background: var(--color-coral-500);
+  color: #fff;
+  box-shadow: 0 1px 2px rgb(182 49 26 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.14);
+}
+.btn-danger:hover { background: var(--color-coral-600); }
+
+.btn-spinner {
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Card ---------- */
+
+.card {
+  min-width: 0;
+  padding: 20px;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.03);
+}
+
+.card-pad-lg { padding: 24px; }
+
+/* Extra-soft corners (Card `rounded`) */
+.card-round { border-radius: var(--radius-2xl); }
+
+/* No padding: for cards whose content (tables, lists, chat) runs edge to edge. */
+.card-pad-none {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* ---------- Stat tile ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.stat-tile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-tile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.stat-tile-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+/* ---------- Delta (change indicator) ---------- */
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--color-success-600);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.delta svg {
+  width: 14px;
+  height: 14px;
+}
+
+.delta[data-tone="danger"] {
+  color: var(--color-coral-600);
+}
+
+.delta-chip {
+  height: 22px;
+  padding: 0 8px 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-success-50);
+  font-size: 0.75rem;
+}
+
+.delta-chip[data-tone="danger"] {
+  background: var(--color-coral-50);
+}
+
+.delta-chip svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ---------- Checkbox ---------- */
+
+.checkbox {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1.5px solid var(--color-neutral-300);
+  border-radius: 5px;
+  background: var(--color-surface) center / 12px no-repeat;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.checkbox:hover:not(:disabled) {
+  border-color: var(--color-primary-400);
+}
+
+.checkbox:checked,
+.checkbox:indeterminate {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-500);
+}
+
+.checkbox:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+}
+
+.checkbox:indeterminate {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M4 8h8'/%3E%3C/svg%3E");
+}
+
+.checkbox:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+/* ---------- Select ---------- */
+
+.select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select select {
+  height: 32px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+}
+
+.select select:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.select svg {
+  position: absolute;
+  right: 11px;
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+/* Default-height variant: lines up with default buttons, text inputs and search fields (44px). */
+.select-md select {
+  height: 44px;
+  padding: 0 40px 0 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+}
+
+.select-md svg {
+  right: 15px;
+}
+
+/* Large variant for forms in dialogs: 50px, softer corners. */
+.select-lg select {
+  height: 50px;
+  padding: 0 40px 0 16px;
+  border-radius: 14px;
+  font-size: 0.9375rem;
+}
+
+.select-lg svg {
+  right: 17px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Form select: fills its field, tinted like text inputs, with an optional leading icon and a muted placeholder. */
+.select-field {
+  display: flex;
+  width: 100%;
+}
+
+.select-field select {
+  width: 100%;
+  background: var(--color-neutral-50);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.select-field select:focus-visible {
+  border-color: var(--color-primary-400);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgb(11 134 90 / 0.16);
+  outline: none;
+}
+
+.select-field select:invalid,
+.select-field select[data-placeholder] {
+  color: var(--color-text-subtle);
+}
+
+.select-field select option {
+  color: var(--color-text);
+}
+
+.select-field[data-invalid] select {
+  border-color: var(--color-coral-400);
+}
+
+.select-field > .select-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+  transform: translateY(-50%);
+}
+
+.select-field[data-icon] select {
+  padding-left: 46px;
+}
+
+/* ---------- Search input ---------- */
+
+.search-input {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.search-input > svg {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.search-input input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-neutral-50);
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-input input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.search-input input:focus {
+  border-color: var(--color-primary-400);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgb(11 134 90 / 0.16);
+  outline: none;
+}
+
+.search-input[data-trailing] input {
+  padding-right: 44px;
+}
+
+.search-input-trailing {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+}
+
+/* Plain white field, for use on a tinted background */
+.search-input-white input {
+  background: var(--color-surface);
+}
+
+/* ---------- Segmented control ---------- */
+
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+/* 26px + 2px padding + 1px border on each side = 32px, the same height as small buttons */
+.segmented button {
+  height: 26px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.segmented button:hover {
+  color: var(--color-text);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.segmented button:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 1px;
+}
+
+/* ---------- Tabs (underline) ---------- */
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tabs button {
+  position: relative;
+  padding: 10px 12px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.tabs button:hover {
+  color: var(--color-text);
+}
+
+.tabs button[aria-selected="true"] {
+  color: var(--color-primary-600);
+}
+
+.tabs button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: -1px;
+  left: 12px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-primary-500);
+}
+
+.tabs button:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Filter chips (single-select pill filters with counts) ---------- */
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.filter-chip:has(.counter) {
+  padding-right: 8px;
+}
+
+.filter-chip:hover {
+  background: var(--color-neutral-50);
+  color: var(--color-text);
+}
+
+.filter-chip[aria-pressed="true"] {
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.filter-chip:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+/* `solid`: white pills on the page background; the active one is filled with the brand green. */
+.filter-chips-solid .filter-chip {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.filter-chips-solid .filter-chip:hover {
+  border-color: var(--color-neutral-200);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.filter-chips-solid .filter-chip[aria-pressed="true"] {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-primary);
+  color: #fff;
+}
+
+.filter-chips-solid .filter-chip[aria-pressed="true"] .counter {
+  background: rgb(255 255 255 / 0.2);
+  color: #fff;
+}
+
+/* ---------- Chip ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* `status` variant has a leading dot */
+.chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* `tag` variant: no dot, squarer corners — for labels like "In Person" */
+.chip-tag { border-radius: 8px; }
+.chip-tag::before { display: none; }
+
+.chip-sm { height: 22px; padding: 0 8px; font-size: 0.6875rem; }
+
+.chip-info { background: var(--color-blue-50); color: var(--color-blue-600); }
+.chip-neutral { background: var(--color-neutral-100); color: var(--color-neutral-600); }
+.chip-violet { background: var(--color-violet-50); color: var(--color-violet-700); }
+.chip-warning { background: var(--color-amber-50); color: var(--color-amber-700); }
+.chip-danger { background: var(--color-coral-50); color: var(--color-coral-600); }
+.chip-success { background: var(--color-success-50); color: var(--color-success-700); }
+
+/* ---------- Counter (small number badge) ---------- */
+
+.counter {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-sm { min-width: 16px; height: 16px; padding: 0 4px; font-size: 0.625rem; }
+
+.counter-primary { background: var(--color-primary-500); color: #fff; }
+.counter-soft { background: var(--color-primary-100); color: var(--color-primary-700); }
+.counter-danger { background: var(--color-coral-500); color: #fff; }
+.counter-neutral { background: var(--color-neutral-100); color: var(--color-neutral-600); }
+
+/* ---------- Avatar ---------- */
+
+.avatar {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--size, 48px);
+  height: var(--size, 48px);
+  border-radius: 50%;
+  font-size: calc(var(--size, 48px) * 0.34);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.7);
+}
+
+.avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+/* `shape="rounded"`: a softly rounded square, for profile cards */
+.avatar-rounded {
+  border-radius: var(--radius, calc(var(--size, 48px) * 0.2));
+  box-shadow: none;
+}
+
+.avatar-wrap {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+.avatar-presence {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-success-500);
+  box-sizing: border-box;
+}
+
+/* ---------- Progress bar ---------- */
+
+.progress {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-100);
+  overflow: hidden;
+}
+
+.progress-sm { height: 6px; }
+
+.progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--tone-fg, var(--color-primary-500));
+  transition: width 0.4s ease;
+}
+
+/* ---------- Legend ---------- */
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend-row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.legend-row .legend-item {
+  gap: 8px;
+}
+
+.legend-swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+
+.legend-label {
+  flex: 1;
+}
+
+.legend-share {
+  min-width: 34px;
+  text-align: right;
+}
+
+/* ---------- Table ---------- */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table td {
+  border-bottom: 1px solid var(--color-neutral-100);
+  color: var(--color-neutral-800);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* `simple`: compact table that lives inside a padded card */
+.table-simple th {
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+}
+
+.table-simple td {
+  padding: 12px 8px 12px 0;
+}
+
+/* `banded`: edge-to-edge table with a tinted header and row hover (use inside a card with no padding) */
+.table-banded th {
+  padding: 11px 16px;
+  background: var(--color-neutral-50);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table-banded td {
+  padding: 12px 16px;
+}
+
+.table-banded tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+.table-banded tbody tr:hover {
+  background: var(--color-neutral-50);
+}
+
+.table-banded tbody tr[data-selected] {
+  background: var(--color-primary-50);
+}
+
+.table .table-check {
+  width: 56px;
+  padding-right: 0;
+  padding-left: 20px;
+}
+
+.table .table-actions {
+  width: 56px;
+  padding-right: 16px;
+  text-align: right;
+}
+
+.table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: -4px -6px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.table-sort svg {
+  width: 13px;
+  height: 13px;
+  opacity: 0.55;
+}
+
+.table-sort:hover {
+  color: var(--color-text);
+}
+
+.table-sort[data-active] {
+  color: var(--color-primary-600);
+}
+
+.table-sort[data-active] svg {
+  opacity: 1;
+}
+
+.table-sort:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 1px;
+}
+
+/* ---------- Pagination ---------- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-button {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-neutral-700);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.page-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.page-button:hover:not(:disabled) {
+  border-color: var(--color-neutral-200);
+  background: var(--color-neutral-50);
+}
+
+.page-button[aria-current="page"] {
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.page-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.page-button:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.page-gap {
+  min-width: 20px;
+  color: var(--color-text-subtle);
+  text-align: center;
+}
+
+/* ---------- Empty state ---------- */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 56px 16px;
+  text-align: center;
+}
+
+.empty-state > svg {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 8px;
+  color: var(--color-text-subtle);
+}
+
+.empty-state-action {
+  margin-top: 12px;
+}
+
+.empty-state-compact {
+  padding: 32px 16px;
+}
+
+/* ---------- Page layout ---------- */
+
+/* The padded, centred wrapper every page uses. It is also a size container, so
+   components inside can adapt to the real content width (sidebar open or collapsed). */
+.page-content {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.page-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 720px) {
+  .page-content {
+    padding: 20px 16px 32px;
+  }
+
+  .page-header-actions {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-header {
+    animation: ui-rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+}
+
+/* ---------- Form field (label + control + hint/error) ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.field-label {
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.field-required {
+  margin-left: 3px;
+  color: var(--color-coral-500);
+}
+
+.field-hint {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-coral-600);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.field-error svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.select-field > .select-icon svg {
+  position: static;
+  width: 18px;
+  height: 18px;
+  color: inherit;
+}
+
+/* ---------- Text input and textarea ---------- */
+
+.input {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.input > svg {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.input input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  background: var(--color-neutral-50);
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input input {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+}
+
+.input[data-icon] input {
+  padding-left: 46px;
+}
+
+.input-lg input {
+  height: 50px;
+  border-radius: 14px;
+  font-size: 0.9375rem;
+}
+
+.input-lg[data-icon] input {
+  padding-left: 48px;
+}
+
+.textarea {
+  min-height: 120px;
+  font-family: inherit;
+  color: inherit;
+  padding: 14px 16px;
+  border-radius: 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.input input::placeholder,
+.textarea::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.input input:focus,
+.textarea:focus {
+  border-color: var(--color-primary-400);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgb(11 134 90 / 0.16);
+  outline: none;
+}
+
+.input[data-invalid] input,
+.textarea[aria-invalid="true"] {
+  border-color: var(--color-coral-400);
+}
+
+.input[data-invalid] input:focus,
+.textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgb(240 88 58 / 0.16);
+}
+
+/* ---------- Modal (native <dialog>) ---------- */
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.modal {
+  width: min(var(--modal-width, 640px), calc(100vw - 48px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 24px 64px rgb(15 23 42 / 0.28), 0 2px 6px rgb(15 23 42 / 0.08);
+}
+
+.modal::backdrop {
+  background: rgb(15 23 42 / 0.5);
+  backdrop-filter: blur(3px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .modal[open] {
+    animation: modal-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .modal[open]::backdrop {
+    animation: modal-backdrop-in 0.22s ease;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal {
+    width: 100vw;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+}
+
+/* ---------- Stepper (vertical) ---------- */
+
+.stepper-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stepper-item {
+  position: relative;
+}
+
+/* Connector between one step's circle and the next */
+.stepper-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 54px;
+  bottom: -4px;
+  left: 31px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--color-neutral-200);
+}
+
+.stepper-item[data-state="done"]:not(:last-child)::after {
+  background: var(--color-primary-400);
+}
+
+.stepper-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: default;
+  transition: background-color 0.15s ease;
+}
+
+.stepper-item:not(:last-child) .stepper-step {
+  margin-bottom: 8px;
+}
+
+.stepper-step[data-state="current"] {
+  background: var(--color-primary-50);
+}
+
+.stepper-step:is(button):not(:disabled) {
+  cursor: pointer;
+}
+
+.stepper-step:is(button):not(:disabled):hover {
+  background: var(--color-neutral-50);
+}
+
+.stepper-step:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.stepper-marker {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-neutral-200);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper-marker svg {
+  width: 18px;
+  height: 18px;
+}
+
+[data-state="current"] .stepper-marker {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--color-primary-100);
+}
+
+[data-state="done"] .stepper-marker {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-500);
+  color: #fff;
+}
+
+.stepper-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+[data-state="current"] .stepper-label {
+  color: var(--color-primary-700);
+}
+
+/* ---------- Image upload ---------- */
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface);
+}
+
+.upload-drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 8px 12px;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  cursor: pointer;
+}
+
+/* The portrait frame has the same proportions as the portraits on doctor cards (corner radius = 38% of the side). */
+.upload-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border: 2px dashed var(--color-primary-300);
+  border-radius: 38%;
+  background: var(--color-primary-50);
+  color: var(--color-primary-500);
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.upload-frame > svg {
+  width: 44px;
+  height: 44px;
+  stroke-width: 1.5;
+}
+
+.upload-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.upload[data-filled] .upload-frame {
+  border-style: solid;
+  border-color: var(--color-surface);
+  box-shadow: 0 0 0 2px var(--color-primary-200);
+}
+
+/* Camera badge on the frame's corner */
+.upload-badge {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-primary-600);
+  color: #fff;
+  box-shadow: var(--shadow-primary);
+}
+
+.upload-badge svg {
+  width: 16px;
+  height: 16px;
+}
+
+.upload-drop:hover .upload-frame,
+.upload[data-dragging] .upload-frame {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-100);
+}
+
+.upload[data-dragging] .upload-frame {
+  transform: scale(1.05);
+}
+
+.upload-drop:focus-within {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.upload-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.upload-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-50);
+}
+
+.upload-preview .avatar {
+  box-shadow: none;
+}
+
+/* Multi-select chips sit on a field background, so they get a hairline outline when off. */
+.choice-chips .filter-chip {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  height: 40px;
+  padding: 0 16px;
+}
+
+.choice-chips .filter-chip:hover {
+  border-color: var(--color-neutral-200);
+  background: var(--color-neutral-50);
+}
+
+.choice-chips .filter-chip[aria-pressed="true"] {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}

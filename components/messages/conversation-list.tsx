@@ -1,11 +1,18 @@
-import { LuInbox, LuListFilter, LuSearch } from "react-icons/lu";
+import { LuInbox, LuListFilter } from "react-icons/lu";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Counter } from "@/components/ui/counter";
+import { EmptyState } from "@/components/ui/empty-state";
+import { SearchInput } from "@/components/ui/search-input";
+import { Tabs, tabId } from "@/components/ui/tabs";
 import { lastMessage, listTimeLabel, type Conversation } from "./data";
-import { PersonAvatar } from "./person-avatar";
 import styles from "./messages.module.css";
 
 export const tabs = ["All Messages", "Patients", "Care Team"] as const;
 export type Tab = (typeof tabs)[number];
+
+const PANEL_ID = "conversation-list";
 
 function preview(conversation: Conversation) {
   const message = lastMessage(conversation);
@@ -35,48 +42,37 @@ export function ConversationList({
   onSelect: (id: string) => void;
 }) {
   return (
-    <Card className={styles.listPanel}>
+    <Card padding="none" className={styles.listPanel}>
       <div className={styles.listTop}>
-        <label className={styles.search}>
-          <span className="sr-only">Search messages</span>
-          <LuSearch aria-hidden />
-          <input type="search" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search messages..." />
-        </label>
-        <button
-          type="button"
-          className={styles.filterButton}
-          aria-pressed={unreadOnly}
+        <SearchInput
+          label="Search messages"
+          wrapperClassName={styles.search}
+          value={query}
+          onChange={(event) => onQueryChange(event.target.value)}
+          placeholder="Search messages..."
+        />
+        <Button
+          variant="secondary"
+          iconOnly
+          pressed={unreadOnly}
           aria-label="Show unread only"
           title="Show unread only"
           onClick={() => onUnreadOnlyChange(!unreadOnly)}
         >
-          <LuListFilter aria-hidden />
-        </button>
+          <LuListFilter />
+        </Button>
       </div>
 
-      <div className={styles.tabs} role="tablist" aria-label="Message type">
-        {tabs.map((name) => (
-          <button
-            key={name}
-            type="button"
-            role="tab"
-            id={`tab-${name}`}
-            aria-selected={tab === name}
-            aria-controls="conversation-list"
-            onClick={() => onTabChange(name)}
-          >
-            {name}
-          </button>
-        ))}
-      </div>
+      <Tabs aria-label="Message type" panelId={PANEL_ID} value={tab} options={tabs} onChange={onTabChange} />
 
-      <div id="conversation-list" role="tabpanel" aria-labelledby={`tab-${tab}`} className={styles.listScroll}>
+      <div id={PANEL_ID} role="tabpanel" aria-labelledby={tabId(PANEL_ID, tab)} className={styles.listScroll}>
         {conversations.length === 0 ? (
-          <div className={styles.listEmpty}>
-            <LuInbox aria-hidden />
-            <p className="text-label">No conversations</p>
-            <p className="text-small text-muted">{unreadOnly ? "You're all caught up." : "Try a different search."}</p>
-          </div>
+          <EmptyState
+            icon={LuInbox}
+            size="compact"
+            title="No conversations"
+            description={unreadOnly ? "You're all caught up." : "Try a different search."}
+          />
         ) : (
           <ul className={styles.items}>
             {conversations.map((conversation) => {
@@ -92,7 +88,7 @@ export function ConversationList({
                     aria-current={active || undefined}
                     onClick={() => onSelect(conversation.id)}
                   >
-                    <PersonAvatar name={conversation.name} size={48} online={conversation.online} />
+                    <Avatar name={conversation.name} size={48} online={conversation.online} />
                     <span className={styles.itemBody}>
                       <span className={styles.itemTop}>
                         <span className={styles.itemName}>{conversation.name}</span>
@@ -101,9 +97,7 @@ export function ConversationList({
                       <span className={styles.itemBottom}>
                         <span className={styles.preview}>{preview(conversation)}</span>
                         {conversation.unread > 0 && (
-                          <span className={styles.unread} aria-label={`${conversation.unread} unread`}>
-                            {conversation.unread}
-                          </span>
+                          <Counter aria-label={`${conversation.unread} unread`}>{conversation.unread}</Counter>
                         )}
                       </span>
                     </span>

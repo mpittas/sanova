@@ -59,7 +59,6 @@
 
 .edgeToggle:focus-visible,
 .item:focus-visible,
-.closeBtn:focus-visible,
 .logout:focus-visible {
   outline: 2px solid var(--color-primary-400);
   outline-offset: 2px;
@@ -105,22 +104,9 @@
   color: var(--color-text-muted);
 }
 
-.closeBtn {
+/* Close button (a ghost <Button>): only shown in the mobile drawer */
+.top .closeBtn {
   display: none;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-}
-
-.closeBtn svg {
-  width: 20px;
-  height: 20px;
 }
 
 /* ---------- Navigation ---------- */
@@ -234,19 +220,7 @@
   background: var(--color-primary-500);
 }
 
-.badge {
-  display: inline-grid;
-  place-items: center;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 7px;
-  border-radius: var(--radius-pill);
-  background: var(--color-primary-100);
-  color: var(--color-primary-700);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
+/* The count badge is a <Counter tone="soft">; it turns solid on the active item */
 .item[data-active] .badge {
   background: var(--color-primary-500);
   color: #fff;
@@ -434,8 +408,8 @@
     display: none;
   }
 
-  .closeBtn {
-    display: grid;
+  .top .closeBtn {
+    display: inline-flex;
   }
 
   .backdrop {

@@ -1,8 +1,9 @@
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import styles from "./patients.module.css";
+
+type PageItem = number | "gap-start" | "gap-end";
 
 /** 1 … 4 5 6 … 42 — always keeps first, last and the pages around the current one. */
-function pageItems(page: number, total: number): (number | "gap-start" | "gap-end")[] {
+export function pageItems(page: number, total: number): PageItem[] {
   if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
 
   const pages = new Set([1, total, page - 1, page, page + 1]);
@@ -10,7 +11,7 @@ function pageItems(page: number, total: number): (number | "gap-start" | "gap-en
   if (page >= total - 2) [total - 3, total - 2, total - 1].forEach((value) => pages.add(value));
 
   const sorted = [...pages].filter((value) => value >= 1 && value <= total).sort((a, b) => a - b);
-  const items: (number | "gap-start" | "gap-end")[] = [];
+  const items: PageItem[] = [];
   sorted.forEach((value, index) => {
     if (index > 0 && value - sorted[index - 1] > 1) items.push(index === 1 ? "gap-start" : "gap-end");
     items.push(value);
@@ -28,8 +29,8 @@ export function Pagination({
   onChange: (page: number) => void;
 }) {
   return (
-    <nav className={styles.pagination} aria-label="Pagination">
-      <button type="button" className={styles.pageButton} aria-label="Previous page" disabled={page <= 1} onClick={() => onChange(page - 1)}>
+    <nav className="pagination" aria-label="Pagination">
+      <button type="button" className="page-button" aria-label="Previous page" disabled={page <= 1} onClick={() => onChange(page - 1)}>
         <LuChevronLeft aria-hidden />
       </button>
 
@@ -38,7 +39,7 @@ export function Pagination({
           <button
             key={item}
             type="button"
-            className={styles.pageButton}
+            className="page-button"
             aria-label={`Page ${item}`}
             aria-current={item === page ? "page" : undefined}
             onClick={() => onChange(item)}
@@ -46,7 +47,7 @@ export function Pagination({
             {item}
           </button>
         ) : (
-          <span key={item} className={styles.pageGap} aria-hidden>
+          <span key={item} className="page-gap" aria-hidden>
             …
           </span>
         ),
@@ -54,7 +55,7 @@ export function Pagination({
 
       <button
         type="button"
-        className={styles.pageButton}
+        className="page-button"
         aria-label="Next page"
         disabled={page >= totalPages}
         onClick={() => onChange(page + 1)}

@@ -10,7 +10,7 @@ export type AppointmentStatus = "confirmed" | "checked-in" | "pending" | "unconf
 export type VisitMode = "In Person" | "Telehealth";
 
 export const statusMeta: Record<AppointmentStatus, { label: string; color: string }> = {
-  confirmed: { label: "Confirmed", color: "var(--color-primary-500)" },
+  confirmed: { label: "Confirmed", color: "var(--color-blue-500)" },
   "checked-in": { label: "Checked in", color: "var(--color-success-500)" },
   pending: { label: "Pending", color: "var(--color-amber-500)" },
   unconfirmed: { label: "Not confirmed", color: "var(--color-neutral-300)" },
@@ -63,7 +63,7 @@ export const stats: {
   /** Cancelled going up is bad news, so it uses the alert colour. */
   deltaTone: "success" | "danger";
 }[] = [
-  { id: "total", label: "Total Appointments", value: 42, change: "12%", period: "from last month", icon: LuCalendar, tone: "primary", deltaTone: "success" },
+  { id: "total", label: "Total Appointments", value: 42, change: "12%", period: "from last month", icon: LuCalendar, tone: "blue", deltaTone: "success" },
   { id: "completed", label: "Completed", value: 36, change: "20%", period: "from last month", icon: LuCircleCheck, tone: "success", deltaTone: "success" },
   { id: "upcoming", label: "Upcoming", value: 6, change: "8%", period: "from last week", icon: LuClock, tone: "amber", deltaTone: "success" },
   { id: "cancelled", label: "Cancelled", value: 3, change: "50%", period: "from last month", icon: LuCircleX, tone: "coral", deltaTone: "danger" },

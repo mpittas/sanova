@@ -1,26 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  LuArrowDown,
-  LuArrowUp,
-  LuChevronsUpDown,
-  LuDownload,
-  LuEllipsis,
-  LuMessageSquare,
-  LuSearch,
-  LuSearchX,
-  LuSlidersHorizontal,
-  LuX,
-} from "react-icons/lu";
+import { LuDownload, LuEllipsis, LuMessageSquare, LuSearchX, LuSlidersHorizontal, LuX } from "react-icons/lu";
 import { formatDate, formatTime } from "@/components/appointments/dates";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Chip, type ChipTone } from "@/components/ui/chip";
+import { Counter } from "@/components/ui/counter";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Pagination } from "@/components/ui/pagination";
+import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
+import { Table, Th } from "@/components/ui/table";
 import { ageOn, patients, providers, type Patient, type PatientStatus } from "./data";
-import { Pagination } from "./pagination";
 import styles from "./patients.module.css";
 
 const statusOptions = ["All Statuses", "Active", "Inactive", "At Risk", "New"] as const;
@@ -32,10 +26,10 @@ const pageSizeOptions = ["6 per page", "10 per page", "25 per page"] as const;
 type SortKey = "name" | "dob" | "lastVisit" | "next";
 type Sort = { key: SortKey; direction: "asc" | "desc" } | null;
 
-const statusChip: Record<PatientStatus, string> = {
-  Active: "chip-success",
-  Inactive: "chip-neutral",
-  "At Risk": "chip-danger",
+const statusTone: Record<PatientStatus, ChipTone> = {
+  Active: "success",
+  Inactive: "neutral",
+  "At Risk": "danger",
 };
 
 const columns: { key: SortKey | null; label: string }[] = [
@@ -151,31 +145,30 @@ export function PatientsView() {
   };
 
   return (
-    <Card className={styles.panel}>
+    <Card padding="none">
       <div className={styles.toolbar}>
-        <label className={styles.search}>
-          <span className="sr-only">Search patients</span>
-          <LuSearch aria-hidden />
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => filter(setQuery)(event.target.value)}
-            placeholder="Search patients by name, phone, email, or medical record number..."
-          />
-        </label>
+        <SearchInput
+          label="Search patients"
+          wrapperClassName={styles.search}
+          value={query}
+          onChange={(event) => filter(setQuery)(event.target.value)}
+          placeholder="Search patients by name, phone, email, or medical record number..."
+          tone="white"
+        />
 
         <div className={styles.filters}>
-          <Select aria-label="Filter by status" value={status} options={statusOptions} onChange={filter(setStatus)} />
-          <Select aria-label="Filter by provider" value={provider} options={providerOptions} onChange={filter(setProvider)} />
+          <Select size="md" aria-label="Filter by status" value={status} options={statusOptions} onChange={filter(setStatus)} />
+          <Select size="md" aria-label="Filter by provider" value={provider} options={providerOptions} onChange={filter(setProvider)} />
           <Button
             variant="secondary"
             iconLeft={<LuSlidersHorizontal />}
+            pressed={moreOpen}
             aria-expanded={moreOpen}
             aria-controls="more-filters"
             onClick={() => setMoreOpen((open) => !open)}
           >
             More Filters
-            {extraFilters > 0 && <span className={styles.filterCount}>{extraFilters}</span>}
+            {extraFilters > 0 && <Counter>{extraFilters}</Counter>}
           </Button>
         </div>
       </div>
@@ -184,11 +177,11 @@ export function PatientsView() {
         <div id="more-filters" className={styles.more}>
           <label className={styles.moreField}>
             <span className="text-small text-muted">Next appointment</span>
-            <Select aria-label="Filter by next appointment" value={appointment} options={appointmentOptions} onChange={filter(setAppointment)} />
+            <Select size="md" aria-label="Filter by next appointment" value={appointment} options={appointmentOptions} onChange={filter(setAppointment)} />
           </label>
           <label className={styles.moreField}>
             <span className="text-small text-muted">Age</span>
-            <Select aria-label="Filter by age" value={age} options={ageOptions} onChange={filter(setAge)} />
+            <Select size="md" aria-label="Filter by age" value={age} options={ageOptions} onChange={filter(setAge)} />
           </label>
           <Button variant="ghost" size="sm" disabled={!hasFilters} onClick={clearFilters}>
             Reset filters
@@ -212,107 +205,99 @@ export function PatientsView() {
         </div>
       )}
 
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.checkCell}>
-                <Checkbox
-                  aria-label="Select all patients on this page"
-                  checked={allOnPage}
-                  indeterminate={selectedOnPage > 0 && !allOnPage}
-                  disabled={rows.length === 0}
-                  onChange={togglePage}
-                />
-              </th>
-              {columns.map(({ key, label }) => {
-                const active = key !== null && sort?.key === key;
-                const Icon = !active ? LuChevronsUpDown : sort?.direction === "asc" ? LuArrowUp : LuArrowDown;
-                return (
-                  <th key={label} aria-sort={active ? (sort?.direction === "asc" ? "ascending" : "descending") : undefined}>
-                    {key ? (
-                      <button type="button" className={styles.sortButton} data-active={active || undefined} onClick={() => cycleSort(key)}>
-                        {label}
-                        <Icon aria-hidden />
-                      </button>
-                    ) : (
-                      label
-                    )}
-                  </th>
-                );
-              })}
-              <th className={styles.actionCell}>
-                <span className="sr-only">Actions</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((patient) => {
-              const isSelected = selected.has(patient.id);
-              return (
-                <tr key={patient.id} data-selected={isSelected || undefined}>
-                  <td className={styles.checkCell}>
-                    <Checkbox aria-label={`Select ${patient.name}`} checked={isSelected} onChange={() => toggleRow(patient.id)} />
-                  </td>
-                  <td>
-                    <div className={styles.patientCell}>
-                      <Avatar name={patient.name} src={patient.photo} size={40} />
-                      <span className={styles.stack}>
-                        <span className="text-label">{patient.name}</span>
-                        <span className="text-small text-muted">MRN: {patient.mrn}</span>
-                      </span>
-                    </div>
-                  </td>
-                  <td>
+      <Table variant="banded" minWidth={980}>
+        <thead>
+          <tr>
+            <th className="table-check">
+              <Checkbox
+                aria-label="Select all patients on this page"
+                checked={allOnPage}
+                indeterminate={selectedOnPage > 0 && !allOnPage}
+                disabled={rows.length === 0}
+                onChange={togglePage}
+              />
+            </th>
+            {columns.map(({ key, label }) => (
+              <Th
+                key={label}
+                sort={key ? { direction: sort?.key === key ? sort.direction : null, onSort: () => cycleSort(key) } : undefined}
+              >
+                {label}
+              </Th>
+            ))}
+            <th className="table-actions">
+              <span className="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((patient) => {
+            const isSelected = selected.has(patient.id);
+            return (
+              <tr key={patient.id} data-selected={isSelected || undefined}>
+                <td className="table-check">
+                  <Checkbox aria-label={`Select ${patient.name}`} checked={isSelected} onChange={() => toggleRow(patient.id)} />
+                </td>
+                <td>
+                  <div className={styles.patientCell}>
+                    <Avatar name={patient.name} src={patient.photo} size={40} />
                     <span className={styles.stack}>
-                      <span className="num">{shortDate(patient.dob)}</span>
-                      <span className="text-small text-muted">({ageOn(patient.dob)} years)</span>
+                      <span className="text-label">{patient.name}</span>
+                      <span className="text-small text-muted">MRN: {patient.mrn}</span>
                     </span>
-                  </td>
-                  <td>
+                  </div>
+                </td>
+                <td>
+                  <span className={styles.stack}>
+                    <span className="num">{shortDate(patient.dob)}</span>
+                    <span className="text-small text-muted">({ageOn(patient.dob)} years)</span>
+                  </span>
+                </td>
+                <td>
+                  <span className={styles.stack}>
+                    <span className="num">{patient.phone}</span>
+                    <span className="text-small text-muted">{patient.email}</span>
+                  </span>
+                </td>
+                <td className={`num ${styles.muted}`}>{shortDate(patient.lastVisit)}</td>
+                <td>
+                  {patient.next ? (
                     <span className={styles.stack}>
-                      <span className="num">{patient.phone}</span>
-                      <span className="text-small text-muted">{patient.email}</span>
+                      <span className="num">{shortDate(patient.next.date)}</span>
+                      <span className="text-small text-muted num">{formatTime(patient.next.time)}</span>
                     </span>
-                  </td>
-                  <td className={`num ${styles.muted}`}>{shortDate(patient.lastVisit)}</td>
-                  <td>
-                    {patient.next ? (
-                      <span className={styles.stack}>
-                        <span className="num">{shortDate(patient.next.date)}</span>
-                        <span className="text-small text-muted num">{formatTime(patient.next.time)}</span>
-                      </span>
-                    ) : (
-                      <span className="text-subtle" aria-label="None scheduled">
-                        —
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    <span className={`chip ${statusChip[patient.status]}`}>{patient.status}</span>
-                  </td>
-                  <td className={styles.actionCell}>
-                    <Button variant="ghost" size="sm" iconOnly aria-label={`More actions for ${patient.name}`}>
-                      <LuEllipsis />
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  ) : (
+                    <span className="text-subtle" aria-label="None scheduled">
+                      —
+                    </span>
+                  )}
+                </td>
+                <td>
+                  <Chip tone={statusTone[patient.status]}>{patient.status}</Chip>
+                </td>
+                <td className="table-actions">
+                  <Button variant="ghost" size="sm" iconOnly aria-label={`More actions for ${patient.name}`}>
+                    <LuEllipsis />
+                  </Button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
 
-        {rows.length === 0 && (
-          <div className={styles.empty}>
-            <LuSearchX aria-hidden />
-            <p className="text-label">No patients found</p>
-            <p className="text-small text-muted">Try a different search or adjust your filters.</p>
+      {rows.length === 0 && (
+        <EmptyState
+          icon={LuSearchX}
+          title="No patients found"
+          description="Try a different search or adjust your filters."
+          action={
             <Button variant="secondary" size="sm" onClick={clearFilters}>
               Clear filters
             </Button>
-          </div>
-        )}
-      </div>
+          }
+        />
+      )}
 
       <div className={styles.footer}>
         <p className="text-small text-muted num" aria-live="polite">

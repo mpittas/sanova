@@ -11,7 +11,21 @@ export type Step = (typeof steps)[number];
 export type Scale = Record<Step, string>;
 
 export const palette = {
+  // Brand: a deep medical green. 500 is dark enough for white text (4.6:1), so it works as a button fill.
   primary: {
+    "50": "#EDF9F3",
+    "100": "#D5F1E3",
+    "200": "#AEE3C9",
+    "300": "#7BCFAA",
+    "400": "#3FB583",
+    "500": "#0B865A",
+    "600": "#086E49",
+    "700": "#07583B",
+    "800": "#084630",
+    "900": "#093928",
+  },
+  // Informational / neutral-positive accents (the old brand blue): "Upcoming", "In Person", scheduled items.
+  blue: {
     "50": "#EFF5FF",
     "100": "#DEE9FF",
     "200": "#BFD4FF",
@@ -101,7 +115,8 @@ export type PaletteName = keyof typeof palette;
 
 export const paletteMeta: Record<PaletteName, { label: string; usage: string }> = {
   primary: { label: "Primary", usage: "Brand, primary actions, links, active states" },
-  success: { label: "Success", usage: "Positive trends, confirmations, appointments" },
+  blue: { label: "Blue", usage: "Informational states: upcoming, scheduled, in-person" },
+  success: { label: "Success", usage: "Positive trends, confirmations, completed" },
   violet: { label: "Violet", usage: "Secondary accent, doctors, records" },
   coral: { label: "Coral", usage: "Alerts, destructive actions, revenue" },
   amber: { label: "Amber", usage: "Warnings and highlights" },
@@ -122,11 +137,11 @@ export const semantic = [
 
 /** Typography scale — emitted as `.text-<name>` classes. */
 export const typeScale = [
-  { name: "display", size: 36, lineHeight: 1.1, weight: 700, tracking: "-0.03em", usage: "Welcome headline" },
-  { name: "h1", size: 28, lineHeight: 1.2, weight: 700, tracking: "-0.02em", usage: "Page titles" },
-  { name: "h2", size: 24, lineHeight: 1.25, weight: 600, tracking: "-0.02em", usage: "Section titles" },
-  { name: "h3", size: 20, lineHeight: 1.3, weight: 600, tracking: "-0.01em", usage: "Sub-sections" },
-  { name: "h4", size: 16, lineHeight: 1.35, weight: 600, tracking: "-0.01em", usage: "Card titles" },
+  { name: "display", size: 48, lineHeight: 1.05, weight: 400, tracking: "-0.02em", usage: "Welcome headline" },
+  { name: "h1", size: 34, lineHeight: 1.15, weight: 500, tracking: "-0.015em", usage: "Page titles" },
+  { name: "h2", size: 28, lineHeight: 1.2, weight: 500, tracking: "-0.01em", usage: "Section titles" },
+  { name: "h3", size: 23, lineHeight: 1.25, weight: 500, tracking: "-0.005em", usage: "Sub-sections" },
+  { name: "h4", size: 18, lineHeight: 1.3, weight: 500, tracking: "0", usage: "Card titles" },
   { name: "stat", size: 30, lineHeight: 1.1, weight: 700, tracking: "-0.02em", usage: "KPI numbers" },
   { name: "lead", size: 26, lineHeight: 1.2, weight: 400, tracking: "-0.01em", usage: "Intro / subtitle text" },
   { name: "body-lg", size: 16, lineHeight: 1.5, weight: 400, tracking: "0", usage: "Long-form text" },
@@ -135,6 +150,37 @@ export const typeScale = [
   { name: "small", size: 13, lineHeight: 1.4, weight: 400, tracking: "0", usage: "Secondary information" },
   { name: "caption", size: 12, lineHeight: 1.35, weight: 500, tracking: "0.01em", usage: "Axis labels, footnotes" },
 ] as const;
+
+// ---------------------------------------------------------------------------------------------
+// Colour maths, used by the /docs usage guide so the numbers shown there are always real.
+// ---------------------------------------------------------------------------------------------
+
+const channels = (hex: string) => [1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16));
+const linear = (value: number) => {
+  const channel = value / 255;
+  return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+};
+
+/** WCAG relative luminance. */
+function luminance(hex: string) {
+  const [r, g, b] = channels(hex).map(linear);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** WCAG contrast ratio between two hex colours (1–21). Text needs 4.5, large text and UI shapes 3. */
+export function contrastRatio(a: string, b: string) {
+  const [lighter, darker] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/** Perceptual lightness (OKLab L, 0 = black, 1 = white). Steps that differ by ~0.07+ read as clearly different. */
+export function lightness(hex: string) {
+  const [r, g, b] = channels(hex).map(linear);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
+}
 
 export function buildThemeCss(): string {
   const vars: string[] = [];

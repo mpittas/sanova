@@ -1,6 +1,6 @@
-import { LuArrowUp } from "react-icons/lu";
 import { Sparkline } from "@/components/charts/sparkline";
 import { Card } from "@/components/ui/card";
+import { Delta } from "@/components/ui/delta";
 import { ToneTile } from "@/components/ui/tone-tile";
 import { palette } from "@/lib/tokens";
 import { stats } from "./data";
@@ -19,11 +19,7 @@ export function StatCards() {
           </div>
           <p className={`text-stat num ${styles.statValue}`}>{value}</p>
           <p className={styles.statMeta}>
-            <span className={styles.deltaChip}>
-              <LuArrowUp aria-hidden />
-              <span className="sr-only">Up </span>
-              {change}
-            </span>
+            <Delta value={change} variant="chip" />
             <span className="text-small text-muted">{period}</span>
           </p>
           <div className={styles.spark}>

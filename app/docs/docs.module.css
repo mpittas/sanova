@@ -52,7 +52,7 @@
 
 .nav a {
   padding: 8px 14px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   color: var(--color-text-muted);
   font-weight: 500;
   text-decoration: none;
@@ -242,4 +242,273 @@
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* ---------- Component docs ---------- */
+
+.nav {
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.navGroup {
+  margin-top: 14px;
+  padding: 0 14px 4px;
+  color: var(--color-text-subtle);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.divider {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 40px;
+  border-top: 1px solid var(--color-border);
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 640px;
+}
+
+.specimens {
+  display: flex;
+  flex-direction: column;
+}
+
+.specimen {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 14px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.specimen:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.specimen:last-child {
+  padding-bottom: 0;
+}
+
+.specimenMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.specimenItems {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.code {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-800);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.cardPad {
+  padding: 20px;
+}
+
+.fieldStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.progressDemo {
+  width: 260px;
+  max-width: 100%;
+}
+
+.legendDemo {
+  width: 260px;
+  max-width: 100%;
+}
+
+.demoLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: -4px;
+}
+
+.pageHeaderDemo {
+  padding: 20px;
+  border: 1px dashed var(--color-neutral-200);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.tabsDemo {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tabsPanel {
+  padding: 14px 16px;
+}
+
+.checkboxDemo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkboxDemo label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkboxChild {
+  margin-left: 26px;
+}
+
+@media (max-width: 900px) {
+  .specimen {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .nav {
+    max-height: none;
+  }
+
+  .navGroup {
+    display: none;
+  }
+}
+/* ---------- Colour usage guide ---------- */
+
+.usageTable {
+  display: flex;
+  flex-direction: column;
+}
+
+.usageHead,
+.usageRow {
+  display: grid;
+  grid-template-columns: 90px 100px 100px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.usageHead {
+  border-top: 0;
+  padding-top: 0;
+  color: var(--color-text-subtle);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.usageStep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.usageChip {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 1px rgb(15 23 42 / 0.08);
+}
+
+.usageRow [data-pass] {
+  color: var(--color-success-700);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .usageHead {
+    display: none;
+  }
+
+  .usageRow {
+    grid-template-columns: 80px 70px minmax(0, 1fr);
+  }
+
+  .usageRow > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+/* A swatch of the page background, for components designed to sit directly on it. */
+.onPage {
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+}
+
+.formDemo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 460px;
+}
+
+.modalDemo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px;
+}
+
+.modalDemoActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.stepperDemo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 340px;
+  max-width: 100%;
+}
+
+.stepperDemoActions {
+  display: flex;
+  gap: 8px;
+}
+
+.uploadDemo {
+  width: 240px;
 }

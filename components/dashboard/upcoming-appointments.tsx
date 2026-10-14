@@ -3,13 +3,15 @@ import { LuArrowRight, LuEllipsisVertical } from "react-icons/lu";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Chip, type ChipTone } from "@/components/ui/chip";
+import { Table, Th } from "@/components/ui/table";
 import { appointments, type AppointmentStatus } from "./data";
 import styles from "./dashboard.module.css";
 
-const chipClass: Record<AppointmentStatus, string> = {
-  "Checked In": "chip-success",
-  Upcoming: "chip-info",
-  Rescheduled: "chip-warning",
+const statusTone: Record<AppointmentStatus, ChipTone> = {
+  "Checked In": "success",
+  Upcoming: "info",
+  Rescheduled: "warning",
 };
 
 export function UpcomingAppointments() {
@@ -18,22 +20,20 @@ export function UpcomingAppointments() {
       title="Upcoming Appointments"
       description="Today's schedule"
       action={
-        <Link href="/" className={`text-label ${styles.viewAll}`}>
+        <Link href="/appointments" className={`text-label ${styles.viewAll}`}>
           View all <LuArrowRight aria-hidden />
         </Link>
       }
     >
-      <table className={styles.table}>
+      <Table variant="simple">
         <thead>
           <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Patient</th>
-            <th scope="col" className={styles.colStatus}>
-              Status
-            </th>
-            <th scope="col">
+            <Th>Time</Th>
+            <Th>Patient</Th>
+            <Th className={styles.colStatus}>Status</Th>
+            <Th>
               <span className="sr-only">Actions</span>
-            </th>
+            </Th>
           </tr>
         </thead>
         <tbody>
@@ -52,9 +52,9 @@ export function UpcomingAppointments() {
                 </div>
               </td>
               <td className={styles.colStatus}>
-                <span className={`chip ${chipClass[status]}`}>{status}</span>
+                <Chip tone={statusTone[status]}>{status}</Chip>
               </td>
-              <td className={styles.rowAction}>
+              <td className="table-actions">
                 <Button variant="ghost" size="sm" iconOnly aria-label={`More actions for ${patient}`}>
                   <LuEllipsisVertical />
                 </Button>
@@ -62,7 +62,7 @@ export function UpcomingAppointments() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </Card>
   );
 }
