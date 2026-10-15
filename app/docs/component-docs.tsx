@@ -1,5 +1,8 @@
-import { LuCalendarCheck, LuInbox, LuPlus, LuUserPlus, LuUsers } from "react-icons/lu";
+import { LuCalendar, LuCalendarCheck, LuClock, LuFileText, LuHeart, LuInbox, LuPlus, LuStethoscope, LuUserPlus, LuUsers, LuVideo } from "react-icons/lu";
 import { PageHeader } from "@/components/layout/page-header";
+import { SplitLayout } from "@/components/layout/split-layout";
+import { portraits } from "@/lib/portraits";
+import { ActionGrid, ActionTile } from "@/components/ui/action-tile";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,8 +10,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { Counter } from "@/components/ui/counter";
 import { Delta } from "@/components/ui/delta";
+import { DetailItem, DetailList } from "@/components/ui/detail-list";
 import { EmptyState } from "@/components/ui/empty-state";
+import { InfoGrid, InfoTile } from "@/components/ui/info-tile";
 import { Legend, LegendItem } from "@/components/ui/legend";
+import { ArchLineup, PageBanner } from "@/components/ui/page-banner";
+import { Person } from "@/components/ui/person";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { SearchInput } from "@/components/ui/search-input";
 import { StatGrid, StatTile } from "@/components/ui/stat-tile";
@@ -21,7 +28,9 @@ import {
   FilterChipsDemo,
   FormDemo,
   ImageUploadDemo,
+  ListToolbarDemo,
   ModalDemo,
+  NoticeDemo,
   PaginationDemo,
   SegmentedDemo,
   SelectDemo,
@@ -55,6 +64,12 @@ export const componentNav = [
   { id: "pagination", label: "Pagination" },
   { id: "empty-states", label: "Empty states" },
   { id: "page-layout", label: "Page layout" },
+  { id: "page-banner", label: "Page banner" },
+  { id: "split-layout", label: "Split layout" },
+  { id: "notice", label: "Notice" },
+  { id: "list-toolbar", label: "List toolbar" },
+  { id: "info-tiles", label: "Info & action tiles" },
+  { id: "detail-list", label: "Detail list" },
 ];
 
 export function ComponentDocs() {
@@ -180,7 +195,7 @@ export function ComponentDocs() {
         id="avatars"
         title="Avatars"
         description="Round portraits with an initials fallback while loading, when the photo fails, or when there is none."
-        source="@/components/ui/avatar"
+        source="@/components/ui/avatar, person"
       >
         <Panel>
           <Specimens>
@@ -206,6 +221,10 @@ export function ComponentDocs() {
               <Avatar name="Emily Carter" size={64} shape="rounded" />
               <Avatar name="Alex Morgan" size={64} shape="rounded" />
               <Avatar name="Emily Carter" size={64} shape="rounded" radius={24} />
+            </Specimen>
+            <Specimen label="Person" hint="Avatar, name and a line of detail">
+              <Person name="Emily Carter" subtitle="MRN: CC-1001" />
+              <Person name="Alex Morgan" subtitle="Follow-up Visit" />
             </Specimen>
           </Specimens>
         </Panel>
@@ -399,7 +418,9 @@ export function ComponentDocs() {
           note={
             <>
               Set <code className="mono">width</code> in pixels. Turn off <code className="mono">dismissOnBackdrop</code> for long
-              forms. On phones the dialog fills the screen.
+              forms. On phones the dialog fills the screen. Build the contents from <code className="mono">ModalPanel</code> (or{" "}
+              <code className="mono">ModalForm</code>), <code className="mono">ModalHeader</code>, <code className="mono">ModalBody</code>{" "}
+              and <code className="mono">ModalFooter</code>; put two fields side by side with <code className="mono">FieldRow</code>.
             </>
           }
         >
@@ -409,7 +430,7 @@ export function ComponentDocs() {
             </Specimen>
           </Specimens>
         </Panel>
-        <CodeBlock>{`<Modal open={open} onClose={close} labelledBy="title-id" width={480}>\n  <h2 id="title-id">Remove this doctor?</h2>\n  …\n</Modal>`}</CodeBlock>
+        <CodeBlock>{`<Modal open={open} onClose={close} labelledBy="title-id" width={480}>\n  <ModalForm onSubmit={save}>\n    <ModalHeader title="New Prescription" titleId="title-id" description="…" onClose={close} />\n    <ModalBody>…<FieldRow>…</FieldRow></ModalBody>\n    <ModalFooter>…</ModalFooter>\n  </ModalForm>\n</Modal>`}</CodeBlock>
       </DocSection>
 
       {/* ---------- Stepper ---------- */}
@@ -606,6 +627,102 @@ export function ComponentDocs() {
           </div>
         </Panel>
         <CodeBlock>{`<AppShell>\n  <AppHeader />\n  <PageContent>\n    <PageHeader title="Patients" description="…" actions={<Button>Add Patient</Button>} />\n    …\n  </PageContent>\n</AppShell>`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- Page banner ---------- */}
+      <DocSection
+        id="page-banner"
+        title="Page banner"
+        description="The soft green welcome banner under a page title: a short pitch on the left, portraits in arched frames on the right. The title and the main action stay in PageHeader; the banner is decoration and copy only."
+        source="@/components/ui/page-banner"
+      >
+        <div className={styles.bannerDemo}>
+          <PageBanner
+            title="Exceptional care starts with great people."
+            description="Manage your doctors, view their specialties and schedules, and keep the whole team in one place."
+            visual={<ArchLineup photos={[portraits["Olivia Torres"], portraits["Dr. James Carter"], portraits["Noah Wilson"]]} />}
+          />
+        </div>
+        <CodeBlock>{`<PageHeader title="Doctors" description="…" actions={<Button>Add Doctor</Button>} />\n<PageBanner title="…" description="…" visual={<ArchLineup photos={[…]} />} />`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- Split layout ---------- */}
+      <DocSection
+        id="split-layout"
+        title="Split layout"
+        description="A main column and a side column. Under 1100px of content width the side column drops below, and its cards flow into a grid. Pick the side width with side, or pass columns for a fixed ratio."
+        source="@/components/layout/split-layout"
+      >
+        <Panel title="sm · md · lg" note="sm is 380px (calendars, summaries), md is 440px (record panels), lg is 460–540px (a detail view).">
+          <SplitLayout aside={<div className={styles.splitBox}>Side</div>}>
+            <div className={styles.splitBox}>Main</div>
+          </SplitLayout>
+        </Panel>
+        <CodeBlock>{`<SplitLayout side="md" sideLabel="Patient summary" aside={<><HealthInfo /><Documents /></>}>\n  <ActivityTimeline … />\n</SplitLayout>`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- Notice ---------- */}
+      <DocSection
+        id="notice"
+        title="Notice"
+        description="Green confirmation for the result of an action. It dismisses itself after six seconds, or when closed. Keep the message in state and clear it in onDismiss."
+        source="@/components/ui/notice"
+      >
+        <NoticeDemo />
+        <CodeBlock>{`<Notice message={notice} onDismiss={() => setNotice(null)} />`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- List toolbar ---------- */}
+      <DocSection
+        id="list-toolbar"
+        title="List toolbar"
+        description="What sits around every searchable list: FilterBar (chips, search, filters), FilterPanel (the extra filters), ResultsFooter (count and pages) and NoResults (when nothing matches). Pass inset to FilterBar, FilterPanel and ResultsFooter when they sit inside a card."
+        source="@/components/ui/filter-bar, results-footer, no-results"
+      >
+        <ListToolbarDemo />
+        <CodeBlock>{`<FilterBar chips={<FilterChips … />}>\n  <SearchInput … />\n  <Button>Filters</Button>\n</FilterBar>\n<ResultsFooter firstIndex={0} shown={6} total={24} noun={["doctor", "doctors"]} page={1} totalPages={4} onPageChange={…} />`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- Info & action tiles ---------- */}
+      <DocSection
+        id="info-tiles"
+        title="Info & action tiles"
+        description="InfoTile is a compact figure or fact inside a card: use variant=metric for counts and variant=fact for a value under its label. ActionTile is a shortcut to a task, a link when it has an href. For a page-level KPI use StatTile."
+        source="@/components/ui/info-tile, action-tile"
+      >
+        <Panel title="InfoTile">
+          <InfoGrid>
+            <InfoTile label="Total Doctors" value="14" icon={LuStethoscope} tone="primary" />
+            <InfoTile label="Specialties" value="7" icon={LuHeart} tone="coral" />
+            <InfoTile variant="fact" label="Blood Type" value="A+" icon={LuHeart} tone="coral" />
+          </InfoGrid>
+        </Panel>
+        <Panel title="ActionTile" note="With a badge, the count replaces the arrow.">
+          <ActionGrid>
+            <ActionTile label="Instant Consult" icon={<LuVideo />} tone="success" badge={2} />
+            <ActionTile label="Medical Records" icon={<LuFileText />} tone="amber" href="/medical-records" />
+          </ActionGrid>
+        </Panel>
+        <CodeBlock>{`<InfoGrid columns={2}>\n  <InfoTile variant="fact" label="Blood Type" value="A+" icon={LuHeart} tone="coral" />\n</InfoGrid>\n<ActionGrid>\n  <ActionTile label="Messages" icon={<LuMessageSquare />} tone="blue" href="/messages" />\n</ActionGrid>`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- Detail list ---------- */}
+      <DocSection
+        id="detail-list"
+        title="Detail list"
+        description="Icon-led facts about one thing: when, how long, where, notes. An item with a title aligns to the top."
+        source="@/components/ui/detail-list"
+      >
+        <Card>
+          <DetailList>
+            <DetailItem icon={LuCalendar}>Thursday, May 9, 2024</DetailItem>
+            <DetailItem icon={LuClock}>1:30 PM – 2:30 PM (60 minutes)</DetailItem>
+            <DetailItem icon={LuFileText} title="New Patient Consultation">
+              Initial assessment and medical history review.
+            </DetailItem>
+          </DetailList>
+        </Card>
+        <CodeBlock>{`<DetailList>\n  <DetailItem icon={LuCalendar}>Thursday, May 9, 2024</DetailItem>\n  <DetailItem icon={LuFileText} title="Notes">…</DetailItem>\n</DetailList>`}</CodeBlock>
       </DocSection>
     </>
   );

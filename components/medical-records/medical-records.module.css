@@ -1,0 +1,179 @@
+/* Medical records page: only the layout that is specific to this page.
+   Cards, tabs, chips, form fields, the dialog, etc. come from components/ui. */
+
+/* ---------- Timeline ---------- */
+
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+}
+
+/* The rail: a line through the dots, from the first record to the last. */
+.item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 2px;
+  background: var(--color-neutral-100);
+}
+
+.item:first-child::before {
+  top: 40px;
+}
+
+.item:last-child::before {
+  bottom: calc(100% - 40px);
+}
+
+.item:only-child::before {
+  display: none;
+}
+
+.dot {
+  position: relative;
+  align-self: start;
+  width: 10px;
+  height: 10px;
+  margin-top: 35px;
+  border-radius: 50%;
+  background: var(--tone-fg);
+  box-shadow: 0 0 0 3px var(--color-surface);
+}
+
+.row {
+  min-width: 0;
+  padding: 20px 0;
+}
+
+.item + .item .row {
+  border-top: 1px solid var(--color-border);
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: auto 104px minmax(0, 1fr) auto auto;
+  gap: 4px 16px;
+  align-items: start;
+}
+
+.date {
+  padding-top: 13px;
+}
+
+.entryText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.summary {
+  margin-top: 6px;
+  max-width: 62ch;
+}
+
+.type {
+  margin-top: 13px;
+}
+
+.expand {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+}
+
+.expand svg {
+  transition: transform 0.15s ease;
+}
+
+.expand[aria-expanded="true"] svg {
+  transform: rotate(90deg);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px 16px;
+  margin: 16px 0 0 184px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-50);
+}
+
+.details dd {
+  margin: 0;
+}
+
+/* ---------- Key health information ---------- */
+
+/* ---------- Documents ---------- */
+
+.documents {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.documents li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.documentActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ---------- Responsive ---------- */
+
+/* These follow the width of the content area, so they adapt to the sidebar being open or collapsed. */
+@container (max-width: 760px) {
+  /* Date and type sit with the text, so the title keeps its width. */
+  .entry {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .date {
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 0;
+  }
+
+  .entryText {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .type {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: start;
+    margin-top: 8px;
+  }
+
+  .expand {
+    grid-column: 3;
+    grid-row: 1;
+    margin-top: 0;
+  }
+
+  .details {
+    margin-left: 0;
+  }
+}
+

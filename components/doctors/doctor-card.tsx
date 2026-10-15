@@ -87,7 +87,7 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
         <ToneTile tone="primary" size={40}>
           <LuCalendar />
         </ToneTile>
-        <p className={styles.slot}>
+        <p className="text-stack">
           <span className="text-caption text-muted">{onLeave ? "Back on" : "Next available"}</span>
           <span className="text-label num">{slotLabel(doctor.next)}</span>
         </p>

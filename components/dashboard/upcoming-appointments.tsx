@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LuArrowRight, LuEllipsisVertical } from "react-icons/lu";
-import { Avatar } from "@/components/ui/avatar";
+import { Person } from "@/components/ui/person";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip, type ChipTone } from "@/components/ui/chip";
@@ -43,13 +43,7 @@ export function UpcomingAppointments() {
                 {time} <span>{period}</span>
               </td>
               <td>
-                <div className={styles.patientCell}>
-                  <Avatar name={patient} size={38} />
-                  <span className={styles.patient}>
-                    <span className="text-label">{patient}</span>
-                    <span className="text-small text-muted">{type}</span>
-                  </span>
-                </div>
+                <Person name={patient} subtitle={type} />
               </td>
               <td className={styles.colStatus}>
                 <Chip tone={statusTone[status]}>{status}</Chip>

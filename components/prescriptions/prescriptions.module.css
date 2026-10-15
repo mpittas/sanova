@@ -1,0 +1,267 @@
+/* Prescriptions page: only the layout that is specific to this page.
+   Cards, chips, selects, form fields, the dialog, etc. come from components/ui. */
+
+/* ---------- Layout ---------- */
+
+.detailWrap {
+  min-width: 0;
+  /* Leaves room under the sticky header when the detail is scrolled into view on narrow screens. */
+  scroll-margin-top: 88px;
+}
+
+/* ---------- Prescription history ---------- */
+
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px 120px minmax(0, 1fr);
+  align-items: center;
+  padding: 5px 0;
+}
+
+/* The rail: a line through the dots, from the first prescription to the last. */
+.item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 2px;
+  background: var(--color-neutral-100);
+}
+
+.item:first-child::before {
+  top: 50%;
+}
+
+.item:last-child::before {
+  bottom: 50%;
+}
+
+.item:only-child::before {
+  display: none;
+}
+
+.dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-neutral-300);
+  box-shadow: 0 0 0 3px var(--color-surface);
+}
+
+.item[data-status="Active"] .dot {
+  background: var(--color-primary-500);
+}
+
+.when {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding-right: 8px;
+}
+
+.rx {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.rx:hover {
+  background: var(--color-neutral-50);
+}
+
+.rx[aria-pressed="true"] {
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+}
+
+/* The medication tile is round, like a pill. */
+.rx > :first-child {
+  border-radius: 50%;
+}
+
+.rxText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+}
+
+.rx[aria-pressed="true"] .chevron {
+  color: var(--color-primary-600);
+}
+
+/* ---------- Prescription detail ---------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 176px;
+  padding: 24px;
+  --banner-glow: 85% 40%;
+}
+
+.heroText {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 62%;
+}
+
+.heroText > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  right: -28px;
+  display: grid;
+  place-items: center;
+  width: 156px;
+  height: 156px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tone-fg) 14%, var(--color-surface));
+  color: var(--tone-fg);
+  box-shadow:
+    0 0 0 22px color-mix(in srgb, var(--tone-fg) 8%, transparent),
+    0 0 0 46px color-mix(in srgb, var(--tone-fg) 5%, transparent);
+}
+
+.ring svg {
+  width: 64px;
+  height: 64px;
+  margin-right: 26px;
+  opacity: 0.85;
+  stroke-width: 1.5;
+}
+
+.detailBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px 24px 24px;
+}
+
+.details {
+  margin-top: 12px;
+}
+
+.notes {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 0 4px;
+}
+
+.notesIcon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+  color: var(--color-text-muted);
+}
+
+.sent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: -8px;
+  color: var(--color-primary-700);
+  font-weight: 500;
+}
+
+.sent svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actions > * {
+  flex: 1 1 auto;
+}
+
+.actions > :first-child {
+  flex-grow: 1.6;
+}
+
+/* ---------- Responsive ---------- */
+
+/* These follow the width of the content area, so they adapt to the sidebar being open or collapsed. */
+@container (max-width: 640px) {
+  /* The date and status sit above each prescription, so it keeps the full width. */
+  .item {
+    grid-template-columns: 24px minmax(0, 1fr);
+    align-items: start;
+    row-gap: 4px;
+  }
+
+  .dot {
+    margin-top: 6px;
+  }
+
+  .item:first-child::before {
+    top: 11px;
+  }
+
+  .item:last-child::before {
+    bottom: calc(100% - 11px);
+  }
+
+  .when {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    grid-column: 2;
+  }
+
+  .rx {
+    grid-column: 2;
+  }
+
+  .heroText {
+    max-width: 100%;
+  }
+
+  .ring {
+    opacity: 0.35;
+  }
+}

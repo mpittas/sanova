@@ -61,6 +61,13 @@ select {
   color: inherit;
 }
 
+/* Keyboard focus ring for every interactive element. Components only override it when the ring must sit inside the
+   element (offset -2px) or when they supply their own. `:where` keeps the specificity at zero so those overrides win. */
+:where(a, button, [role="button"], summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
 .text-muted {
   color: var(--color-text-muted);
 }

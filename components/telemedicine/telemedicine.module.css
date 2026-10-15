@@ -1,0 +1,398 @@
+/* Telemedicine page: only the layout that is specific to this page.
+   Cards, chips, inputs, pagination, modals, etc. come from components/ui. */
+
+/* ---------- Banner overlays ---------- */
+
+.callBadge {
+  position: absolute;
+  top: 36px;
+  left: -28px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 4px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  color: #fff;
+  box-shadow: var(--shadow-float);
+}
+
+.callBadge svg {
+  width: 22px;
+  height: 22px;
+}
+
+.secure {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  z-index: 1;
+  gap: 6px;
+  box-shadow: var(--shadow-float);
+  background: var(--color-surface);
+}
+
+.secure svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Session list ---------- */
+
+.list {
+  container-type: inline-size;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(184px, 1fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.row:hover {
+  border-color: var(--color-neutral-200);
+  box-shadow: var(--shadow-card);
+}
+
+/* The session to look at now: about to start, in progress, or someone is waiting. */
+.row[data-live] {
+  border-color: var(--color-primary-200);
+  background: linear-gradient(100deg, var(--color-primary-50), var(--color-surface) 80%);
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.name:hover {
+  color: var(--color-primary-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.visit {
+  color: var(--color-primary-600);
+  font-weight: 500;
+}
+
+.when {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.when span {
+  white-space: nowrap;
+}
+
+.when svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.facts li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.facts svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The state of the session and what to do about it. Side by side when there is room, stacked when there isn't. */
+.end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.status {
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@container (max-width: 960px) {
+  .end {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+}
+
+@container (max-width: 700px) {
+  .row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .facts {
+    grid-column: 2;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+  }
+
+  .end {
+    grid-column: 1 / -1;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+}
+
+@container (max-width: 460px) {
+  .end {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .status {
+    align-self: flex-start;
+  }
+
+  .actions > * {
+    flex: 1;
+  }
+}
+
+/* ---------- Calendar ---------- */
+
+.weekHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.weekHeader > svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.weekDay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0 10px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.weekName {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.weekNumber {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.weekDay:hover .weekNumber {
+  background: var(--color-neutral-100);
+}
+
+.weekDay:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 1px;
+}
+
+.weekDay[data-today] .weekNumber {
+  color: var(--color-primary-600);
+  font-weight: 700;
+}
+
+.weekDay[data-has-sessions]::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  transform: translateX(-50%);
+}
+
+.weekDay[data-selected] .weekNumber {
+  background: var(--color-primary-500);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgb(11 134 90 / 0.3);
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 16px 0 0;
+  list-style: none;
+}
+
+/* The line the dots sit on. */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  left: 4px;
+  width: 1px;
+  background: var(--color-neutral-200);
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  align-items: center;
+  padding-left: 18px;
+}
+
+.timeline li[data-status="completed"],
+.timeline li[data-status="cancelled"] {
+  opacity: 0.72;
+}
+
+.timelineDot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--color-surface);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-sizing: content-box;
+  margin-left: -1px;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.timelineItem:hover {
+  background: var(--color-neutral-50);
+}
+
+.timelineItem:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: -2px;
+}
+
+.timelineCall {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.timelineCall svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Responsive ---------- */
+
+/* Follows the width of the content area, so it adapts to the sidebar being open or collapsed. */

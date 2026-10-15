@@ -1,0 +1,382 @@
+/* Patient identity header shared by the patient record pages (medical records, lab results). */
+
+/* ---------- Breadcrumb ---------- */
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin: 0;
+  padding: 0;
+  color: var(--color-text-muted);
+  list-style: none;
+}
+
+.crumbs li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crumbs svg {
+  width: 14px;
+  height: 14px;
+}
+
+.crumbs a {
+  color: var(--color-primary-600);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  text-decoration: underline;
+}
+
+.crumbs a:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Patient banner ---------- */
+
+.banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  min-height: 200px;
+  --banner-glow: 12% 30%;
+}
+
+/* The portrait fills the left of the banner and fades into it. */
+.portrait {
+  align-self: stretch;
+  mask-image: linear-gradient(to right, #000 72%, transparent);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.identity {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 28px 40px 28px 0;
+}
+
+.identity h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.verified {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  color: var(--color-primary-500);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meta li + li::before {
+  content: "•";
+  margin: 0 12px;
+  color: var(--color-primary-400);
+}
+
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px 0 14px;
+  border: 1px solid var(--color-primary-100);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.contact svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--color-primary-500);
+}
+
+.banner .status {
+  position: absolute;
+  top: 28px;
+  right: 280px;
+  z-index: 1;
+  height: 32px;
+  padding: 0 14px;
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06);
+}
+
+.leaves {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: auto;
+  pointer-events: none;
+}
+
+/* ---------- "card" variant: the portrait sits inside the banner as a rounded tile, with a tagline on the right ---------- */
+
+.banner[data-variant="card"] {
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 300px);
+  gap: 32px;
+  min-height: 0;
+  padding: 16px 40px 16px 16px;
+  --banner-glow: 8% 30%;
+}
+
+.banner[data-variant="card"] .portrait {
+  width: 164px;
+  height: 164px;
+  align-self: center;
+  overflow: hidden;
+  border-radius: 44px;
+  background: var(--color-primary-200);
+  mask-image: none;
+  box-shadow: 0 0 0 4px var(--color-surface), 0 8px 24px rgb(11 134 90 / 0.12);
+}
+
+.banner[data-variant="card"] .identity {
+  padding: 16px 0;
+}
+
+.tagline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 280px;
+  margin-left: auto;
+  color: var(--color-primary-600);
+  text-align: right;
+  text-wrap: balance;
+}
+
+.tagline p {
+  font-style: italic;
+  transform: rotate(-4deg);
+}
+
+.tagline svg {
+  width: 36px;
+  height: 36px;
+  stroke-width: 1.5;
+}
+
+.aside {
+  position: relative;
+  z-index: 1;
+  justify-self: end;
+  width: 100%;
+  max-width: 280px;
+}
+
+.swoosh {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  pointer-events: none;
+}
+
+/* ---------- Responsive ---------- */
+
+/* These follow the width of the content area, so they adapt to the sidebar being open or collapsed. */
+@container (max-width: 1000px) {
+  .banner .status {
+    right: 24px;
+  }
+
+  .leaves,
+  .swoosh {
+    opacity: 0.5;
+  }
+
+  .banner[data-variant="card"] {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .tagline {
+    display: none;
+  }
+
+  .aside {
+    grid-column: 1 / -1;
+    justify-self: start;
+    max-width: none;
+  }
+}
+
+@container (max-width: 760px) {
+  .banner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .portrait {
+    height: 200px;
+    mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  }
+
+  .identity {
+    padding: 0 24px 28px;
+  }
+
+  .banner .status {
+    top: 16px;
+    right: 16px;
+  }
+
+  .leaves,
+  .swoosh {
+    display: none;
+  }
+
+  .banner[data-variant="card"] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .banner[data-variant="card"] .portrait {
+    width: 128px;
+    height: 128px;
+    border-radius: 36px;
+    mask-image: none;
+  }
+
+  .banner[data-variant="card"] .identity {
+    padding: 0 8px 12px;
+  }
+}
+
+/* ---------- Record navigation: underline links between the pages of one patient's record ---------- */
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0 16px;
+  list-style: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.nav a svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.nav a:hover {
+  color: var(--color-text);
+}
+
+.nav a[aria-current="page"] {
+  color: var(--color-primary-600);
+}
+
+.nav a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: -1px;
+  left: 12px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-primary-500);
+}
+
+.nav a:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Link card shown inside the banner (e.g. allergies) ---------- */
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-primary-100);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.alert:hover {
+  box-shadow: var(--shadow-float);
+}
+
+.alertText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.alert > svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+}

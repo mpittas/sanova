@@ -35,10 +35,6 @@
   display: none;
 }
 
-.spacer {
-  flex: 1;
-}
-
 .search {
   width: 420px;
   max-width: 100%;
@@ -185,19 +181,6 @@
   font-weight: 400;
 }
 
-.patientCell {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.patient {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  line-height: 1.3;
-}
-
 /* ---------- Patient statistics (nested circles) ---------- */
 
 .bubbles {
@@ -312,64 +295,6 @@
   justify-content: space-between;
   gap: 8px 16px;
   margin-bottom: 8px;
-}
-
-/* ---------- Quick actions ---------- */
-
-.actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 10px;
-}
-
-.action {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  min-height: 98px;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-}
-
-.action:hover {
-  border-color: var(--tone-fg);
-  box-shadow: 0 6px 18px rgb(15 23 42 / 0.07);
-  transform: translateY(-1px);
-}
-
-.action:focus-visible {
-  outline: 2px solid var(--color-primary-400);
-  outline-offset: 2px;
-}
-
-.actionLabel {
-  min-width: 0;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1.3;
-  overflow-wrap: break-word;
-}
-
-.actionArrow {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 16px;
-  height: 16px;
-  color: var(--color-text-subtle);
-  transition: color 0.15s ease, transform 0.15s ease;
-}
-
-.action:hover .actionArrow {
-  color: var(--tone-strong);
-  transform: translate(2px, -2px);
 }
 
 /* ---------- Entrance motion ---------- */

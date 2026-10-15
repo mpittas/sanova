@@ -56,3 +56,8 @@ export function Field({ label, required, hint, error, className, children }: Fie
     </div>
   );
 }
+
+/** Two fields side by side (one above the other on a phone). */
+export function FieldRow({ children }: { children: ReactNode }) {
+  return <div className="field-row">{children}</div>;
+}

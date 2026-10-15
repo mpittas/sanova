@@ -14,7 +14,7 @@ export function AppHeader() {
       <MobileMenuButton className={styles.mobileOnly} />
 
       <Link href="/" className={`${styles.brand} ${styles.mobileOnly}`} aria-label="Sanova dashboard">
-        <LogoMark size={32} />
+        <LogoMark size={40} />
         <span className={styles.brandName}>Sanova</span>
       </Link>
 
@@ -29,7 +29,7 @@ export function AppHeader() {
         }
       />
 
-      <span className={styles.spacer} />
+      <span className="spacer" />
 
       <Button variant="secondary" iconOnly className={styles.bell} aria-label="Notifications, 1 unread">
         <LuBell />

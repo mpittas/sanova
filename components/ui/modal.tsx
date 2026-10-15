@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, type ComponentPropsWithoutRef, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
+import { LuX } from "react-icons/lu";
+import { Button } from "./button";
 
 type ModalProps = {
   open: boolean;
@@ -63,4 +65,64 @@ export function Modal({ open, onClose, labelledBy, width = 640, dismissOnBackdro
       {open && children}
     </dialog>
   );
+}
+
+// ---------------------------------------------------------------------------------------------
+// Dialog contents. Every dialog is a ModalPanel (or ModalForm) holding a ModalHeader, a ModalBody
+// that scrolls on its own, and a ModalFooter with the actions.
+// ---------------------------------------------------------------------------------------------
+
+const panelClass = (className?: string) => ["modal-panel", className].filter(Boolean).join(" ");
+
+/** The column that lays out a dialog's header, body and footer. */
+export function ModalPanel({ className, ...rest }: ComponentPropsWithoutRef<"div">) {
+  return <div className={panelClass(className)} {...rest} />;
+}
+
+/** Same as `ModalPanel`, but a `<form>`: submitting it runs `onSubmit`. Browser validation is off; use `Field` errors. */
+export function ModalForm({ className, ...rest }: ComponentPropsWithRef<"form">) {
+  return <form className={panelClass(className)} noValidate {...rest} />;
+}
+
+/** Title, one-line description and close button. `leading` (an avatar) and `trailing` (a status chip) sit around the text. */
+export function ModalHeader({
+  title,
+  titleId,
+  description,
+  leading,
+  trailing,
+  onClose,
+}: {
+  title: ReactNode;
+  /** Must match the `labelledBy` of the surrounding `Modal`. */
+  titleId: string;
+  description?: ReactNode;
+  leading?: ReactNode;
+  trailing?: ReactNode;
+  onClose: () => void;
+}) {
+  return (
+    <header className="modal-head">
+      {leading}
+      <div className="modal-title">
+        <h2 id={titleId} className="text-h2">
+          {title}
+        </h2>
+        {description && <p className="text-body text-muted">{description}</p>}
+      </div>
+      {trailing}
+      <Button variant="secondary" iconOnly onClick={onClose} aria-label="Close">
+        <LuX />
+      </Button>
+    </header>
+  );
+}
+
+export function ModalBody({ className, ...rest }: ComponentPropsWithoutRef<"div">) {
+  return <div className={["modal-body", className].filter(Boolean).join(" ")} {...rest} />;
+}
+
+/** Right-aligned actions under a hairline: the secondary action first, the primary one last. */
+export function ModalFooter({ className, ...rest }: ComponentPropsWithoutRef<"footer">) {
+  return <footer className={["modal-footer", className].filter(Boolean).join(" ")} {...rest} />;
 }

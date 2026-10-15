@@ -65,3 +65,9 @@ export function addMinutes(time: string, minutes: number) {
   const total = hours * 60 + mins + minutes;
   return `${String(Math.floor(total / 60) % 24).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 }
+
+/** 0 = Sunday ... 6 = Saturday */
+export const dayOfWeek = (iso: ISODate) => parse(iso).getUTCDay();
+
+/** Whole days from `from` to `to` (negative when `to` is earlier). */
+export const daysBetween = (from: ISODate, to: ISODate) => Math.round((parse(to).getTime() - parse(from).getTime()) / MS_PER_DAY);

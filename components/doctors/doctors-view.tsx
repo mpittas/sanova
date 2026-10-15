@@ -1,22 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { LuCircleCheck, LuPlus, LuSearchX, LuSlidersHorizontal, LuX } from "react-icons/lu";
+import { useMemo, useState } from "react";
+import { LuPlus, LuSlidersHorizontal } from "react-icons/lu";
 import { TODAY } from "@/components/appointments/data";
 import { PageHeader } from "@/components/layout/page-header";
+import { SplitLayout } from "@/components/layout/split-layout";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Notice } from "@/components/ui/notice";
+import { ArchLineup, PageBanner } from "@/components/ui/page-banner";
 import { Counter } from "@/components/ui/counter";
-import { EmptyState } from "@/components/ui/empty-state";
+import { FilterBar, FilterField, FilterPanel } from "@/components/ui/filter-bar";
 import { FilterChips } from "@/components/ui/filter-chips";
-import { Pagination } from "@/components/ui/pagination";
+import { NoResults } from "@/components/ui/no-results";
+import { ResultsFooter } from "@/components/ui/results-footer";
 import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
+import { usePagination } from "@/lib/use-pagination";
 import { AddDoctorModal } from "./add-doctor-modal";
-import { doctors as seedDoctors, specialties, type Doctor, type Specialty } from "./data";
+import { doctorByName, doctors as seedDoctors, specialties, type Doctor, type Specialty } from "./data";
 import { DoctorCard } from "./doctor-card";
 import { DoctorSchedule } from "./doctor-schedule";
-import { DoctorsHero } from "./doctors-hero";
 import { SpecialtyDistribution } from "./specialty-distribution";
 import { TeamOverview } from "./team-overview";
 import styles from "./doctors.module.css";
@@ -27,17 +30,18 @@ const statusOptions = ["All Statuses", "Active", "On Leave"] as const;
 const slotOptions = ["Any time", "Available today"] as const;
 const PAGE_SIZE = 6;
 
+const lineup = ["Dr. Olivia Bennett", "Dr. Noah Wilson", "Dr. Liam Carter"].map((name) => doctorByName(name)!.photo);
+
 export function DoctorsView() {
   const [team, setTeam] = useState<Doctor[]>(seedDoctors);
   const [addOpen, setAddOpen] = useState(false);
-  const [added, setAdded] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const [specialty, setSpecialty] = useState<SpecialtyFilter>("All Doctors");
   const [query, setQuery] = useState("");
   const [moreOpen, setMoreOpen] = useState(false);
   const [status, setStatus] = useState<(typeof statusOptions)[number]>("All Statuses");
   const [slot, setSlot] = useState<(typeof slotOptions)[number]>("Any time");
-  const [page, setPage] = useState(1);
 
   const extraFilters = (status !== "All Statuses" ? 1 : 0) + (slot !== "Any time" ? 1 : 0);
   const hasFilters = specialty !== "All Doctors" || query !== "" || extraFilters > 0;
@@ -54,7 +58,7 @@ export function DoctorsView() {
   /** Changing a filter always returns to the first page. */
   const filter = <T,>(setter: (value: T) => void) => (value: T) => {
     setter(value);
-    setPage(1);
+    reset();
   };
 
   const filtered = useMemo(() => {
@@ -68,22 +72,19 @@ export function DoctorsView() {
     });
   }, [team, specialty, query, status, slot]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const firstIndex = (currentPage - 1) * PAGE_SIZE;
-  const visible = filtered.slice(firstIndex, firstIndex + PAGE_SIZE);
+  const { page, setPage, reset, totalPages, firstIndex, visible, total } = usePagination(filtered, PAGE_SIZE);
 
   const clearFilters = () => {
     setSpecialty("All Doctors");
     setQuery("");
     setStatus("All Statuses");
     setSlot("Any time");
-    setPage(1);
+    reset();
   };
 
   const addDoctor = (doctor: Doctor) => {
     setTeam((current) => [...current, doctor]);
-    setAdded(doctor.name);
+    setNotice(`${doctor.name} was added to your team.`);
     // Show the new doctor: clear filters and jump to the last page, where it was added.
     setSpecialty("All Doctors");
     setQuery("");
@@ -91,13 +92,6 @@ export function DoctorsView() {
     setSlot("Any time");
     setPage(Math.ceil((team.length + 1) / PAGE_SIZE));
   };
-
-  // The confirmation fades after a few seconds; it can also be dismissed.
-  useEffect(() => {
-    if (!added) return;
-    const timer = window.setTimeout(() => setAdded(null), 6000);
-    return () => window.clearTimeout(timer);
-  }, [added]);
 
   return (
     <>
@@ -111,107 +105,82 @@ export function DoctorsView() {
         }
       />
 
-      <div className={styles.layout}>
-        <div className={styles.main}>
-          <DoctorsHero />
+      <PageBanner
+        title="Exceptional care starts with great people."
+        description="Manage your doctors, view their specialties and schedules, and keep the whole team in one place."
+        visual={<ArchLineup photos={lineup} />}
+      />
 
-          {added && (
-            <div className={styles.notice} role="status">
-              <LuCircleCheck aria-hidden />
-              <p className="text-label">{added} was added to your team.</p>
-              <Button variant="ghost" size="sm" iconOnly aria-label="Dismiss" onClick={() => setAdded(null)}>
-                <LuX />
-              </Button>
-            </div>
-          )}
+      <SplitLayout
+        sideLabel="Team summary"
+        aside={
+          <>
+            <TeamOverview doctors={team} />
+            <DoctorSchedule />
+            <SpecialtyDistribution doctors={team} />
+          </>
+        }
+      >
+        <Notice message={notice} onDismiss={() => setNotice(null)} />
 
-          <div className={styles.toolbar}>
-            <FilterChips
-              aria-label="Filter by specialty"
-              variant="solid"
-              className={styles.chips}
-              value={specialty}
-              options={chipOptions}
-              onChange={filter(setSpecialty)}
-            />
-            <div className={styles.tools}>
-              <SearchInput
-                label="Search doctors"
-                wrapperClassName={styles.search}
-                tone="white"
-                value={query}
-                onChange={(event) => filter(setQuery)(event.target.value)}
-                placeholder="Search doctors..."
-              />
-              <Button
-                variant="secondary"
-                iconLeft={<LuSlidersHorizontal />}
-                pressed={moreOpen}
-                aria-expanded={moreOpen}
-                aria-controls="more-doctor-filters"
-                onClick={() => setMoreOpen((open) => !open)}
-              >
-                Filters
-                {extraFilters > 0 && <Counter>{extraFilters}</Counter>}
-              </Button>
-            </div>
-          </div>
+        <FilterBar
+          chips={
+            <FilterChips aria-label="Filter by specialty" variant="solid" value={specialty} options={chipOptions} onChange={filter(setSpecialty)} />
+          }
+        >
+          <SearchInput
+            label="Search doctors"
+            tone="white"
+            value={query}
+            onChange={(event) => filter(setQuery)(event.target.value)}
+            placeholder="Search doctors..."
+          />
+          <Button
+            variant="secondary"
+            iconLeft={<LuSlidersHorizontal />}
+            pressed={moreOpen}
+            aria-expanded={moreOpen}
+            aria-controls="more-doctor-filters"
+            onClick={() => setMoreOpen((open) => !open)}
+          >
+            Filters
+            {extraFilters > 0 && <Counter>{extraFilters}</Counter>}
+          </Button>
+        </FilterBar>
 
-          {moreOpen && (
-            <Card id="more-doctor-filters" className={styles.more}>
-              <label className={styles.moreField}>
-                <span className="text-small text-muted">Status</span>
-                <Select size="md" aria-label="Filter by status" value={status} options={statusOptions} onChange={filter(setStatus)} />
-              </label>
-              <label className={styles.moreField}>
-                <span className="text-small text-muted">Next availability</span>
-                <Select size="md" aria-label="Filter by next availability" value={slot} options={slotOptions} onChange={filter(setSlot)} />
-              </label>
-              <Button variant="ghost" size="sm" disabled={!hasFilters} onClick={clearFilters}>
-                Reset filters
-              </Button>
-            </Card>
-          )}
+        {moreOpen && (
+          <FilterPanel id="more-doctor-filters" onReset={clearFilters} canReset={hasFilters}>
+            <FilterField label="Status">
+              <Select size="md" aria-label="Filter by status" value={status} options={statusOptions} onChange={filter(setStatus)} />
+            </FilterField>
+            <FilterField label="Next availability">
+              <Select size="md" aria-label="Filter by next availability" value={slot} options={slotOptions} onChange={filter(setSlot)} />
+            </FilterField>
+          </FilterPanel>
+        )}
 
-          {visible.length > 0 ? (
-            <ul className={styles.grid} aria-label="Doctors">
-              {visible.map((doctor) => (
-                <li key={doctor.id}>
-                  <DoctorCard doctor={doctor} />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <Card rounded>
-              <EmptyState
-                icon={LuSearchX}
-                title="No doctors found"
-                description="Try a different search or adjust your filters."
-                action={
-                  <Button variant="secondary" size="sm" onClick={clearFilters}>
-                    Clear filters
-                  </Button>
-                }
-              />
-            </Card>
-          )}
+        {visible.length > 0 ? (
+          <ul className={styles.grid} aria-label="Doctors">
+            {visible.map((doctor) => (
+              <li key={doctor.id}>
+                <DoctorCard doctor={doctor} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <NoResults framed title="No doctors found" onClear={clearFilters} />
+        )}
 
-          <div className={styles.footer}>
-            <p className="text-small text-muted num" aria-live="polite">
-              {filtered.length === 0
-                ? "Showing 0 doctors"
-                : `Showing ${firstIndex + 1}–${firstIndex + visible.length} of ${filtered.length} ${filtered.length === 1 ? "doctor" : "doctors"}`}
-            </p>
-            <Pagination page={currentPage} totalPages={totalPages} onChange={setPage} />
-          </div>
-        </div>
-
-        <aside className={styles.side} aria-label="Team summary">
-          <TeamOverview doctors={team} />
-          <DoctorSchedule />
-          <SpecialtyDistribution doctors={team} />
-        </aside>
-      </div>
+        <ResultsFooter
+          firstIndex={firstIndex}
+          shown={visible.length}
+          total={total}
+          noun={["doctor", "doctors"]}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      </SplitLayout>
 
       <AddDoctorModal open={addOpen} onClose={() => setAddOpen(false)} onAdd={addDoctor} />
     </>

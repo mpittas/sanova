@@ -3,7 +3,8 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
-import type { Appointment } from "./data";
+import { DetailItem, DetailList } from "@/components/ui/detail-list";
+import { stageOf, statusMeta, type Appointment } from "./data";
 import { addMinutes, formatDate, formatTime } from "./dates";
 import styles from "./appointments.module.css";
 
@@ -16,7 +17,8 @@ export function AppointmentDetails({ appointment }: { appointment: Appointment |
     );
   }
 
-  const { patient, mrn, date, start, duration, mode, title, summary, notes } = appointment;
+  const { patient, mrn, date, start, duration, mode, title, summary, notes, status } = appointment;
+  const stage = stageOf(status);
   const ModeIcon = mode === "Telehealth" ? LuVideo : LuMapPin;
 
   return (
@@ -27,47 +29,46 @@ export function AppointmentDetails({ appointment }: { appointment: Appointment |
           <p className="text-h4">{patient}</p>
           <p className="text-small text-muted">MRN: {mrn}</p>
         </div>
+        <Chip tone={stage === "Completed" ? "success" : stage === "Cancelled" ? "danger" : status === "pending" ? "warning" : status === "unconfirmed" ? "neutral" : "info"}>
+          {statusMeta[status].label}
+        </Chip>
         <Button variant="secondary" size="sm">
           Edit
         </Button>
       </div>
 
-      <ul className={styles.detailList}>
-        <li>
-          <LuCalendar aria-hidden />
-          <span>{formatDate(date, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</span>
-        </li>
-        <li>
-          <LuClock aria-hidden />
-          <span>
-            {formatTime(start)} – {formatTime(addMinutes(start, duration))} ({duration} minutes)
-          </span>
-        </li>
-        <li>
-          <ModeIcon aria-hidden />
+      <DetailList className={styles.detailList}>
+        <DetailItem icon={LuCalendar}>{formatDate(date, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</DetailItem>
+        <DetailItem icon={LuClock}>
+          {formatTime(start)} – {formatTime(addMinutes(start, duration))} ({duration} minutes)
+        </DetailItem>
+        <DetailItem icon={ModeIcon}>
           <Chip variant="tag" tone={mode === "Telehealth" ? "violet" : "info"}>
             {mode}
           </Chip>
-        </li>
-        <li data-top>
-          <LuFileText aria-hidden />
-          <span>
-            <span className={styles.detailTitle}>{title}</span>
-            <span className="text-muted">{summary}</span>
-          </span>
-        </li>
-        <li data-top>
-          <LuStickyNote aria-hidden />
-          <span>
-            <span className={styles.detailTitle}>Notes</span>
-            <span className="text-muted">{notes}</span>
-          </span>
-        </li>
-      </ul>
+        </DetailItem>
+        <DetailItem icon={LuFileText} title={title}>
+          {summary}
+        </DetailItem>
+        <DetailItem icon={LuStickyNote} title="Notes">
+          {notes}
+        </DetailItem>
+      </DetailList>
 
       <div className={styles.detailActions}>
-        <Button>Start Appointment</Button>
-        <Button variant="secondary">Reschedule</Button>
+        {stage === "Upcoming" && (
+          <>
+            <Button>Start Appointment</Button>
+            <Button variant="secondary">Reschedule</Button>
+          </>
+        )}
+        {stage === "Completed" && <Button>View Visit Summary</Button>}
+        {stage === "Cancelled" && (
+          <>
+            <Button>Rebook</Button>
+            <Button variant="secondary">Contact Patient</Button>
+          </>
+        )}
         <Button variant="secondary" iconOnly aria-label="More actions">
           <LuEllipsis />
         </Button>

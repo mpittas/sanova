@@ -171,7 +171,7 @@ export function AddDoctorModal({
                 Back
               </Button>
             )}
-            <span className={styles.spacer} />
+            <span className="spacer" />
             <Button variant="secondary" onClick={requestClose}>
               Cancel
             </Button>

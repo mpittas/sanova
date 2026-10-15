@@ -43,16 +43,16 @@ const sections: { label: string; items: NavEntry[] }[] = [
       { label: "Appointments", icon: LuCalendarDays, href: "/appointments", badge: 28 },
       { label: "Patients", icon: LuUsers, href: "/patients" },
       { label: "Doctors", icon: LuStethoscope, href: "/doctors" },
-      { label: "Departments", icon: LuBuilding2 },
+      { label: "Departments", icon: LuBuilding2, href: "/departments" },
     ],
   },
   {
     label: "Clinical",
     items: [
-      { label: "Medical Records", icon: LuFileText },
-      { label: "Prescriptions", icon: LuPill },
-      { label: "Lab Results", icon: LuFlaskConical },
-      { label: "Telemedicine", icon: LuVideo },
+      { label: "Medical Records", icon: LuFileText, href: "/medical-records" },
+      { label: "Prescriptions", icon: LuPill, href: "/prescriptions" },
+      { label: "Lab Results", icon: LuFlaskConical, href: "/lab-results" },
+      { label: "Telemedicine", icon: LuVideo, href: "/telemedicine" },
     ],
   },
   {
@@ -164,7 +164,7 @@ export function Sidebar() {
 
         <div className={styles.top}>
           <Link href="/" className={styles.brand} aria-label="Sanova dashboard" onClick={closeMobile}>
-            <LogoMark size={36} />
+            <LogoMark size={38} />
             <span className={styles.brandText}>
               <span className={styles.brandName}>Sanova</span>
               <span className={styles.brandSub}>Clinic Management</span>

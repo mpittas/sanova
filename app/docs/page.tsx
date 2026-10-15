@@ -49,7 +49,7 @@ export default function DocsPage() {
     <div className={styles.page}>
       <header className={styles.topbar}>
         <Link href="/" className={styles.brand} aria-label="Sanova dashboard">
-          <LogoMark size={36} />
+          <LogoMark size={44} />
           <span className="text-h4">Sanova</span>
           <span className={styles.badge}>Design System</span>
         </Link>

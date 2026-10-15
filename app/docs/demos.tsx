@@ -10,7 +10,12 @@ import { Chip, type ChipTone } from "@/components/ui/chip";
 import { Field } from "@/components/ui/field";
 import { ChoiceChips, FilterChips } from "@/components/ui/filter-chips";
 import { ImageUpload, type UploadedImage } from "@/components/ui/image-upload";
-import { Modal } from "@/components/ui/modal";
+import { FilterBar, FilterField, FilterPanel } from "@/components/ui/filter-bar";
+import { Modal, ModalFooter, ModalHeader, ModalPanel } from "@/components/ui/modal";
+import { NoResults } from "@/components/ui/no-results";
+import { Notice } from "@/components/ui/notice";
+import { ResultsFooter } from "@/components/ui/results-footer";
+import { SearchInput } from "@/components/ui/search-input";
 import { Pagination } from "@/components/ui/pagination";
 import { Segmented } from "@/components/ui/segmented";
 import { Select } from "@/components/ui/select";
@@ -216,21 +221,23 @@ export function ModalDemo() {
       <Button variant="secondary" onClick={() => setOpen(true)}>
         Open dialog
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)} labelledBy="demo-modal-title" width={440}>
-        <div className={styles.modalDemo}>
-          <h3 id="demo-modal-title" className="text-h3">
-            Remove this doctor?
-          </h3>
-          <p className="text-body text-muted">They will no longer appear in schedules. Booked appointments stay on the calendar.</p>
-          <div className={styles.modalDemoActions}>
+      <Modal open={open} onClose={() => setOpen(false)} labelledBy="demo-modal-title" width={480}>
+        <ModalPanel>
+          <ModalHeader
+            title="Remove this doctor?"
+            titleId="demo-modal-title"
+            description="They will no longer appear in schedules. Booked appointments stay on the calendar."
+            onClose={() => setOpen(false)}
+          />
+          <ModalFooter>
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button variant="danger" onClick={() => setOpen(false)}>
               Remove doctor
             </Button>
-          </div>
-        </div>
+          </ModalFooter>
+        </ModalPanel>
       </Modal>
     </>
   );
@@ -264,6 +271,61 @@ export function ImageUploadDemo() {
   return (
     <div className={styles.uploadDemo}>
       <ImageUpload label="Profile photo" previewName="Amara Nwosu" value={image} onChange={setImage} />
+    </div>
+  );
+}
+
+export function NoticeDemo() {
+  const [message, setMessage] = useState<string | null>("Dr. Mia Chen was added to your team.");
+  return (
+    <div className={styles.noticeDemo}>
+      <Notice message={message} onDismiss={() => setMessage(null)} autoDismiss={0} />
+      {!message && (
+        <Button variant="secondary" size="sm" onClick={() => setMessage("Dr. Mia Chen was added to your team.")}>
+          Show it again
+        </Button>
+      )}
+    </div>
+  );
+}
+
+const demoSpecialties = ["All Doctors", "Cardiology", "Pediatrics"] as const;
+
+export function ListToolbarDemo() {
+  const [specialty, setSpecialty] = useState<(typeof demoSpecialties)[number]>("All Doctors");
+  const [open, setOpen] = useState(true);
+  const [status, setStatus] = useState("All Statuses");
+  const [page, setPage] = useState(1);
+
+  return (
+    <div className={styles.toolbarDemo}>
+      <FilterBar
+        chips={
+          <FilterChips
+            aria-label="Filter by specialty"
+            variant="solid"
+            value={specialty}
+            options={demoSpecialties.map((value, index) => ({ value, count: [14, 4, 2][index] }))}
+            onChange={setSpecialty}
+          />
+        }
+      >
+        <SearchInput label="Search doctors" tone="white" placeholder="Search doctors..." />
+        <Button variant="secondary" pressed={open} aria-expanded={open} aria-controls="demo-filter-panel" onClick={() => setOpen((value) => !value)}>
+          Filters
+        </Button>
+      </FilterBar>
+      {open && (
+        <FilterPanel id="demo-filter-panel" canReset={status !== "All Statuses"} onReset={() => setStatus("All Statuses")}>
+          <FilterField label="Status">
+            <Select size="md" aria-label="Filter by status" value={status} options={["All Statuses", "Active", "On Leave"]} onChange={setStatus} />
+          </FilterField>
+        </FilterPanel>
+      )}
+      <ResultsFooter firstIndex={(page - 1) * 6} shown={6} total={24} noun={["doctor", "doctors"]} page={page} totalPages={4} onPageChange={setPage} />
+      <Card rounded>
+        <NoResults title="No doctors found" onClear={() => setSpecialty("All Doctors")} />
+      </Card>
     </div>
   );
 }
