@@ -1,0 +1,9 @@
+01-emerald-arch.png: 2146 x 733 pixels
+02-pearl-light.png: 1512 x 1040 pixels
+03-forest-wave.png: 1513 x 1040 pixels
+04-emerald-sweep.png: 2145 x 733 pixels
+05-forest-shadow.png: 1512 x 1040 pixels
+06-emerald-ribbon.png: 1513 x 1040 pixels
+07-forest-curve.png: 1513 x 1040 pixels
+08-emerald-fold.png: 1512 x 1040 pixels
+09-ivory-folds.png: 2145 x 733 pixels

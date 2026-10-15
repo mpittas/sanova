@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Brand and design system
+
+Read [BRANDING.md](BRANDING.md) for Sanova's logo treatment, signature flowing dither backgrounds, and visual direction. Exact interface colors and typography live in [lib/tokens.ts](lib/tokens.ts) and are displayed on the `/docs` page.
+
 ## Getting Started
 
 First, run the development server:

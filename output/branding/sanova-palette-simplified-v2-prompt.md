@@ -1,0 +1,6 @@
+# Simplified palette image
+
+Mode: built-in image generation.
+Output: public/branding/sanova-palette-simplified-v2.png
+
+Edit the supplied Sanova color palette presentation image. Simplify the overcrowded middle row from FIVE swatches to only TWO swatches. Remove Success, Violet, and Teal completely, including their names and hex codes. The new middle row has two equal-width rectangles: left Coral #F0583A, right Amber #F59E0B, labeled exactly "Coral" with "#F0583A" and "Amber" with "#F59E0B" in dark neutral ink. Preserve the original top row unchanged: Primary green #0B865A occupying the left two-thirds, Blue #2F6BF2 occupying right one-third, white labels. Preserve the original bottom row unchanged: three equal-width rectangles Neutral ink #0F172A, Page background #F5F7FB, Surface white #FFFFFF, with their original labels and codes. Keep all THREE ROW HEIGHTS equal to the original, preserve the square canvas, exact edge-to-edge geometric alignment, original sans-serif typography, padding and font hierarchy. Flat solid colors only, no borders, no rounded corners, no extra text, no texture, no gradient, no mockup. Only change the middle row as described. Clean minimal professional brand palette.
