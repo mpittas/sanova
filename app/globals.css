@@ -1,24 +1,12 @@
 /*
- * Sanova base styles: reset, typography helpers and shadows/radii.
- * Colors and type classes (.text-*) are generated from lib/tokens.ts.
- * Component styles live in ui.css.
+ * Sanova base styles: reset and typography helpers.
+ * Design tokens (colors, radii, shadows, spacing, sizes, motion) and the .text-* type classes are generated from
+ * lib/tokens.ts. Component styles live in ui.css. Use the variables rather than literal values.
  */
 
 :root {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
-
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 14px;
-  /* Extra-soft corners for feature surfaces: heroes, profile cards (Card `rounded`). */
-  --radius-2xl: 24px;
-  --radius-pill: 999px;
-
-  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.03), 0 10px 30px rgb(11 134 90 / 0.05);
-  --shadow-float: 0 2px 4px rgb(15 23 42 / 0.04), 0 12px 28px rgb(15 23 42 / 0.08);
-  --shadow-primary: 0 1px 2px rgb(6 70 46 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.14);
 }
 
 *,
@@ -36,7 +24,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -8,30 +8,30 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 12px;
-  padding-bottom: 16px;
+  gap: var(--space-10) var(--space-12);
+  padding-bottom: var(--space-16);
   border-bottom: 1px solid var(--color-border);
 }
 
 .filters {
-  padding: 12px 0 4px;
+  padding: var(--space-12) 0 var(--space-4);
 }
 
 .stepper {
   display: flex;
-  gap: 6px;
+  gap: var(--space-6);
 }
 
 .toolbarTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 4px;
+  gap: var(--space-8);
+  margin: 0 var(--space-4);
 }
 
 .toolbarTitle svg {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
   color: var(--color-text-muted);
 }
 
@@ -43,17 +43,17 @@
 }
 
 .list {
-  padding-top: 8px;
+  padding-top: var(--space-8);
 }
 
 .group + .group {
-  margin-top: 8px;
+  margin-top: var(--space-8);
 }
 
 .groupHeader {
-  padding: 12px 12px 6px;
+  padding: var(--space-12) var(--space-12) var(--space-6);
   color: var(--color-text-subtle);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -64,10 +64,10 @@
   display: grid;
   grid-template-columns: 82px 10px 40px minmax(0, 1fr) minmax(0, 1.2fr) auto 32px;
   align-items: center;
-  gap: 14px;
-  padding: 10px 12px;
+  gap: var(--space-14);
+  padding: var(--space-10) var(--space-12);
   border-radius: var(--radius-md);
-  transition: background-color 0.15s ease;
+  transition: background-color var(--duration-base) var(--ease-standard);
 }
 
 .row + .row::before {
@@ -138,20 +138,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-12);
 }
 
 .calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  row-gap: 2px;
+  row-gap: var(--space-2);
   justify-items: center;
 }
 
 .weekday {
-  padding: 6px 0 8px;
+  padding: var(--space-6) 0 var(--space-8);
   color: var(--color-text-muted);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
 }
 
@@ -165,10 +165,10 @@
   border: 0;
   border-radius: 50%;
   background: transparent;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-md);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 }
 
 .day:hover {
@@ -198,13 +198,13 @@
 
 .day[data-selected] {
   background: var(--color-primary-500);
-  color: #fff;
+  color: var(--color-white);
   font-weight: 600;
-  box-shadow: 0 4px 10px rgb(11 134 90 / 0.3);
+  box-shadow: var(--shadow-cta);
 }
 
 .day[data-selected]::after {
-  background: #fff;
+  background: var(--color-white);
 }
 
 /* ---------- Details ---------- */
@@ -212,7 +212,7 @@
 .detailsHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .detailsPatient {
@@ -222,18 +222,18 @@
 }
 
 .detailList {
-  margin: 16px 0 20px;
+  margin: var(--space-16) 0 var(--space-20);
 }
 
 .detailActions {
   display: flex;
-  gap: 10px;
+  gap: var(--space-10);
 }
 
 .detailActions > :first-child {
   flex: 1;
   min-width: 0;
-  padding: 0 12px;
+  padding: 0 var(--space-12);
 }
 
 /* ---------- Responsive ---------- */
@@ -252,7 +252,7 @@
 @container (max-width: 520px) {
   .row {
     grid-template-columns: 68px 10px 40px minmax(0, 1fr) 32px;
-    gap: 10px;
+    gap: var(--space-10);
   }
 
   .rowMode {

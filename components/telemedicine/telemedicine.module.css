@@ -15,7 +15,7 @@
   border: 4px solid var(--color-surface);
   border-radius: 50%;
   background: var(--color-primary-500);
-  color: #fff;
+  color: var(--color-white);
   box-shadow: var(--shadow-float);
 }
 
@@ -29,14 +29,14 @@
   top: 28px;
   right: 0;
   z-index: 1;
-  gap: 6px;
+  gap: var(--space-6);
   box-shadow: var(--shadow-float);
   background: var(--color-surface);
 }
 
 .secure svg {
-  width: 14px;
-  height: 14px;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
 /* ---------- Session list ---------- */
@@ -48,7 +48,7 @@
 .rows {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-12);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -58,12 +58,12 @@
   display: grid;
   grid-template-columns: auto minmax(184px, 1fr) minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px 18px;
-  padding: 14px 16px;
+  gap: var(--space-8) var(--space-18);
+  padding: var(--space-14) var(--space-16);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   background: var(--color-surface);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
 }
 
 .row:hover {
@@ -80,7 +80,7 @@
 .who {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -116,8 +116,8 @@
 .when {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 2px;
+  gap: var(--space-6);
+  margin-top: var(--space-2);
 }
 
 .when span {
@@ -126,33 +126,33 @@
 
 .when svg {
   flex: none;
-  width: 14px;
-  height: 14px;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
 .facts {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-8);
   min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
 }
 
 .facts li {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
   min-width: 0;
 }
 
 .facts svg {
   flex: none;
-  width: 16px;
-  height: 16px;
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
 .truncate {
@@ -166,7 +166,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 18px;
+  gap: var(--space-18);
 }
 
 .status {
@@ -176,14 +176,14 @@
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 @container (max-width: 960px) {
   .end {
     flex-direction: column;
     align-items: flex-end;
-    gap: 10px;
+    gap: var(--space-10);
   }
 }
 
@@ -196,7 +196,7 @@
     grid-column: 2;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 6px 16px;
+    gap: var(--space-6) var(--space-16);
   }
 
   .end {
@@ -226,21 +226,21 @@
 .weekHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
 }
 
 .weekHeader > svg {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
   color: var(--color-text-muted);
 }
 
 .week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 2px;
-  padding-bottom: 16px;
+  gap: var(--space-2);
+  padding-bottom: var(--space-16);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -249,8 +249,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 4px 0 10px;
+  gap: var(--space-6);
+  padding: var(--space-4) 0 var(--space-10);
   border: 0;
   border-radius: var(--radius-md);
   background: transparent;
@@ -260,7 +260,7 @@
 
 .weekName {
   color: var(--color-text-muted);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
 }
 
 .weekNumber {
@@ -269,8 +269,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  font-size: 0.875rem;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  font-size: var(--font-size-base);
+  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 }
 
 .weekDay:hover .weekNumber {
@@ -301,18 +301,18 @@
 
 .weekDay[data-selected] .weekNumber {
   background: var(--color-primary-500);
-  color: #fff;
+  color: var(--color-white);
   font-weight: 600;
-  box-shadow: 0 4px 10px rgb(11 134 90 / 0.3);
+  box-shadow: var(--shadow-cta);
 }
 
 .timeline {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
   margin: 0;
-  padding: 16px 0 0;
+  padding: var(--space-16) 0 0;
   list-style: none;
 }
 
@@ -332,7 +332,7 @@
   display: grid;
   grid-template-columns: 62px minmax(0, 1fr);
   align-items: center;
-  padding-left: 18px;
+  padding-left: var(--space-18);
 }
 
 .timeline li[data-status="completed"],
@@ -357,8 +357,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
-  padding: 6px 8px;
+  gap: var(--space-12);
+  padding: var(--space-6) var(--space-8);
   border: 0;
   border-radius: var(--radius-lg);
   background: transparent;
@@ -366,7 +366,7 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--duration-base) var(--ease-standard);
 }
 
 .timelineItem:hover {
@@ -389,8 +389,8 @@
 }
 
 .timelineCall svg {
-  width: 16px;
-  height: 16px;
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
 /* ---------- Responsive ---------- */

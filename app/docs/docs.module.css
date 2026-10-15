@@ -9,8 +9,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 32px;
+  gap: var(--space-16);
+  padding: var(--space-14) var(--space-32);
   border-bottom: 1px solid var(--color-border);
   background: rgb(249 251 254 / 0.85);
   backdrop-filter: blur(12px);
@@ -19,26 +19,26 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-10);
   text-decoration: none;
 }
 
 .badge {
-  padding: 3px 10px;
+  padding: 3px var(--space-10);
   border-radius: var(--radius-pill);
   background: var(--color-primary-50);
   color: var(--color-primary-600);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
 }
 
 .layout {
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
-  gap: 40px;
+  gap: var(--space-40);
   max-width: 1120px;
   margin: 0 auto;
-  padding: 40px 32px 96px;
+  padding: var(--space-40) var(--space-32) 96px;
 }
 
 .nav {
@@ -46,12 +46,12 @@
   top: 90px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
   align-self: start;
 }
 
 .nav a {
-  padding: 8px 14px;
+  padding: var(--space-8) var(--space-14);
   border-radius: var(--radius-md);
   color: var(--color-text-muted);
   font-weight: 500;
@@ -66,22 +66,22 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 56px;
+  gap: var(--space-56);
   min-width: 0;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-16);
   scroll-margin-top: 90px;
 }
 
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 24px;
+  gap: var(--space-16);
+  padding: var(--space-24);
   border-radius: var(--radius-xl);
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
@@ -92,7 +92,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 4px 16px;
+  gap: var(--space-4) var(--space-16);
 }
 
 /* Colors */
@@ -100,26 +100,26 @@
 .scale {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .swatchGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
+  gap: var(--space-16);
 }
 
 .semantic {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
 }
 
 .swatch {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
+  gap: var(--space-2);
   padding: 0;
   border: 0;
   background: none;
@@ -136,10 +136,10 @@
 .chipColor {
   width: 100%;
   height: 56px;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-6);
   border-radius: var(--radius-md);
-  box-shadow: inset 0 0 0 1px rgb(15 23 42 / 0.08);
-  transition: transform 0.15s ease;
+  box-shadow: var(--shadow-hairline);
+  transition: transform var(--duration-base) var(--ease-standard);
 }
 
 .swatch:hover .chipColor {
@@ -151,7 +151,7 @@
 .fontSpecimen {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: var(--space-32);
 }
 
 .glyph {
@@ -177,15 +177,99 @@
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr) 150px;
   align-items: center;
-  gap: 24px;
-  padding: 16px 0;
+  gap: var(--space-24);
+  padding: var(--space-16) 0;
   border-top: 1px solid var(--color-border);
 }
 
 .typeMeta {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
+}
+
+/* Foundations: radius, elevation, spacing and size tokens */
+
+.tokenGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-16);
+}
+
+.tokenItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+.radiusSample {
+  width: var(--space-56);
+  height: var(--space-56);
+  border: 2px solid var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.shadowSample {
+  width: 100%;
+  height: var(--space-56);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.spaceList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin: 0;
+}
+
+.spaceRow {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) 56px;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.spaceBar {
+  display: block;
+  height: var(--space-8);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-400);
+}
+
+.tokenColumns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-24);
+}
+
+.tokenColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+.tokenList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.tokenRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-8) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.tokenRow dt,
+.tokenRow dd {
+  margin: 0;
 }
 
 /* Buttons */
@@ -199,8 +283,8 @@
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   align-items: center;
-  gap: 24px;
-  padding: 16px 0;
+  gap: var(--space-24);
+  padding: var(--space-16) 0;
   border-top: 1px solid var(--color-border);
 }
 
@@ -208,18 +292,18 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-    padding: 24px 16px 64px;
+    gap: var(--space-24);
+    padding: var(--space-24) var(--space-16) 64px;
   }
 
   .topbar {
-    padding: 12px 16px;
+    padding: var(--space-12) var(--space-16);
   }
 
   .nav {
@@ -235,7 +319,7 @@
   .typeRow,
   .buttonRow {
     grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
+    gap: var(--space-8);
   }
 
   .fontSpecimen {
@@ -253,10 +337,10 @@
 }
 
 .navGroup {
-  margin-top: 14px;
-  padding: 0 14px 4px;
+  margin-top: var(--space-14);
+  padding: 0 var(--space-14) var(--space-4);
   color: var(--color-text-subtle);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -265,15 +349,15 @@
 .divider {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding-top: 40px;
+  gap: var(--space-6);
+  padding-top: var(--space-40);
   border-top: 1px solid var(--color-border);
 }
 
 .sectionHead {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
   max-width: 640px;
 }
 
@@ -286,8 +370,8 @@
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   align-items: center;
-  gap: 24px;
-  padding: 14px 0;
+  gap: var(--space-24);
+  padding: var(--space-14) 0;
   border-top: 1px solid var(--color-border);
 }
 
@@ -303,25 +387,25 @@
 .specimenMeta {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
 }
 
 .specimenItems {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .code {
   margin: 0;
-  padding: 14px 16px;
+  padding: var(--space-14) var(--space-16);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-neutral-50);
   color: var(--color-neutral-800);
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: var(--font-size-md);
   line-height: 1.6;
   overflow-x: auto;
 }
@@ -329,17 +413,17 @@
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  gap: var(--space-16);
 }
 
 .cardPad {
-  padding: 20px;
+  padding: var(--space-20);
 }
 
 .fieldStack {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-12);
   max-width: 420px;
 }
 
@@ -356,12 +440,12 @@
 .demoLabel {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
   margin-bottom: -4px;
 }
 
 .pageHeaderDemo {
-  padding: 20px;
+  padding: var(--space-20);
   border: 1px dashed var(--color-neutral-200);
   border-radius: var(--radius-md);
   background: var(--color-bg);
@@ -376,19 +460,19 @@
 }
 
 .tabsPanel {
-  padding: 14px 16px;
+  padding: var(--space-14) var(--space-16);
 }
 
 .checkboxDemo {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .checkboxDemo label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-10);
   cursor: pointer;
 }
 
@@ -399,7 +483,7 @@
 @media (max-width: 900px) {
   .specimen {
     grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
+    gap: var(--space-8);
   }
 
   .nav {
@@ -422,8 +506,8 @@
   display: grid;
   grid-template-columns: 90px 100px 100px minmax(0, 1fr);
   align-items: center;
-  gap: 16px;
-  padding: 10px 0;
+  gap: var(--space-16);
+  padding: var(--space-10) 0;
   border-top: 1px solid var(--color-border);
 }
 
@@ -431,7 +515,7 @@
   border-top: 0;
   padding-top: 0;
   color: var(--color-text-subtle);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -440,14 +524,14 @@
 .usageStep {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-10);
 }
 
 .usageChip {
   width: 28px;
   height: 28px;
   border-radius: var(--radius-sm);
-  box-shadow: inset 0 0 0 1px rgb(15 23 42 / 0.08);
+  box-shadow: var(--shadow-hairline);
 }
 
 .usageRow [data-pass] {
@@ -470,7 +554,7 @@
 }
 /* A swatch of the page background, for components designed to sit directly on it. */
 .onPage {
-  padding: 12px;
+  padding: var(--space-12);
   border-radius: var(--radius-lg);
   background: var(--color-bg);
 }
@@ -478,21 +562,21 @@
 .formDemo {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-20);
   max-width: 460px;
 }
 
 .stepperDemo {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-16);
   width: 340px;
   max-width: 100%;
 }
 
 .stepperDemoActions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .uploadDemo {
@@ -503,7 +587,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .noticeDemo > :first-child {
@@ -513,7 +597,7 @@
 .toolbarDemo {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-16);
 }
 
 .splitBox {

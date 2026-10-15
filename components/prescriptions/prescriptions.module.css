@@ -65,23 +65,23 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
-  padding-right: 8px;
+  gap: var(--space-6);
+  padding-right: var(--space-8);
 }
 
 .rx {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: var(--space-16);
   align-items: center;
   width: 100%;
-  padding: 14px 16px;
+  padding: var(--space-14) var(--space-16);
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
 }
 
 .rx:hover {
@@ -122,7 +122,7 @@
   display: flex;
   align-items: center;
   min-height: 176px;
-  padding: 24px;
+  padding: var(--space-24);
   --banner-glow: 85% 40%;
 }
 
@@ -132,14 +132,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: var(--space-14);
   max-width: 62%;
 }
 
 .heroText > div {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
 }
 
 .ring {
@@ -170,34 +170,34 @@
 .detailBody {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 20px 24px 24px;
+  gap: var(--space-24);
+  padding: var(--space-20) var(--space-24) var(--space-24);
 }
 
 .details {
-  margin-top: 12px;
+  margin-top: var(--space-12);
 }
 
 .notes {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  margin-top: 18px;
-  padding: 0 4px;
+  gap: var(--space-14);
+  margin-top: var(--space-18);
+  padding: 0 var(--space-4);
 }
 
 .notesIcon {
   flex: none;
   width: 22px;
   height: 22px;
-  margin-top: 6px;
+  margin-top: var(--space-6);
   color: var(--color-text-muted);
 }
 
 .sent {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
   margin-top: -8px;
   color: var(--color-primary-700);
   font-weight: 500;
@@ -205,14 +205,14 @@
 
 .sent svg {
   flex: none;
-  width: 16px;
-  height: 16px;
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .actions > * {
@@ -231,11 +231,11 @@
   .item {
     grid-template-columns: 24px minmax(0, 1fr);
     align-items: start;
-    row-gap: 4px;
+    row-gap: var(--space-4);
   }
 
   .dot {
-    margin-top: 6px;
+    margin-top: var(--space-6);
   }
 
   .item:first-child::before {
@@ -249,7 +249,7 @@
   .when {
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-10);
     grid-column: 2;
   }
 

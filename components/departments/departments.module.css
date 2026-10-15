@@ -6,7 +6,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  gap: var(--space-20);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -21,14 +21,14 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--space-18);
   min-width: 0;
-  padding: 14px 14px 20px;
+  padding: var(--space-14) var(--space-14) var(--space-20);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow var(--duration-medium) var(--ease-standard), transform var(--duration-medium) var(--ease-standard);
 }
 
 @media (hover: hover) {
@@ -45,9 +45,9 @@
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  gap: 20px;
+  gap: var(--space-20);
   min-height: 168px;
-  padding: 20px;
+  padding: var(--space-20);
   overflow: hidden;
   border-radius: calc(var(--radius-2xl) - 8px);
   background: linear-gradient(115deg, var(--tone-bg) 35%, color-mix(in srgb, var(--tone-fg) 16%, var(--color-surface)) 140%);
@@ -59,14 +59,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: var(--space-12);
   max-width: 62%;
 }
 
 .artText > div {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
 }
 
 .artText > span {
@@ -94,7 +94,7 @@
 .ring svg {
   width: 58px;
   height: 58px;
-  margin-right: 24px;
+  margin-right: var(--space-24);
   opacity: 0.85;
   stroke-width: 1.5;
 }
@@ -116,8 +116,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 14px 16px;
-  padding: 0 10px;
+  gap: var(--space-14) var(--space-16);
+  padding: 0 var(--space-10);
 }
 
 .figures {
@@ -129,7 +129,7 @@
 .figures > div {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -158,10 +158,10 @@
 .more {
   min-width: 30px;
   height: 30px;
-  padding: 0 6px;
+  padding: 0 var(--space-6);
   background: color-mix(in srgb, var(--tone-fg) 16%, var(--color-surface));
   color: var(--tone-strong);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
 }
 
@@ -170,18 +170,18 @@
 .bottom {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 20px;
+  gap: var(--space-20);
 }
 
 .activity {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 260px;
-  gap: 24px 32px;
+  gap: var(--space-24) var(--space-32);
   align-items: center;
 }
 
 .activityLegend {
-  gap: 16px;
+  gap: var(--space-16);
 }
 
 .updates {
@@ -196,7 +196,7 @@
 .updates li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 14px;
+  gap: var(--space-14);
   align-items: center;
 }
 

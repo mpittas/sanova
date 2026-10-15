@@ -133,7 +133,89 @@ export const semantic = [
   { name: "text", value: "#0F172A", usage: "Primary text" },
   { name: "text-muted", value: "#64748B", usage: "Secondary text" },
   { name: "text-subtle", value: "#94A3B8", usage: "Hints, axis labels, placeholders" },
+  { name: "white", value: "#FFFFFF", usage: "Text on solid brand and status fills, reversed logo" },
 ] as const;
+
+/** Corner radii. `pill` is for fully rounded chips, counters and toggles. */
+export const radius = {
+  xs: "6px",
+  sm: "8px",
+  md: "10px",
+  control: "12px",
+  xl: "14px",
+  lg: "16px",
+  "2xl": "24px",
+  pill: "999px",
+} as const;
+
+/** Spacing for gap, padding and margin. Named by pixel value: `--space-12` is 12px. */
+export const space = {
+  2: "2px",
+  4: "4px",
+  6: "6px",
+  8: "8px",
+  10: "10px",
+  12: "12px",
+  14: "14px",
+  16: "16px",
+  18: "18px",
+  20: "20px",
+  24: "24px",
+  28: "28px",
+  32: "32px",
+  36: "36px",
+  40: "40px",
+  48: "48px",
+  56: "56px",
+} as const;
+
+/** Text sizes for UI copy. The `.text-*` classes below use the larger type scale. */
+export const fontSize = {
+  "2xs": "0.625rem",
+  xs: "0.6875rem",
+  sm: "0.75rem",
+  md: "0.8125rem",
+  base: "0.875rem",
+  lg: "0.9375rem",
+} as const;
+
+/** Fixed heights for buttons, fields and chips. */
+export const controlSize = {
+  xs: "26px",
+  sm: "32px",
+  chip: "36px",
+  md: "44px",
+  lg: "50px",
+  xl: "52px",
+} as const;
+
+/** Icon sizes, set on the icon's own box. */
+export const iconSize = {
+  xs: "13px",
+  sm: "14px",
+  md: "16px",
+  lg: "18px",
+  xl: "20px",
+  "2xl": "32px",
+} as const;
+
+/** Transition and animation durations. Use `base` unless there is a reason not to. */
+export const duration = {
+  instant: "0.1s",
+  fast: "0.12s",
+  base: "0.15s",
+  medium: "0.2s",
+  slow: "0.25s",
+  slower: "0.4s",
+  enter: "0.45s",
+  spin: "0.7s",
+} as const;
+
+export const easing = {
+  standard: "ease",
+  out: "cubic-bezier(0.2, 0.7, 0.2, 1)",
+  move: "cubic-bezier(0.4, 0, 0.2, 1)",
+} as const;
 
 /** Typography scale — emitted as `.text-<name>` classes. */
 export const typeScale = [
@@ -182,13 +264,75 @@ export function lightness(hex: string) {
   return 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
 }
 
+// ---------------------------------------------------------------------------------------------
+// Elevation and overlays. Shadows tint their colour from the palette, so changing a brand
+// colour changes every shadow that uses it.
+// ---------------------------------------------------------------------------------------------
+
+/** A hex colour at an alpha, as an `rgb()` string for shadows and overlays. */
+function rgba(hex: string, alpha: number) {
+  const [r, g, b] = [1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16));
+  return `rgb(${r} ${g} ${b} / ${alpha})`;
+}
+
+const ink = palette.neutral["900"];
+const brand = palette.primary["500"];
+const coral = palette.coral["500"];
+const highlight = "inset 0 1px 0 rgb(255 255 255 / 0.14)";
+
+export const shadow = {
+  /** Flat card and control edge */
+  xs: `0 1px 2px ${rgba(ink, 0.03)}`,
+  control: `0 1px 2px ${rgba(ink, 0.04)}`,
+  card: `0 1px 2px ${rgba(ink, 0.03)}, 0 10px 30px ${rgba(brand, 0.05)}`,
+  float: `0 2px 4px ${rgba(ink, 0.04)}, 0 12px 28px ${rgba(ink, 0.08)}`,
+  /** Hovered tile */
+  raised: `0 6px 18px ${rgba(ink, 0.07)}`,
+  /** Floating menus and the mobile sidebar */
+  menu: `0 6px 16px ${rgba(ink, 0.2)}`,
+  drawer: `0 0 60px ${rgba(ink, 0.25)}`,
+  /** Dialogs */
+  popover: `0 24px 64px ${rgba(ink, 0.28)}, 0 2px 6px ${rgba(ink, 0.08)}`,
+  /** Solid brand and danger buttons, with a light top edge */
+  primary: `0 1px 2px rgb(6 70 46 / 0.35), ${highlight}`,
+  danger: `0 1px 2px ${rgba(coral, 0.35)}, ${highlight}`,
+  /** Brand glow under coloured panels and CTAs */
+  cta: `0 4px 10px ${rgba(brand, 0.3)}`,
+  "cta-lg": `0 10px 24px ${rgba(brand, 0.3)}`,
+  /** Keyboard focus halo around fields */
+  focus: `0 0 0 3px ${rgba(brand, 0.16)}`,
+  "focus-danger": `0 0 0 3px ${rgba(coral, 0.16)}`,
+  /** Hairline inset, for tiles on tinted surfaces */
+  hairline: `inset 0 0 0 1px ${rgba(ink, 0.08)}`,
+  "avatar-ring": "inset 0 0 0 2px rgb(255 255 255 / 0.7)",
+} as const;
+
+/** Translucent overlays and fills on coloured backgrounds. */
+export const overlay = {
+  scrim: rgba(ink, 0.5),
+  "scrim-soft": rgba(ink, 0.4),
+  "white-muted": "rgb(255 255 255 / 0.2)",
+} as const;
+
 export function buildThemeCss(): string {
   const vars: string[] = [];
+  const set = (prefix: string, values: Record<string, string>) => {
+    for (const [key, value] of Object.entries(values)) vars.push(`--${prefix}-${key}:${value};`);
+  };
 
   for (const [name, scale] of Object.entries(palette)) {
     for (const step of steps) vars.push(`--color-${name}-${step}:${scale[step]};`);
   }
   for (const token of semantic) vars.push(`--color-${token.name}:${token.value};`);
+  set("color", overlay);
+  set("radius", radius);
+  set("shadow", shadow);
+  set("space", space);
+  set("font-size", fontSize);
+  set("control", controlSize);
+  set("icon", iconSize);
+  set("duration", duration);
+  set("ease", easing);
 
   const typeClasses = typeScale
     .map(

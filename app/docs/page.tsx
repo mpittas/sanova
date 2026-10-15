@@ -3,7 +3,24 @@ import Link from "next/link";
 import { LuArrowLeft, LuArrowRight, LuDownload, LuPlus, LuTrash2 } from "react-icons/lu";
 import { LogoMark } from "@/components/logo";
 import { Button, type ButtonSize, type ButtonVariant } from "@/components/ui/button";
-import { contrastRatio, lightness, palette, paletteMeta, semantic, typeScale, type PaletteName } from "@/lib/tokens";
+import {
+  contrastRatio,
+  controlSize,
+  duration,
+  easing,
+  fontSize,
+  iconSize,
+  lightness,
+  overlay,
+  palette,
+  paletteMeta,
+  radius,
+  semantic,
+  shadow,
+  space,
+  typeScale,
+  type PaletteName,
+} from "@/lib/tokens";
 import { ComponentDocs, componentNav } from "./component-docs";
 import { CopySwatch } from "./copy-swatch";
 import styles from "./docs.module.css";
@@ -16,6 +33,7 @@ export const metadata: Metadata = {
 const sections = [
   { id: "colors", label: "Colors" },
   { id: "typography", label: "Typography" },
+  { id: "foundations", label: "Foundations" },
   { id: "buttons", label: "Buttons" },
 ];
 
@@ -43,6 +61,26 @@ const primaryUsage: { step: keyof typeof palette.primary; use: string }[] = [
   { step: "800", use: "Headings on tints, dark surfaces" },
   { step: "900", use: "Deepest text and dark surfaces" },
 ];
+
+function TokenList({ title, prefix, values }: { title: string; prefix: string; values: Record<string, string> }) {
+  return (
+    <div className={styles.tokenColumn}>
+      <h4 className="text-label">{title}</h4>
+      <dl className={styles.tokenList}>
+        {Object.entries(values).map(([name, value]) => (
+          <div key={name} className={styles.tokenRow}>
+            <dt>
+              <code className="mono text-small">
+                --{prefix}-{name}
+              </code>
+            </dt>
+            <dd className="num text-caption text-muted">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
 
 export default function DocsPage() {
   return (
@@ -204,6 +242,76 @@ export default function DocsPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+
+          {/* ---------- Foundations ---------- */}
+          <section id="foundations" className={styles.section}>
+            <h2 className="text-h2">Foundations</h2>
+            <p className="text-body text-muted">
+              Shape, depth, spacing, sizing and motion. Each value is a CSS variable generated from{" "}
+              <code className="mono">lib/tokens.ts</code>. Components use the variable, never the literal value.
+            </p>
+
+            <div className={styles.panel}>
+              <h3 className="text-h4">Corner radius</h3>
+              <div className={styles.tokenGrid}>
+                {Object.entries(radius).map(([name, value]) => (
+                  <div key={name} className={styles.tokenItem}>
+                    <span className={styles.radiusSample} style={{ borderRadius: `var(--radius-${name})` }} />
+                    <code className="mono text-small">--radius-{name}</code>
+                    <span className="num text-caption text-muted">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.panel}>
+              <h3 className="text-h4">Elevation</h3>
+              <div className={styles.tokenGrid}>
+                {Object.keys(shadow).map((name) => (
+                  <div key={name} className={styles.tokenItem}>
+                    <span className={styles.shadowSample} style={{ boxShadow: `var(--shadow-${name})` }} />
+                    <code className="mono text-small">--shadow-{name}</code>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.panel}>
+              <h3 className="text-h4">Spacing</h3>
+              <p className="text-small text-muted">Gap, padding and margin. Named by pixel value.</p>
+              <div className={styles.spaceList}>
+                {Object.entries(space).map(([name, value]) => (
+                  <div key={name} className={styles.spaceRow}>
+                    <code className="mono text-small">--space-{name}</code>
+                    <span className={styles.spaceBar} style={{ width: `var(--space-${name})` }} />
+                    <span className="num text-caption text-muted">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.panel}>
+              <h3 className="text-h4">Sizes</h3>
+              <div className={styles.tokenColumns}>
+                <TokenList title="Control height" prefix="control" values={controlSize} />
+                <TokenList title="Icon" prefix="icon" values={iconSize} />
+                <TokenList title="Font size" prefix="font-size" values={fontSize} />
+              </div>
+            </div>
+
+            <div className={styles.panel}>
+              <h3 className="text-h4">Motion</h3>
+              <div className={styles.tokenColumns}>
+                <TokenList title="Duration" prefix="duration" values={duration} />
+                <TokenList title="Easing" prefix="ease" values={easing} />
+              </div>
+            </div>
+
+            <div className={styles.panel}>
+              <h3 className="text-h4">Overlays</h3>
+              <TokenList title="Translucent fills" prefix="color" values={overlay} />
             </div>
           </section>
 

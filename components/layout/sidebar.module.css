@@ -20,10 +20,10 @@
   flex-direction: column;
   width: var(--sidebar-width);
   height: 100vh;
-  padding: 20px 14px 16px;
+  padding: var(--space-20) var(--space-14) var(--space-16);
   border-right: 1px solid var(--color-border);
   background: var(--color-surface);
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width var(--duration-slow) var(--ease-move);
 }
 
 /* Floating toggle sitting on the sidebar's edge */
@@ -43,12 +43,12 @@
   color: var(--color-text-muted);
   box-shadow: 0 2px 6px rgb(15 23 42 / 0.08);
   cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  transition: color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
 }
 
 .edgeToggle svg {
-  width: 16px;
-  height: 16px;
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
 .edgeToggle:hover {
@@ -62,14 +62,14 @@
   align-items: center;
   justify-content: space-between;
   min-height: 44px;
-  padding: 0 6px;
-  margin-bottom: 20px;
+  padding: 0 var(--space-6);
+  margin-bottom: var(--space-20);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
   min-width: 0;
   text-decoration: none;
 }
@@ -93,7 +93,7 @@
 }
 
 .brandSub {
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
 
@@ -108,10 +108,10 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--space-18);
   min-height: 0;
   margin: 0 -14px;
-  padding: 0 14px;
+  padding: 0 var(--space-14);
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -121,27 +121,27 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
 }
 
 .sectionLabel {
   height: 20px;
-  padding: 0 12px;
+  padding: 0 var(--space-12);
   overflow: hidden;
   color: var(--color-text-subtle);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.08em;
   line-height: 20px;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: opacity 0.15s ease;
+  transition: opacity var(--duration-base) var(--ease-standard);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -151,21 +151,21 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
   width: 100%;
   height: 42px;
-  padding: 0 12px;
+  padding: 0 var(--space-12);
   border: 0;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-neutral-600);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   text-align: left;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 }
 
 .icon {
@@ -173,7 +173,7 @@
   width: 20px;
   height: 20px;
   color: var(--color-neutral-500);
-  transition: color 0.15s ease;
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
 .label {
@@ -181,7 +181,7 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 0.15s ease;
+  transition: opacity var(--duration-base) var(--ease-standard);
 }
 
 .item:hover {
@@ -216,7 +216,7 @@
 /* The count badge is a <Counter tone="soft">; it turns solid on the active item */
 .item[data-active] .badge {
   background: var(--color-primary-500);
-  color: #fff;
+  color: var(--color-white);
 }
 
 /* ---------- Bottom ---------- */
@@ -224,16 +224,16 @@
 .bottom {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 12px;
+  gap: var(--space-12);
+  padding-top: var(--space-12);
   border-top: 1px solid var(--color-border);
 }
 
 .profile {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px;
+  gap: var(--space-10);
+  padding: var(--space-8);
   border-radius: var(--radius-lg);
   background: var(--color-neutral-50);
 }
@@ -249,7 +249,7 @@
 
 .profileName {
   overflow: hidden;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-md);
   font-weight: 600;
   text-overflow: ellipsis;
 }
@@ -257,7 +257,7 @@
 .profileRole {
   overflow: hidden;
   color: var(--color-text-muted);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   text-overflow: ellipsis;
 }
 
@@ -276,8 +276,8 @@
 }
 
 .logout svg {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
 }
 
 .logout:hover {
@@ -292,24 +292,24 @@
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 8px;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-10);
+  border-radius: var(--radius-sm);
   background: var(--color-neutral-900);
-  color: #fff;
-  font-size: 0.8125rem;
+  color: var(--color-white);
+  font-size: var(--font-size-md);
   font-weight: 500;
   white-space: nowrap;
   transform: translateY(-50%);
   pointer-events: none;
-  box-shadow: 0 6px 16px rgb(15 23 42 / 0.2);
+  box-shadow: var(--shadow-menu);
 }
 
 .tooltipBadge {
-  padding: 0 6px;
+  padding: 0 var(--space-6);
   border-radius: var(--radius-pill);
-  background: rgb(255 255 255 / 0.2);
-  font-size: 0.6875rem;
+  background: var(--color-white-muted);
+  font-size: var(--font-size-xs);
 }
 
 .backdrop {
@@ -337,7 +337,7 @@
 
   .sidebar[data-collapsed] .sectionLabel {
     height: 1px;
-    margin: 8px 12px;
+    margin: var(--space-8) var(--space-12);
     background: var(--color-border);
   }
 
@@ -374,7 +374,7 @@
 
   .sidebar[data-collapsed] .profile {
     justify-content: center;
-    padding: 6px 0;
+    padding: var(--space-6) 0;
     background: transparent;
   }
 }
@@ -388,12 +388,12 @@
     inset: 0 auto 0 0;
     z-index: 60;
     transform: translateX(-100%);
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+    transition: transform var(--duration-slow) var(--ease-move), box-shadow var(--duration-slow) var(--ease-standard);
   }
 
   .sidebar[data-mobile-open] {
     transform: none;
-    box-shadow: 0 0 60px rgb(15 23 42 / 0.25);
+    box-shadow: var(--shadow-drawer);
   }
 
   .edgeToggle,
@@ -410,10 +410,10 @@
     inset: 0;
     z-index: 55;
     display: block;
-    background: rgb(15 23 42 / 0.4);
+    background: var(--color-scrim-soft);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s ease;
+    transition: opacity var(--duration-slow) var(--ease-standard);
   }
 
   .backdrop[data-open] {

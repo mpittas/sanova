@@ -10,8 +10,8 @@
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 32px;
+  gap: var(--space-16);
+  padding: var(--space-12) var(--space-32);
   border-bottom: 1px solid var(--color-border);
   background: rgb(255 255 255 / 0.88);
   backdrop-filter: saturate(1.4) blur(12px);
@@ -20,7 +20,7 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-10);
   text-decoration: none;
 }
 
@@ -59,14 +59,14 @@
 .user {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px 10px 4px 4px;
+  gap: var(--space-10);
+  padding: var(--space-4) var(--space-10) var(--space-4) var(--space-4);
   border: 0;
   border-radius: var(--radius-md);
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--duration-base) var(--ease-standard);
 }
 
 .user:hover {
@@ -84,10 +84,10 @@
 .eyebrow {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-6);
   min-height: 20px;
   color: var(--color-primary-600);
-  font-size: 0.8125rem;
+  font-size: var(--font-size-md);
   font-weight: 600;
 }
 
@@ -101,7 +101,7 @@
 .stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-16);
 }
 
 .stats > .statCard {
@@ -115,22 +115,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .statValue {
-  margin-top: 10px;
+  margin-top: var(--space-10);
 }
 
 .statMeta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 8px;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
 }
 
 .spark {
-  margin: 8px -20px 0;
+  margin: var(--space-8) -20px 0;
 }
 
 /* ---------- Grid rows ---------- */
@@ -138,7 +138,7 @@
 .row3,
 .row4 {
   display: grid;
-  gap: 16px;
+  gap: var(--space-16);
 }
 
 .row3 {
@@ -154,7 +154,7 @@
 .viewAll {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-4);
   color: var(--color-primary-600);
   font-weight: 500;
   text-decoration: none;
@@ -165,8 +165,8 @@
 }
 
 .viewAll svg {
-  width: 16px;
-  height: 16px;
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
 .time {
@@ -214,7 +214,7 @@
 
 .bubble span {
   color: var(--color-neutral-600);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
 }
 
 .bubble1 { width: 100%; background: var(--color-primary-50); box-shadow: inset 0 0 0 1px var(--color-primary-100); }
@@ -225,8 +225,8 @@
   justify-content: center;
   padding-top: 0;
   background: var(--color-primary-500);
-  color: #fff;
-  box-shadow: 0 10px 24px rgb(11 134 90 / 0.3);
+  color: var(--color-white);
+  box-shadow: var(--shadow-cta-lg);
 }
 .bubble4 span {
   color: var(--color-primary-100);
@@ -235,8 +235,8 @@
 .split {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
-  padding-top: 12px;
+  margin-top: var(--space-16);
+  padding-top: var(--space-12);
   border-top: 1px solid var(--color-neutral-100);
 }
 
@@ -245,7 +245,7 @@
 .departmentList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-16);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -255,7 +255,7 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) minmax(40px, 72px) 36px;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .departmentName {
@@ -275,7 +275,7 @@
 .demographics {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-20);
 }
 
 .donut {
@@ -293,8 +293,8 @@
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 8px 16px;
-  margin-bottom: 8px;
+  gap: var(--space-8) var(--space-16);
+  margin-bottom: var(--space-8);
 }
 
 /* ---------- Entrance motion ---------- */
@@ -303,7 +303,7 @@
   .stats > *,
   .row3 > *,
   .row4 > * {
-    animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    animation: rise var(--duration-enter) var(--ease-out) backwards;
   }
 
   .stats > :nth-child(2),
@@ -381,7 +381,7 @@
 
 @media (max-width: 720px) {
   .header {
-    padding: 12px 16px;
+    padding: var(--space-12) var(--space-16);
   }
 
   .stats,
