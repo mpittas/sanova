@@ -904,73 +904,70 @@
   border-radius: var(--radius-sm);
 }
 
-/* ---------- Filter chips (single-select pill filters with counts) ---------- */
+/* ---------- Filter chips (quiet single-select text filter with counts) ---------- */
 
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-6);
+  gap: 2px 18px;
 }
 
 .filter-chip {
+  position: relative;
   display: inline-flex;
-  align-items: center;
-  gap: var(--space-8);
-  height: var(--control-chip);
-  padding: 0 var(--space-14);
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
+  align-items: baseline;
+  gap: 5px;
+  height: 32px;
+  padding: 0;
+  border: 0;
   background: transparent;
   color: var(--color-text-muted);
-  font-size: var(--font-size-md);
+  font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
+  transition: color 0.15s ease;
 }
 
-.filter-chip:has(.counter) {
-  padding-right: var(--space-8);
+.filter-chip-count {
+  color: var(--color-text-subtle);
+  font-size: 0.75rem;
+  font-weight: 400;
 }
 
 .filter-chip:hover {
-  background: var(--color-neutral-50);
   color: var(--color-text);
 }
 
 .filter-chip[aria-pressed="true"] {
-  border-color: var(--color-primary-200);
-  background: var(--color-primary-50);
   color: var(--color-primary-700);
+  font-weight: 600;
+}
+
+.filter-chip[aria-pressed="true"] .filter-chip-count {
+  color: var(--color-primary-600);
+}
+
+.filter-chip[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-primary-500);
 }
 
 .filter-chip:focus-visible {
   outline: 2px solid var(--color-primary-400);
-  outline-offset: 2px;
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
-/* `solid`: white pills on the page background; the active one is filled with the brand green. */
-.filter-chips-solid .filter-chip {
-  border-color: var(--color-border);
-  background: var(--color-surface);
-}
-
-.filter-chips-solid .filter-chip:hover {
-  border-color: var(--color-neutral-200);
-  background: var(--color-surface);
-  color: var(--color-text);
-}
-
-.filter-chips-solid .filter-chip[aria-pressed="true"] {
-  border-color: var(--color-primary-600);
-  background: var(--color-primary-600);
-  box-shadow: var(--shadow-primary);
-  color: var(--color-white);
-}
-
-.filter-chips-solid .filter-chip[aria-pressed="true"] .counter {
-  background: var(--color-white-muted);
-  color: var(--color-white);
+/* Dropdown form, used when there are too many options for a single row. */
+.filter-select select {
+  min-width: 200px;
 }
 
 /* ---------- Chip ---------- */
@@ -1670,10 +1667,9 @@
   padding: var(--space-16) var(--space-20);
 }
 
-/* Every chip stays visible: they wrap onto extra lines rather than scrolling sideways. When there is no room for the
-   controls beside them, the controls drop to their own full-width row. */
+/* The filter takes only the room it needs; the controls fill the rest of the row, and drop below when it is too narrow. */
 .filter-bar-chips {
-  flex: 1 1 800px;
+  flex: 0 1 auto;
   min-width: 0;
 }
 
@@ -2068,12 +2064,20 @@
   box-shadow: none;
 }
 
-/* Multi-select chips sit on a field background, so they get a hairline outline when off. */
+/* Multi-select chips in forms keep the pill look: a hairline outline when off, tinted when on. */
+.choice-chips {
+  gap: 6px;
+}
+
 .choice-chips .filter-chip {
-  border-color: var(--color-border);
-  background: var(--color-surface);
+  align-items: center;
   height: 40px;
-  padding: 0 var(--space-16);
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 0.8125rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .choice-chips .filter-chip:hover {
@@ -2084,4 +2088,14 @@
 .choice-chips .filter-chip[aria-pressed="true"] {
   border-color: var(--color-primary-300);
   background: var(--color-primary-50);
+  font-weight: 500;
+}
+
+.choice-chips .filter-chip[aria-pressed="true"]::after {
+  content: none;
+}
+
+.choice-chips .filter-chip:focus-visible {
+  outline-offset: 2px;
+  border-radius: var(--radius-pill);
 }

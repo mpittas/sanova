@@ -365,18 +365,16 @@ export function ComponentDocs() {
       <DocSection
         id="filter-chips"
         title="Filter chips"
-        description="Pill filters with item counts, for narrowing a list by category. One is active at a time."
+        description="Quiet single-select filter with item counts, for narrowing a list by category. A text row up to five options, a dropdown beyond that."
         source="@/components/ui/filter-chips"
       >
-        <Panel note="The row wraps by default; give it a className to make it scroll instead, as the Doctors page does.">
+        <Panel note="Switches to a dropdown on its own when there are more than five options (maxInline).">
           <Specimens>
-            <Specimen label='variant="soft"' hint="Default. Inside a card">
+            <Specimen label="Text row" hint="Five options or fewer">
               <FilterChipsDemo />
             </Specimen>
-            <Specimen label='variant="solid"' hint="Directly on the page background">
-              <div className={styles.onPage}>
-                <FilterChipsDemo variant="solid" />
-              </div>
+            <Specimen label="Dropdown" hint="More than five options">
+              <FilterChipsDemo many />
             </Specimen>
           </Specimens>
         </Panel>

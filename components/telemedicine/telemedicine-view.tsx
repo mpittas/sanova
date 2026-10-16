@@ -198,7 +198,6 @@ export function TelemedicineView() {
           chips={
             <FilterChips
               aria-label="Session type"
-              variant="solid"
               value={tab}
               options={tabs.map((value) => ({ value, count: counts[value] }))}
               onChange={changeTab}

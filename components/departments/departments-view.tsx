@@ -70,7 +70,7 @@ export function DepartmentsView() {
       <DepartmentStats departments={departments} />
 
       <FilterBar
-        chips={<FilterChips aria-label="Filter by department" variant="solid" value={filter} options={chipOptions} onChange={setFilter} />}
+        chips={<FilterChips aria-label="Filter by department" value={filter} options={chipOptions} onChange={setFilter} />}
       >
         <SearchInput label="Search departments" tone="white" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search..." />
         <Select size="md" aria-label="Sort departments" value={sort} options={sortOptions} onChange={setSort} />

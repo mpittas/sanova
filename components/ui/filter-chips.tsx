@@ -1,4 +1,4 @@
-import { Counter } from "./counter";
+import { LuChevronDown } from "react-icons/lu";
 
 export type FilterChipOption<T extends string> = {
   value: T;
@@ -12,34 +12,48 @@ type FilterChipsProps<T extends string> = {
   options: readonly FilterChipOption<T>[];
   onChange: (value: T) => void;
   "aria-label": string;
-  /** `soft` (default) tints the active chip; `solid` fills it with the brand green, for chips that sit directly on the page. */
-  variant?: "soft" | "solid";
+  /** Up to this many options show as a text row; more collapse into a dropdown. */
+  maxInline?: number;
   className?: string;
 };
 
-/** Row of pill filters with item counts. One is active at a time; wraps (or scrolls, via `className`) on narrow screens. */
-export function FilterChips<T extends string>({ value, options, onChange, variant = "soft", className, ...rest }: FilterChipsProps<T>) {
+const text = <T extends string>({ value, label, count }: FilterChipOption<T>) =>
+  `${label ?? value}${count !== undefined ? ` (${count})` : ""}`;
+
+/**
+ * Quiet single-select filter with item counts: a plain text row with an underline on the active option, or a
+ * dropdown when there are too many options to fit on one line.
+ */
+export function FilterChips<T extends string>({ value, options, onChange, maxInline = 5, className, ...rest }: FilterChipsProps<T>) {
+  if (options.length > maxInline) {
+    return (
+      <span className={["select", "select-md", "filter-select", className].filter(Boolean).join(" ")}>
+        <select value={value} onChange={(event) => onChange(event.target.value as T)} {...rest}>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {text(option)}
+            </option>
+          ))}
+        </select>
+        <LuChevronDown aria-hidden />
+      </span>
+    );
+  }
+
   return (
-    <div
-      className={["filter-chips", variant === "solid" && "filter-chips-solid", className].filter(Boolean).join(" ")}
-      role="group"
-      {...rest}
-    >
-      {options.map((option) => {
-        const active = option.value === value;
-        return (
-          <button
-            key={option.value}
-            type="button"
-            className="filter-chip"
-            aria-pressed={active}
-            onClick={() => onChange(option.value)}
-          >
-            {option.label ?? option.value}
-            {option.count !== undefined && <Counter tone={active ? "soft" : "neutral"}>{option.count}</Counter>}
-          </button>
-        );
-      })}
+    <div className={["filter-chips", className].filter(Boolean).join(" ")} role="group" {...rest}>
+      {options.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          className="filter-chip"
+          aria-pressed={option.value === value}
+          onClick={() => onChange(option.value)}
+        >
+          {option.label ?? option.value}
+          {option.count !== undefined && <span className="filter-chip-count num">{option.count}</span>}
+        </button>
+      ))}
     </div>
   );
 }

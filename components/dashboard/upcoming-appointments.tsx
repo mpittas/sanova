@@ -1,14 +1,12 @@
 import Link from "next/link";
-import { LuArrowRight, LuEllipsisVertical } from "react-icons/lu";
+import { LuArrowRight } from "react-icons/lu";
 import { Person } from "@/components/ui/person";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Chip, type ChipTone } from "@/components/ui/chip";
 import { Table, Th } from "@/components/ui/table";
 import { appointments, type AppointmentStatus } from "./data";
 import styles from "./dashboard.module.css";
 
-const statusTone: Record<AppointmentStatus, ChipTone> = {
+const statusTone: Record<AppointmentStatus, "success" | "info" | "warning"> = {
   "Checked In": "success",
   Upcoming: "info",
   Rescheduled: "warning",
@@ -17,7 +15,7 @@ const statusTone: Record<AppointmentStatus, ChipTone> = {
 export function UpcomingAppointments() {
   return (
     <Card
-      title="Upcoming Appointments"
+      title="Upcoming appointments"
       description="Today's schedule"
       action={
         <Link href="/appointments" className={`text-label ${styles.viewAll}`}>
@@ -25,15 +23,12 @@ export function UpcomingAppointments() {
         </Link>
       }
     >
-      <Table variant="simple">
+      <Table variant="simple" className={styles.appointments}>
         <thead>
           <tr>
             <Th>Time</Th>
             <Th>Patient</Th>
             <Th className={styles.colStatus}>Status</Th>
-            <Th>
-              <span className="sr-only">Actions</span>
-            </Th>
           </tr>
         </thead>
         <tbody>
@@ -46,12 +41,9 @@ export function UpcomingAppointments() {
                 <Person name={patient} subtitle={type} />
               </td>
               <td className={styles.colStatus}>
-                <Chip tone={statusTone[status]}>{status}</Chip>
-              </td>
-              <td className="table-actions">
-                <Button variant="ghost" size="sm" iconOnly aria-label={`More actions for ${patient}`}>
-                  <LuEllipsisVertical />
-                </Button>
+                <span className={styles.status} data-tone={statusTone[status]}>
+                  {status}
+                </span>
               </td>
             </tr>
           ))}

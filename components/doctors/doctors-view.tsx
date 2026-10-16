@@ -125,7 +125,7 @@ export function DoctorsView() {
 
         <FilterBar
           chips={
-            <FilterChips aria-label="Filter by specialty" variant="solid" value={specialty} options={chipOptions} onChange={filter(setSpecialty)} />
+            <FilterChips aria-label="Filter by specialty" value={specialty} options={chipOptions} onChange={filter(setSpecialty)} />
           }
         >
           <SearchInput

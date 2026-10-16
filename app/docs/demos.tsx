@@ -64,14 +64,16 @@ export function SegmentedDemo() {
 const specialtyFilters = ["All Doctors", "Cardiology", "Dermatology", "Pediatrics"] as const;
 const specialtyCounts = [14, 2, 2, 2];
 
-export function FilterChipsDemo({ variant }: { variant?: "soft" | "solid" }) {
-  const [value, setValue] = useState<(typeof specialtyFilters)[number]>("All Doctors");
+const manySpecialties = ["All Doctors", "General Practice", "Cardiology", "Dermatology", "Pediatrics", "Orthopedics"] as const;
+
+export function FilterChipsDemo({ many = false }: { many?: boolean }) {
+  const filters: readonly string[] = many ? manySpecialties : specialtyFilters;
+  const [value, setValue] = useState<string>("All Doctors");
   return (
     <FilterChips
       aria-label="Specialty"
-      variant={variant}
       value={value}
-      options={specialtyFilters.map((option, index) => ({ value: option, count: specialtyCounts[index] }))}
+      options={filters.map((option, index) => ({ value: option, count: specialtyCounts[index] ?? 1 }))}
       onChange={setValue}
     />
   );
@@ -303,7 +305,6 @@ export function ListToolbarDemo() {
         chips={
           <FilterChips
             aria-label="Filter by specialty"
-            variant="solid"
             value={specialty}
             options={demoSpecialties.map((value, index) => ({ value, count: [14, 4, 2][index] }))}
             onChange={setSpecialty}

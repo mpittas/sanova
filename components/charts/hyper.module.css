@@ -1,0 +1,273 @@
+/* Hyper chart set — light theme. Gradient pills on white, hairline grid, soft floating tooltip. */
+
+/* ---------- Columns ---------- */
+
+.columns {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  /* Plot height plus the category row underneath. */
+  --label-height: 28px;
+}
+
+.axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: var(--plot-height);
+  color: var(--color-text-subtle);
+  line-height: 1;
+}
+
+.axis > span {
+  transform: translateY(0);
+}
+
+.plot {
+  position: relative;
+  min-width: 0;
+}
+
+.grid {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--plot-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.grid > span {
+  height: 0;
+  border-top: 1px dashed var(--color-neutral-200, #dce3ee);
+}
+
+.cols {
+  position: relative;
+  display: flex;
+  height: calc(var(--plot-height) + var(--label-height));
+}
+
+.col {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  outline: none;
+}
+
+.colActive {
+  background: linear-gradient(to bottom, transparent, rgb(11 134 90 / 0.06));
+}
+
+.col:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: -2px;
+}
+
+.stack,
+.group {
+  height: var(--plot-height);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.stack {
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 3px;
+}
+
+.group {
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.pill {
+  display: block;
+  border-radius: 999px;
+  min-height: 0;
+}
+
+.stack > .pill {
+  width: min(55%, 22px);
+}
+
+.group > .pill {
+  width: min(28%, 10px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pill {
+    transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.category {
+  height: var(--label-height);
+  display: flex;
+  align-items: flex-end;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- Tooltip ---------- */
+
+.tip {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 132px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.1), 0 1px 2px rgb(15 23 42 / 0.05);
+  pointer-events: none;
+}
+
+.tipStart {
+  left: 0;
+  transform: none;
+}
+
+.tipEnd {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.tipRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.tipRow > .num {
+  margin-left: auto;
+}
+
+.tipDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ---------- Segmented bar rows ---------- */
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rowHead {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.rowHead > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowValue {
+  min-width: 36px;
+  text-align: right;
+}
+
+.track {
+  display: flex;
+  gap: 3px;
+  height: 14px;
+}
+
+.seg,
+.segOn {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+}
+
+.seg {
+  background: var(--color-neutral-100, #eaeff7);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .segOn {
+    animation: segIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes segIn {
+    from {
+      opacity: 0;
+      transform: scaleY(0.3);
+    }
+  }
+}
+
+/* ---------- Spark bars ---------- */
+
+.spark {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.sparkBar,
+.sparkLast {
+  flex: 1;
+  min-width: 0;
+  max-width: 14px;
+  border-radius: 999px;
+  transform-origin: bottom;
+}
+
+/* Earlier values sit back; the latest one carries the colour. */
+.sparkBar {
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+
+.sparkBar:hover {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sparkBar,
+  .sparkLast {
+    animation: sparkIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes sparkIn {
+    from {
+      transform: scaleY(0.2);
+      opacity: 0;
+    }
+  }
+}
