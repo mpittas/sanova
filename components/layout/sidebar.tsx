@@ -58,17 +58,17 @@ const sections: { label: string; items: NavEntry[] }[] = [
   {
     label: "Manage",
     items: [
-      { label: "Billing", icon: LuReceipt },
-      { label: "Reports", icon: LuChartColumn },
+      { label: "Billing", icon: LuReceipt, href: "/billing" },
+      { label: "Reports", icon: LuChartColumn, href: "/reports" },
       { label: "Messages", icon: LuMessageSquare, href: "/messages", badge: 3 },
-      { label: "Settings", icon: LuSettings },
+      { label: "Settings", icon: LuSettings, href: "/settings" },
     ],
   },
 ];
 
 const footerItems: NavEntry[] = [
   { label: "Design System", icon: LuPalette, href: "/docs" },
-  { label: "Help Center", icon: LuCircleHelp },
+  { label: "Help Center", icon: LuCircleHelp, href: "/help" },
 ];
 
 function NavItem({
@@ -164,7 +164,7 @@ export function Sidebar() {
 
         <div className={styles.top}>
           <Link href="/" className={styles.brand} aria-label="Sanova dashboard" onClick={closeMobile}>
-            <LogoMark size={38} />
+            <LogoMark size={30} color="#2B2B2A" />
             <span className={styles.brandText}>
               <span className={styles.brandName}>Sanova</span>
               <span className={styles.brandSub}>Clinic Management</span>
@@ -186,7 +186,7 @@ export function Sidebar() {
                   <NavItem
                     key={entry.label}
                     entry={entry}
-                    active={entry.href === pathname}
+                    active={!!entry.href && (entry.href === pathname || (entry.href !== "/" && pathname.startsWith(`${entry.href}/`)))}
                     collapsed={collapsed}
                     onNavigate={closeMobile}
                   />

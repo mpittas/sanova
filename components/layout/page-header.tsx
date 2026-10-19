@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Title block at the top of every page, with optional eyebrow above and actions on the right. */
+/** Title block at the top of every page: a plain title and one muted line, with optional eyebrow above and actions on the right. */
 export function PageHeader({
   title,
   description,
@@ -16,8 +16,8 @@ export function PageHeader({
     <div className="page-header">
       <div className="page-header-text">
         {eyebrow}
-        <h1 className="text-h1">{title}</h1>
-        {description && <p className="text-body-lg text-muted">{description}</p>}
+        <h1 className="page-header-title">{title}</h1>
+        {description && <p className="page-header-desc">{description}</p>}
       </div>
       {actions && <div className="page-header-actions">{actions}</div>}
     </div>

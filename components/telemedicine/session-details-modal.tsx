@@ -33,7 +33,7 @@ export function SessionDetailsModal({ session, handlers, onClose }: { session: S
                 {formatDate(session.date, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
               </DetailItem>
               <DetailItem icon={LuClock}>
-                <span className="num">
+                <span>
                   {formatTime(session.start)} – {formatTime(addMinutes(session.start, session.duration))} ({session.duration} minutes)
                 </span>
               </DetailItem>

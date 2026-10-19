@@ -18,7 +18,9 @@ import { ArchLineup, PageBanner } from "@/components/ui/page-banner";
 import { Person } from "@/components/ui/person";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { SearchInput } from "@/components/ui/search-input";
+import { SettingRow, SettingsGroup } from "@/components/ui/settings-group";
 import { StatGrid, StatTile } from "@/components/ui/stat-tile";
+import { Switch } from "@/components/ui/switch";
 import { Table, Th } from "@/components/ui/table";
 import { ToneTile } from "@/components/ui/tone-tile";
 import { CodeBlock, DocSection, Panel, Specimen, Specimens } from "./docs-helpers";
@@ -70,6 +72,7 @@ export const componentNav = [
   { id: "list-toolbar", label: "List toolbar" },
   { id: "info-tiles", label: "Info & action tiles" },
   { id: "detail-list", label: "Detail list" },
+  { id: "settings", label: "Settings rows & switch" },
 ];
 
 export function ComponentDocs() {
@@ -261,7 +264,7 @@ export function ComponentDocs() {
       <DocSection
         id="stat-tiles"
         title="Stat tiles"
-        description="KPI tiles: a tinted icon, a label, a big number and a change indicator. StatGrid lays them out responsively."
+        description="KPI tiles: a tinted icon, a label, a big number and a change indicator. Pass trend for gradient spark bars under the figure (the dashboard layout). StatGrid lays them out responsively."
         source="@/components/ui/stat-tile"
       >
         <StatGrid>
@@ -269,6 +272,10 @@ export function ComponentDocs() {
           <StatTile label="Completed" value="36" change="20%" period="from last month" icon={LuCalendarCheck} tone="success" />
           <StatTile label="New Patients" value="18" change="50%" period="from last month" icon={LuUserPlus} tone="amber" />
           <StatTile label="At Risk" value="7" change="2" period="from last month" icon={LuUsers} tone="coral" deltaTone="danger" />
+        </StatGrid>
+        <StatGrid>
+          <StatTile label="Total Patients" value="1,248" change="12%" period="vs last month" icon={LuUsers} tone="primary" trend={[22, 30, 26, 38, 34, 44, 40, 52, 46, 58, 54, 66]} />
+          <StatTile label="Revenue" value="$16,073" change="9.3%" period="vs last month" icon={LuCalendarCheck} tone="blue" trend={[14, 18, 16, 22, 20, 26, 24, 32, 28, 36, 34, 44]} />
         </StatGrid>
         <Panel title="Icon tiles" note="ToneTile is the tinted rounded square used inside tiles, lists and quick actions.">
           <Specimens>
@@ -352,6 +359,9 @@ export function ComponentDocs() {
             </Specimen>
             <Specimen label="Tabs" hint="Underline, controls a panel">
               <TabsDemo />
+            </Specimen>
+            <Specimen label="Tabs (pill)" hint="Outlined active tab with counts, above a table">
+              <TabsDemo variant="pill" />
             </Specimen>
             <Specimen label="Button pressed" hint="A toggle button">
               <ToggleButtonDemo />
@@ -721,6 +731,33 @@ export function ComponentDocs() {
           </DetailList>
         </Card>
         <CodeBlock>{`<DetailList>\n  <DetailItem icon={LuCalendar}>Thursday, May 9, 2024</DetailItem>\n  <DetailItem icon={LuFileText} title="Notes">…</DetailItem>\n</DetailList>`}</CodeBlock>
+      </DocSection>
+
+      {/* ---------- Settings rows & switch ---------- */}
+      <DocSection
+        id="settings"
+        title="Settings rows & switch"
+        description="SettingsGroup is a titled card of SettingRows: the name and one line of help on the left, the control on the right. Use control=field for inputs and selects (a fixed 280px column); everything else sits at its natural size. Switch is for a setting that applies immediately; use a footer with a Save button when changes should wait."
+        source="@/components/ui/settings-group, switch"
+      >
+        <SettingsGroup title="Notifications" description="Stay on top of your schedule.">
+          <SettingRow title="New bookings" description="When a patient books or requests a visit.">
+            {(control) => <Switch {...control} defaultChecked />}
+          </SettingRow>
+          <SettingRow title="Daily agenda" description="Your schedule for the day, sent at 7:00 am.">
+            {(control) => <Switch {...control} />}
+          </SettingRow>
+          <SettingRow title="Password" description="Last changed 3 months ago.">
+            <Button variant="secondary" size="sm">
+              Change password
+            </Button>
+          </SettingRow>
+        </SettingsGroup>
+        <CodeBlock>{`<SettingsGroup title="Notifications" description="Stay on top of your schedule.">
+  <SettingRow title="New bookings" description="When a patient books a visit.">
+    {(control) => <Switch {...control} checked={on} onChange={…} />}
+  </SettingRow>
+</SettingsGroup>`}</CodeBlock>
       </DocSection>
     </>
   );

@@ -1,0 +1,41 @@
+.page { display: grid; gap: 20px; min-width: 0; }
+.page > :global(.page-header) { margin-bottom: 0; }
+.row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+.rowWide { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); }
+.chartHead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
+.cardNote { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--color-neutral-100); }
+.departmentLegend { margin-top: 12px; }
+.exportRow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.month { font-weight: 600; }
+/* Same quiet table as the dashboard, appointments and billing. */
+table.summary th { padding: 0 8px 12px 0; border-bottom: 0; color: var(--color-text-subtle); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+table.summary td { padding: 14px 8px 14px 0; vertical-align: middle; }
+table.summary tbody tr:first-child td { border-top: 1px solid var(--color-neutral-100); }
+table.summary th:last-child, table.summary td:last-child { padding-right: 0; }
+.visitsBody { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; gap: 12px; margin-top: -6px; }
+.visitsSide { display: grid; gap: 14px; min-width: 0; }
+.splitList { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.splitList li { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; }
+.splitList li > .num:first-of-type { margin-left: auto; font-weight: 600; color: #333; }
+.splitList li > .num:last-child { min-width: 34px; text-align: right; font-size: 0.75rem; }
+.heatScale { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+.heatRamp { display: inline-flex; gap: 3px; }
+.heatRamp i { width: 22px; height: 8px; border-radius: 4px; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 6px 0 0; padding-top: 14px; border-top: 1px solid var(--color-neutral-100); }
+.facts dt { font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 4px; }
+.facts dd { margin: 0; font-size: 0.875rem; font-weight: 600; color: #333; white-space: nowrap; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.sparkAxis { display: flex; justify-content: space-between; margin: 6px 0 0; }
+/* Heatmap figures drop in row by row, top to bottom, just after their cells appear. */
+@media (prefers-reduced-motion: no-preference) {
+  .heatChart :global(.apexcharts-heatmap-series .apexcharts-data-labels) { animation: figureIn 340ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(1) .apexcharts-data-labels) { animation-delay: 140ms; }
+  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(2) .apexcharts-data-labels) { animation-delay: 210ms; }
+  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(3) .apexcharts-data-labels) { animation-delay: 280ms; }
+  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(4) .apexcharts-data-labels) { animation-delay: 350ms; }
+  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(5) .apexcharts-data-labels) { animation-delay: 420ms; }
+  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(6) .apexcharts-data-labels) { animation-delay: 490ms; }
+  @keyframes figureIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+}
+@container (max-width: 1000px) { .row, .rowWide { grid-template-columns: minmax(0, 1fr); } }
+@container (max-width: 560px) { .visitsBody { grid-template-columns: minmax(0, 1fr); } .facts { grid-template-columns: minmax(0, 1fr); } }

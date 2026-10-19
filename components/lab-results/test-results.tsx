@@ -27,8 +27,8 @@ export function TestResults({ test }: { test: LabTest }) {
               <td className="num">
                 <span className="text-label">{formatValue(parameter)}</span> <span className="text-small text-muted">{parameter.unit}</span>
               </td>
-              <td className="text-small text-muted num">
-                {formatRange(parameter)} {parameter.unit}
+              <td className="text-small text-muted">
+                <span className="num">{formatRange(parameter)}</span> {parameter.unit}
               </td>
               <td>
                 <Chip tone={chipTone[status]} variant="tag" size="sm">

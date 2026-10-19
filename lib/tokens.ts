@@ -11,16 +11,16 @@ export type Step = (typeof steps)[number];
 export type Scale = Record<Step, string>;
 
 export const palette = {
-  // Brand: a deep medical green. 500 is dark enough for white text (4.6:1), so it works as a button fill.
+  // Brand: a fresh medical green, kept light on purpose. 500 carries white text on buttons at about 3.9:1, so keep button labels medium weight or heavier.
   primary: {
     "50": "#EDF9F3",
     "100": "#D5F1E3",
     "200": "#AEE3C9",
     "300": "#7BCFAA",
     "400": "#3FB583",
-    "500": "#0B865A",
-    "600": "#086E49",
-    "700": "#07583B",
+    "500": "#139A68",
+    "600": "#0E8157",
+    "700": "#0A6B49",
     "800": "#084630",
     "900": "#093928",
   },

@@ -5,14 +5,12 @@ import { Card } from "@/components/ui/card";
 import { Counter } from "@/components/ui/counter";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SearchInput } from "@/components/ui/search-input";
-import { Tabs, tabId } from "@/components/ui/tabs";
+import { Select } from "@/components/ui/select";
 import { lastMessage, listTimeLabel, type Conversation } from "./data";
 import styles from "./messages.module.css";
 
 export const tabs = ["All Messages", "Patients", "Care Team"] as const;
 export type Tab = (typeof tabs)[number];
-
-const PANEL_ID = "conversation-list";
 
 function preview(conversation: Conversation) {
   const message = lastMessage(conversation);
@@ -42,7 +40,8 @@ export function ConversationList({
   onSelect: (id: string) => void;
 }) {
   return (
-    <Card padding="none" className={styles.listPanel}>
+    <Card rounded padding="none" className={styles.listPanel}>
+      <header className={styles.inboxHeader}><div><h2>Inbox <span>{conversations.length}</span></h2><p>Patients and your care team.</p></div></header>
       <div className={styles.listTop}>
         <SearchInput
           label="Search messages"
@@ -63,9 +62,9 @@ export function ConversationList({
         </Button>
       </div>
 
-      <Tabs aria-label="Message type" panelId={PANEL_ID} value={tab} options={tabs} onChange={onTabChange} />
+      <div className={styles.listFilters}><Select size="sm" aria-label="Message type" value={tab} options={tabs} onChange={onTabChange} /><span>{unreadOnly ? "Unread conversations" : "All conversations"}</span></div>
 
-      <div id={PANEL_ID} role="tabpanel" aria-labelledby={tabId(PANEL_ID, tab)} className={styles.listScroll}>
+      <div className={styles.listScroll}>
         {conversations.length === 0 ? (
           <EmptyState
             icon={LuInbox}
@@ -88,11 +87,11 @@ export function ConversationList({
                     aria-current={active || undefined}
                     onClick={() => onSelect(conversation.id)}
                   >
-                    <Avatar name={conversation.name} size={48} online={conversation.online} />
+                    <Avatar name={conversation.name} size={42} online={conversation.online} />
                     <span className={styles.itemBody}>
                       <span className={styles.itemTop}>
                         <span className={styles.itemName}>{conversation.name}</span>
-                        <span className={`${styles.itemTime} num`}>{listTimeLabel(message)}</span>
+                        <span className={styles.itemTime}>{listTimeLabel(message)}</span>
                       </span>
                       <span className={styles.itemBottom}>
                         <span className={styles.preview}>{preview(conversation)}</span>

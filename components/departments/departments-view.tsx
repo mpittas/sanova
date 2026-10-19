@@ -7,18 +7,14 @@ import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/ui/filter-bar";
 import { FilterChips } from "@/components/ui/filter-chips";
 import { NoResults } from "@/components/ui/no-results";
-import { ArchLineup, PageBanner } from "@/components/ui/page-banner";
 import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
-import { doctorByName } from "@/components/doctors/data";
 import { departments, type DepartmentName } from "./data";
 import { DepartmentActivity } from "./department-activity";
 import { DepartmentCard } from "./department-card";
 import { DepartmentStats } from "./department-stats";
 import { RecentUpdates } from "./recent-updates";
 import styles from "./departments.module.css";
-
-const lineup = ["Dr. Ava Martinez", "Dr. Noah Wilson", "Dr. Liam Carter"].map((name) => doctorByName(name)!.photo);
 
 type DepartmentFilter = "All Departments" | DepartmentName;
 
@@ -59,12 +55,6 @@ export function DepartmentsView() {
         title="Departments"
         description="Organize and manage your clinic's departments, services, and care teams all in one place."
         actions={<Button iconLeft={<LuPlus />}>Add Department</Button>}
-      />
-
-      <PageBanner
-        title="Better care through collaboration"
-        description="Streamline your departments and empower every specialist."
-        visual={<ArchLineup photos={lineup} />}
       />
 
       <DepartmentStats departments={departments} />

@@ -225,6 +225,22 @@ export default function DocsPage() {
             </div>
 
             <div className={styles.panel}>
+              <div className={styles.fontSpecimen}>
+                <span className={`${styles.glyph} num`}>12</span>
+                <div>
+                  <h3 className="text-h3">Martian Mono SemiExpanded</h3>
+                  <p className="text-body text-muted">
+                    For numbers and integers: KPI figures, counts, times, axis labels and percentages. Add the <code className="mono">num</code>{" "}
+                    class to the figure only, never to the words around it.
+                  </p>
+                  <p className="num text-body-lg" style={{ marginTop: 12 }}>
+                    0123456789 $16,073 9.3% 09:30
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.panel}>
               <h3 className="text-h4">Type scale</h3>
               <div className={styles.typeList}>
                 {typeScale.map((style) => (

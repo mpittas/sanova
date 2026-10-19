@@ -1,0 +1,12 @@
+.page { position: relative; display: grid; gap: 20px; min-width: 0; }
+.page > :global(.page-header) { margin-bottom: 0; }
+.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start; }
+.nav { position: sticky; top: 92px; display: grid; gap: 4px; }
+.navItem { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 0; border-radius: 14px; background: transparent; color: var(--color-neutral-700); font: inherit; font-size: 0.9375rem; font-weight: 500; text-align: left; cursor: pointer; transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard); }
+.navItem svg { width: 19px; height: 19px; color: var(--color-text-subtle); }
+.navItem:hover { background: var(--color-neutral-100); }
+.navItem[aria-current="page"] { background: #ddefe5; color: var(--color-primary-800); }
+.navItem[aria-current="page"] svg { color: var(--color-primary-700); }
+.content { display: grid; gap: 20px; min-width: 0; }
+@container (max-width: 820px) { .layout { grid-template-columns: minmax(0, 1fr); gap: 16px; } .nav { position: static; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; } .navItem { flex: none; } }
+@media (max-width: 820px) { .layout { grid-template-columns: minmax(0, 1fr); gap: 16px; } .nav { position: static; display: flex; gap: 6px; overflow-x: auto; } .navItem { flex: none; } }

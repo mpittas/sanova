@@ -3,6 +3,23 @@
 
 /* ---------- Department cards ---------- */
 
+/* Clinic totals lead the page; department names and local figures are a step quieter. */
+.summaryCards :global(.stat-tile-top .text-label) {
+  color: #59697f;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.summaryCards :global(.stat-tile-figure) {
+  font-family: var(--font-figure);
+  font-stretch: normal;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -18,126 +35,123 @@
 }
 
 .card {
+  --font-numeric: var(--font-sans);
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--space-18);
   min-width: 0;
-  padding: var(--space-14) var(--space-14) var(--space-20);
-  border: 1px solid var(--color-border);
+  overflow: hidden;
   border-radius: var(--radius-2xl);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
-  transition: box-shadow var(--duration-medium) var(--ease-standard), transform var(--duration-medium) var(--ease-standard);
+  padding: 0;
+  transition: box-shadow 200ms ease;
 }
 
+/* Surface, border and shadow come from the shared `glass` class; hover only lifts the shadow a little. */
 @media (hover: hover) {
   .card:hover {
-    box-shadow: var(--shadow-float);
-    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 8px 24px rgb(30 41 59 / 0.07);
   }
 }
 
-/* The wash and the rings pick up the department colour (set by data-tone). */
-.art {
-  position: relative;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-20);
-  min-height: 168px;
-  padding: var(--space-20);
-  overflow: hidden;
-  border-radius: calc(var(--radius-2xl) - 8px);
-  background: linear-gradient(115deg, var(--tone-bg) 35%, color-mix(in srgb, var(--tone-fg) 16%, var(--color-surface)) 140%);
-}
-
-.artText {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-12);
-  max-width: 62%;
-}
-
-.artText > div {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.artText > span {
-  background: var(--color-surface);
-  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06);
-}
-
-.ring {
-  position: absolute;
-  top: 50%;
-  right: -28px;
-  display: grid;
-  place-items: center;
-  width: 148px;
-  height: 148px;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--tone-fg) 14%, var(--color-surface));
-  color: var(--tone-fg);
-  box-shadow:
-    0 0 0 22px color-mix(in srgb, var(--tone-fg) 8%, transparent),
-    0 0 0 46px color-mix(in srgb, var(--tone-fg) 5%, transparent);
-}
-
-.ring svg {
-  width: 58px;
-  height: 58px;
-  margin-right: var(--space-24);
-  opacity: 0.85;
-  stroke-width: 1.5;
+.satisfaction {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 .card .open {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 1;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: var(--tone-strong);
-  box-shadow: var(--shadow-float);
+  margin-left: auto;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  color: var(--color-text-muted);
+}
+
+.cardHeading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 94px;
+}
+.cardBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 20px 20px;
+}
+
+.artText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.artText h3 {
+  letter-spacing: -0.3px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.artText p {
+  max-width: 32ch;
+  font-size: 13px;
+  line-height: 1.65;
 }
 
 .footer {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-14) var(--space-16);
-  padding: 0 var(--space-10);
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 0 20px;
+  padding: 12px 0 14px;
+  border-top: 1px solid var(--color-border);
 }
 
 .figures {
-  display: flex;
-  gap: 22px;
-  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: auto 0 0;
 }
 
 .figures > div {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 7px;
   line-height: 1.2;
-  white-space: nowrap;
+}
+
+.figures > div + div {
+  padding-left: 20px;
+  border-left: 1px solid var(--color-border);
 }
 
 .figures dd {
   margin: 0;
+  font-family: var(--font-figure);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  line-height: 1.3;
 }
 
+.figures dt {
+  margin-top: 5px;
+  color: #59697f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.card :global(.num) {
+  font-stretch: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+}
 .faces {
   display: flex;
   align-items: center;
@@ -156,8 +170,8 @@
 }
 
 .more {
-  min-width: 30px;
-  height: 30px;
+  min-width: 28px;
+  height: 28px;
   padding: 0 var(--space-6);
   background: color-mix(in srgb, var(--tone-fg) 16%, var(--color-surface));
   color: var(--tone-strong);
@@ -226,3 +240,5 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+

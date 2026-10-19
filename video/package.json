@@ -1,0 +1,23 @@
+{
+  "name": "sanova-video",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Dashboard out/sanova-dashboard.mp4 --codec=h264 --crf=16",
+    "still": "remotion still Dashboard out/frame.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "@remotion/google-fonts": "4.0.536",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-icons": "^5.7.0",
+    "remotion": "4.0.536"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "puppeteer-core": "^25.14.0",
+    "typescript": "^5"
+  }
+}

@@ -11,12 +11,11 @@ import {
   startOfWeek,
   type ISODate,
 } from "./dates";
+import dash from "@/components/dashboard/dashboard.module.css";
 import { SplitLayout } from "@/components/layout/split-layout";
 import { AppointmentDetails } from "./appointment-details";
 import { MiniCalendar } from "./mini-calendar";
 import { ScheduleCard, type ScheduleFilter, type ScheduleGroup, type View } from "./schedule-card";
-
-const datesWithAppointments: ReadonlySet<ISODate> = new Set(appointments.map((item) => item.date));
 
 function rangeFor(view: View, date: ISODate): [ISODate, ISODate] {
   if (view === "Day") return [date, date];
@@ -75,13 +74,15 @@ export function AppointmentsView() {
   };
 
   return (
+    // Same card chrome as the dashboard.
+    <div className={dash.dash}>
     <SplitLayout
       aside={
         <>
           <MiniCalendar
             month={month}
             selected={selectedDate}
-            datesWithAppointments={datesWithAppointments}
+            appointments={appointments}
             onSelect={goTo}
             onMonthChange={(direction) => setMonth(addMonths(month, direction))}
           />
@@ -103,5 +104,6 @@ export function AppointmentsView() {
         onSelectAppointment={setSelectedId}
       />
     </SplitLayout>
+    </div>
   );
 }

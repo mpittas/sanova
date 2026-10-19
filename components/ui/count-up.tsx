@@ -8,11 +8,13 @@ const pattern = /^(\D*)([\d,]+(?:\.\d+)?)(.*)$/;
 type CountUpProps = {
   /** Formatted value, e.g. "1,248" or "$16,073". The number counts up from zero. */
   value: string;
-  duration?: number;
 };
 
+// Every animated card number finishes together, regardless of its value.
+const DURATION_MS = 700;
+
 /** Counts a formatted number up from zero on mount. Users who prefer reduced motion get the final value at once. */
-export function CountUp({ value, duration = 2400 }: CountUpProps) {
+export function CountUp({ value }: CountUpProps) {
   const match = value.match(pattern);
   const [prefix, digits, suffix] = match ? [match[1], match[2], match[3]] : ["", "", value];
   const target = match ? Number(digits.replace(/,/g, "")) : null;
@@ -28,7 +30,7 @@ export function CountUp({ value, duration = 2400 }: CountUpProps) {
     const start = performance.now();
 
     const tick = (now: number) => {
-      const progress = reduceMotion ? 1 : Math.min(1, (now - start) / duration);
+      const progress = reduceMotion ? 1 : Math.min(1, (now - start) / DURATION_MS);
       // Ease-in-out sine: starts and lands gently, with no sudden jumps at either end.
       setCurrent(target * (1 - (Math.cos(Math.PI * progress) + 1) / 2));
       if (progress < 1) frame = requestAnimationFrame(tick);
@@ -36,7 +38,7 @@ export function CountUp({ value, duration = 2400 }: CountUpProps) {
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [target, duration]);
+  }, [target]);
 
   if (target === null) return <>{value}</>;
 

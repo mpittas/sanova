@@ -1,0 +1,128 @@
+/* Department artwork frame. Transparent renders sit naturally over the frame's pattern. */
+
+.art {
+  --fg: var(--tone-fg);
+  --bg: color-mix(in srgb, var(--tone-bg) 85%, white);
+  position: relative;
+  isolation: isolate;
+  height: 184px;
+  margin: 20px 20px 0;
+  overflow: visible;
+}
+
+/* Keep the complete silhouette inside the frame, including tall anatomical models. */
+.image {
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+}
+
+/* Soft colour pooling in two corners. */
+.art[data-variant="wash"]::before {
+  background-image:
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--fg) 32%, transparent) 0, transparent 54%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--fg) 26%, transparent) 0, transparent 56%);
+}
+
+/* Concentric rings radiating from behind the model. */
+.art[data-variant="rings"]::before {
+  background-image:
+    repeating-radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--fg) 12%, transparent) 0 1px, transparent 1px 28px),
+    radial-gradient(circle at 50% 58%, white 0%, var(--bg) 58%, color-mix(in srgb, var(--fg) 24%, var(--bg)) 100%);
+}
+
+/* A bright halo rising from behind the model. */
+.art[data-variant="glow"]::before {
+  background-image:
+    radial-gradient(circle at 50% 56%, white 0%, transparent 58%),
+    linear-gradient(155deg, var(--bg) 0%, color-mix(in srgb, var(--fg) 38%, var(--bg)) 100%);
+}
+
+/* A fine dot grid on a warm gradient. */
+.art[data-variant="dots"]::before {
+  background-image:
+    radial-gradient(color-mix(in srgb, var(--fg) 30%, transparent) 1.2px, transparent 1.7px),
+    linear-gradient(160deg, var(--bg) 0%, color-mix(in srgb, var(--fg) 30%, var(--bg)) 100%);
+  background-size: 16px 16px, auto;
+}
+
+/* Two soft white shapes drifting in a gradient. */
+.art[data-variant="clouds"]::before {
+  background-image:
+    radial-gradient(circle at 16% 24%, rgb(255 255 255 / 0.5) 0 13%, transparent 14%),
+    radial-gradient(circle at 86% 72%, rgb(255 255 255 / 0.4) 0 17%, transparent 18%),
+    linear-gradient(160deg, var(--bg) 0%, color-mix(in srgb, var(--fg) 26%, var(--bg)) 100%);
+}
+
+/* Fine diagonal hatching on a gradient. */
+.art[data-variant="lines"]::before {
+  background-image:
+    repeating-linear-gradient(135deg, color-mix(in srgb, var(--fg) 11%, transparent) 0 2px, transparent 2px 14px),
+    linear-gradient(160deg, var(--bg) 0%, color-mix(in srgb, var(--fg) 28%, var(--bg)) 100%);
+}
+
+/* Two colour blobs meeting in the middle. */
+.art[data-variant="blobs"]::before {
+  background-image:
+    radial-gradient(circle at 12% 88%, color-mix(in srgb, var(--fg) 34%, var(--bg)) 0%, transparent 56%),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--fg) 22%, white) 0%, transparent 56%),
+    linear-gradient(160deg, white, var(--bg));
+}
+
+/* A light blueprint grid on a vertical fade. */
+.art[data-variant="grid"]::before {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--fg) 11%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--fg) 11%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, white, color-mix(in srgb, var(--fg) 22%, var(--bg)));
+  background-size: 22px 22px, 22px 22px, auto;
+}
+
+/* A compact patterned plinth sits behind the object, leaving the card surface visible around it. */
+.art::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: min(180px, 70%);
+  height: 116px;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-radius: 32px;
+  background-color: var(--bg);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 6px 12px rgb(30 41 59 / 0.035);
+}
+
+.model {
+  position: absolute;
+  width: min(176px, 68%);
+  height: 180px;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+}
+
+/* Small inline artwork keeps the department name and description as the focal point. */
+.compact {
+  flex: 0 0 100px;
+  width: 100px;
+  height: 100px;
+  margin: 0;
+}
+.art.compact::before {
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  border-radius: 18px;
+  background: var(--tone-bg);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--tone-fg) 20%, var(--tone-bg)) 0.8px, transparent 1px);
+  background-size: 9px 9px;
+  background-position: center;
+  box-shadow: none;
+}
+.compact .model {
+  width: 88px;
+  height: 88px;
+  top: 6px;
+}
+

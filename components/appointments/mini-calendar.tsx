@@ -1,65 +1,76 @@
 "use client";
 
+import { useMemo } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { HyperCalendar } from "@/components/charts/hyper-calendar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { formatDate, monthGrid, type ISODate } from "./dates";
+import type { Appointment } from "./data";
+import { formatDate, type ISODate } from "./dates";
 import styles from "./appointments.module.css";
 
-const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
+/** The dashboard's appointments heatmap, made pickable: one square per day, shaded by how busy it is. */
 export function MiniCalendar({
   month,
   selected,
-  datesWithAppointments,
+  appointments,
   onSelect,
   onMonthChange,
 }: {
   /** Any date inside the month being shown. */
   month: ISODate;
   selected: ISODate;
-  datesWithAppointments: ReadonlySet<ISODate>;
+  appointments: readonly Appointment[];
   onSelect: (date: ISODate) => void;
   onMonthChange: (direction: -1 | 1) => void;
 }) {
-  const cells = monthGrid(month);
+  const prefix = month.slice(0, 7);
+  const year = Number(month.slice(0, 4));
+  const monthIndex = Number(month.slice(5, 7)) - 1;
+
+  const { values, total } = useMemo(() => {
+    const values: Record<number, number> = {};
+    let total = 0;
+    for (const { date } of appointments) {
+      if (!date.startsWith(prefix)) continue;
+      const day = Number(date.slice(8));
+      values[day] = (values[day] ?? 0) + 1;
+      total++;
+    }
+    return { values, total };
+  }, [appointments, prefix]);
+
+  const monthName = formatDate(month, { month: "long", year: "numeric" });
 
   return (
-    <Card className={styles.calendar}>
-      <div className={styles.calendarHeader}>
-        <Button variant="secondary" size="sm" iconOnly aria-label="Previous month" onClick={() => onMonthChange(-1)}>
-          <LuChevronLeft />
-        </Button>
-        <h2 className="text-h4" aria-live="polite">
-          {formatDate(month, { month: "long", year: "numeric" })}
-        </h2>
-        <Button variant="secondary" size="sm" iconOnly aria-label="Next month" onClick={() => onMonthChange(1)}>
-          <LuChevronRight />
-        </Button>
-      </div>
-
-      <div className={styles.calendarGrid}>
-        {weekdays.map((day) => (
-          <span key={day} className={styles.weekday} aria-hidden>
-            {day}
-          </span>
-        ))}
-        {cells.map(({ iso, inMonth }) => (
-          <button
-            key={iso}
-            type="button"
-            className={styles.day}
-            data-outside={!inMonth || undefined}
-            data-selected={iso === selected || undefined}
-            data-has-appointments={datesWithAppointments.has(iso) || undefined}
-            aria-pressed={iso === selected}
-            aria-label={formatDate(iso, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
-            onClick={() => onSelect(iso)}
-          >
-            {Number(iso.slice(8))}
-          </button>
-        ))}
-      </div>
+    <Card
+      title="Appointments"
+      description={monthName}
+      action={
+        <div className={styles.monthNav}>
+          <Button variant="secondary" size="sm" iconOnly aria-label="Previous month" onClick={() => onMonthChange(-1)}>
+            <LuChevronLeft />
+          </Button>
+          <Button variant="secondary" size="sm" iconOnly aria-label="Next month" onClick={() => onMonthChange(1)}>
+            <LuChevronRight />
+          </Button>
+        </div>
+      }
+    >
+      <p className={`text-h2 num ${styles.monthTotal}`} aria-live="polite">
+        {total}
+        <span className="text-small text-muted"> this month</span>
+      </p>
+      <HyperCalendar
+        year={year}
+        month={monthIndex}
+        values={values}
+        unit="appointments"
+        empty="No appointments"
+        label={`Appointments per day in ${monthName}, shaded from fewest to most. Pick a day to see its schedule.`}
+        selected={selected.startsWith(prefix) ? Number(selected.slice(8)) : undefined}
+        onSelect={(day) => onSelect(`${prefix}-${String(day).padStart(2, "0")}`)}
+      />
     </Card>
   );
 }

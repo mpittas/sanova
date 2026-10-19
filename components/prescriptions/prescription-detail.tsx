@@ -1,92 +1,41 @@
-import { LuCalendarDays, LuCircleCheck, LuClipboardList, LuFileText, LuPackage, LuPill, LuPrinter, LuRefreshCw, LuSend } from "react-icons/lu";
+import { LuCircleCheck, LuFileText, LuPrinter, LuRefreshCw, LuSend } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
-import { InfoGrid, InfoTile } from "@/components/ui/info-tile";
+import { MedicationVisual } from "./medication-visual";
 import { prescriberPhotos, refillsLabel, type Prescription } from "./data";
 import styles from "./prescriptions.module.css";
 
-type PrescriptionDetailProps = {
-  prescription: Prescription;
-  onRenew: () => void;
-  onSend: () => void;
-};
+type Props = { prescription: Prescription; onRenew: () => void; onSend: () => void };
 
-export function PrescriptionDetail({ prescription, onRenew, onSend }: PrescriptionDetailProps) {
-  const { medication, description, dosage, instructions, prescriber, date, status, quantity, refills, notes, icon: Icon, tone, sentTo } = prescription;
-  const active = status === "Active";
-
-  const details = [
-    { label: "Dosage", value: dosage, icon: LuPill },
-    { label: "Instructions", value: instructions, icon: LuClipboardList },
-    { label: "Quantity", value: quantity, icon: LuPackage },
-    { label: "Refills", value: refillsLabel(refills), icon: LuRefreshCw },
-  ];
-
+export function PrescriptionDetail({ prescription, onRenew, onSend }: Props) {
+  const { medication, description, dosage, instructions, prescriber, date, status, quantity, refills, notes, sentTo } = prescription;
   return (
     <Card rounded padding="none" className={styles.detail}>
-      <section className={`banner-surface banner-surface-flush grain ${styles.hero}`} data-tone={tone} aria-label={medication}>
-        <div className={styles.heroText}>
-          <Chip tone={active ? "success" : "neutral"}>{active ? "Active Prescription" : "Completed Prescription"}</Chip>
-          <div>
-            <h2 className="text-h2 banner-title">{medication}</h2>
-            <p className="text-body banner-text">{description}</p>
-          </div>
-        </div>
-        {/* Decorative: soft rings with the medication's icon, in its colour. */}
-        <span className={styles.ring} aria-hidden>
-          <Icon />
-        </span>
-      </section>
-
+      <header className={styles.detailHeader}><span>Prescription details</span><Button variant="ghost" size="sm" iconLeft={<LuPrinter />} onClick={() => window.print()}>Print</Button></header>
       <div className={styles.detailBody}>
-        <InfoGrid columns={3}>
-          <InfoTile variant="fact" label="Prescribed By" value={prescriber} leading={<Avatar name={prescriber} src={prescriberPhotos[prescriber]} size={40} />} />
-          <InfoTile variant="fact" label="Date Prescribed" value={formatDate(date, { month: "short", day: "numeric", year: "numeric" })} icon={LuCalendarDays} tone="blue" />
-          <InfoTile variant="fact" label="Status" value={status} icon={LuCircleCheck} tone={active ? "success" : "primary"} />
-        </InfoGrid>
-
-        <section aria-labelledby="rx-details-title">
-          <h3 id="rx-details-title" className="text-h4">
-            Prescription Details
-          </h3>
-          <div className={styles.details}>
-            <InfoGrid columns={2}>
-              {details.map(({ label, value, icon }) => (
-                <InfoTile key={label} variant="fact" label={label} value={value} icon={icon} tone="primary" />
-              ))}
-            </InfoGrid>
+        <div className={styles.drugShowcase} data-tone={prescription.tone}>
+          <div className={styles.drugHeading}>
+            <Chip tone={status === "Active" ? "success" : "neutral"} variant="tag" size="sm">{status}</Chip>
+            <h2>{medication}</h2>
+            <span className={styles.strength}>{dosage}</span>
           </div>
-
-          <div className={styles.notes}>
-            <LuFileText className={styles.notesIcon} aria-hidden />
-            <div className="text-stack">
-              <p className="text-caption text-muted">Notes</p>
-              <p className="text-small">{notes}</p>
-            </div>
-          </div>
-        </section>
-
-        {sentTo && (
-          <p className={`text-small ${styles.sent}`} role="status">
-            <LuCircleCheck aria-hidden />
-            Sent to {sentTo.split(" · ")[0]}
-          </p>
-        )}
-
-        <div className={styles.actions}>
-          <Button iconLeft={<LuRefreshCw />} onClick={onRenew}>
-            Renew Prescription
-          </Button>
-          <Button variant="secondary" iconLeft={<LuPrinter />} onClick={() => window.print()}>
-            Print
-          </Button>
-          <Button variant="secondary" iconLeft={<LuSend />} onClick={onSend}>
-            Send to Pharmacy
-          </Button>
+          <MedicationVisual prescription={prescription} large />
+          <p className={styles.description}>{description}</p>
         </div>
+        <section className={styles.directions} aria-label="Directions for use"><span>Directions for use</span><p>{instructions}</p><span>{dosage}</span></section>
+        <dl className={styles.facts}>
+          <div><dt>Quantity</dt><dd>{quantity}</dd></div>
+          <div><dt>Refills</dt><dd>{refillsLabel(refills)}</dd></div>
+          <div><dt>Prescribed on</dt><dd>{formatDate(date, { month: "short", day: "numeric", year: "numeric" })}</dd></div>
+          <div><dt>Prescription ID</dt><dd>{prescription.id.toUpperCase()}</dd></div>
+        </dl>
+        <div className={styles.prescriber}><Avatar name={prescriber} src={prescriberPhotos[prescriber]} size={32} /><div><span>Prescribed by</span><strong>{prescriber}</strong></div></div>
+        <section className={styles.notes}><LuFileText aria-hidden /><div><h3>Care notes</h3><p>{notes}</p></div></section>
+        {sentTo && <p className={styles.sent} role="status"><LuCircleCheck aria-hidden />Sent to {sentTo.split(" · ")[0]}</p>}
+        <div className={styles.actions}><Button iconLeft={<LuSend />} onClick={onSend}>Send to pharmacy</Button><Button variant="secondary" iconLeft={<LuRefreshCw />} onClick={onRenew}>Renew</Button></div>
       </div>
     </Card>
   );

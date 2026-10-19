@@ -3,11 +3,25 @@
 /* ---------- Columns ---------- */
 
 .columns {
+  container-type: inline-size;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 12px;
   /* Plot height plus the category row underneath. */
   --label-height: 28px;
+}
+
+.columns[data-minimal] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Minimal: no value axis and no dashed guides, just a quiet baseline. */
+.columns[data-minimal] .grid > span {
+  border-top-color: transparent;
+}
+
+.columns[data-minimal] .grid > span:last-child {
+  border-top: 1px solid var(--color-neutral-100, #eaeff7);
 }
 
 .axis {
@@ -107,6 +121,21 @@
 @media (prefers-reduced-motion: no-preference) {
   .pill {
     transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* Narrow charts show a single letter per category so the labels never run together. */
+.categoryShort {
+  display: none;
+}
+
+@container (max-width: 360px) {
+  .categoryFull {
+    display: none;
+  }
+
+  .categoryShort {
+    display: inline;
   }
 }
 
@@ -268,6 +297,305 @@
     from {
       transform: scaleY(0.2);
       opacity: 0;
+    }
+  }
+}
+
+/* ---------- Heatmap calendar ---------- */
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Compact squares: each day is capped at 34px and the week sits centred in the card. */
+.calHead,
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 34px));
+  justify-content: center;
+  gap: 6px;
+}
+
+.calHead > span {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.calDay {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  border-radius: 7px;
+  background: var(--color-neutral-100);
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  outline: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calOutside {
+  background: transparent;
+  color: var(--color-neutral-300);
+  font-weight: 400;
+}
+
+/* Five steps of the brand green; the two deepest take white text. */
+.calDay[data-level="1"],
+.calSwatch[data-level="1"] {
+  background: var(--color-primary-100);
+  color: var(--color-primary-800);
+}
+
+.calDay[data-level="2"],
+.calSwatch[data-level="2"] {
+  background: var(--color-primary-200);
+  color: var(--color-primary-800);
+}
+
+.calDay[data-level="3"],
+.calSwatch[data-level="3"] {
+  background: var(--color-primary-300);
+  color: var(--color-primary-900);
+}
+
+.calDay[data-level="4"],
+.calSwatch[data-level="4"] {
+  background: var(--color-primary-500);
+  color: var(--color-white);
+}
+
+.calDay[data-level="5"],
+.calSwatch[data-level="5"] {
+  background: var(--color-primary-700);
+  color: var(--color-white);
+}
+
+.calDay[data-level]:hover,
+.calDay[data-level]:focus-visible {
+  z-index: 2;
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgb(11 134 90 / 0.25);
+}
+
+.calDay:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.calDay[data-pickable] {
+  cursor: pointer;
+}
+
+.calDay[data-selected] {
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary-600);
+  font-weight: 700;
+}
+
+.calTip {
+  position: absolute;
+  z-index: 3;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 96px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.1), 0 1px 2px rgb(15 23 42 / 0.05);
+  color: var(--color-text);
+  font-weight: 400;
+  text-align: left;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.calDay[data-edge="start"] .calTip {
+  left: 0;
+  transform: none;
+}
+
+.calDay[data-edge="end"] .calTip {
+  right: 0;
+  left: auto;
+  transform: none;
+}
+
+.calLegend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.calSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .calDay[data-level] {
+    animation: calIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes calIn {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+  }
+}
+
+/* ---------- Spark line ---------- */
+
+.sparkLine {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.sparkLine svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sparkGuide {
+  stroke: var(--color-neutral-200);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.sparkStroke {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sparkStroke {
+  stroke-width: 1.5;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sparkLine {
+    animation: sparkLineIn 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes sparkLineIn {
+    from {
+      clip-path: inset(0 100% 0 0 round 12px);
+    }
+
+    to {
+      clip-path: inset(0 0 0 0 round 12px);
+    }
+  }
+}
+
+/* ---------- Lines ---------- */
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linesPlot {
+  position: relative;
+  height: var(--plot-height);
+  touch-action: pan-y;
+}
+
+.linesPlot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.linesGuide {
+  stroke: var(--color-neutral-200);
+  stroke-dasharray: 2 4;
+  stroke-width: 1;
+  opacity: 0.7;
+}
+
+.linesStroke {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.linesCursor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-neutral-200);
+  transform: translateX(-0.5px);
+  pointer-events: none;
+}
+
+.linesDot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid;
+  border-radius: 50%;
+  background: var(--color-surface);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.linesTip {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  transform: translateX(-50%);
+  min-width: 140px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.1), 0 1px 2px rgb(15 23 42 / 0.05);
+  pointer-events: none;
+}
+
+.linesCategories {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-subtle);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .linesPlot svg {
+    animation: linesIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes linesIn {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+      clip-path: inset(0 0 0 0);
     }
   }
 }

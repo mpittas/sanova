@@ -78,12 +78,12 @@ export function ChatPanel({
   }, [id, messages.length]);
 
   return (
-    <Card padding="none" className={styles.chat}>
+    <Card rounded padding="none" className={styles.chat}>
       <header className={styles.chatHeader}>
         <Button variant="ghost" size="sm" iconOnly className={styles.back} aria-label="Back to conversations" onClick={onBack}>
           <LuArrowLeft />
         </Button>
-        <Avatar name={name} size={48} online={online} />
+        <Avatar name={name} size={42} online={online} />
         <div className={styles.chatWho}>
           <h2 className="text-h4">{name}</h2>
           <p className={styles.chatSub}>
@@ -126,7 +126,7 @@ export function ChatPanel({
                   </div>
                 ))}
                 <p className={styles.meta}>
-                  <span className="num">{formatTime(row.messages[row.messages.length - 1].time)}</span>
+                  <span>{formatTime(row.messages[row.messages.length - 1].time)}</span>
                   {row.from === "me" &&
                     (row.messages[row.messages.length - 1].status === "read" ? (
                       <LuCheckCheck className={styles.read} role="img" aria-label="Read" />

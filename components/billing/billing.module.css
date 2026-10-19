@@ -1,0 +1,96 @@
+.page { display: grid; gap: 18px; min-width: 0; --font-numeric: var(--font-sans); --color-text-muted: #59697f; }
+.page > :global(.page-header) { margin-bottom: 0; }
+.page :global(.num) { font-stretch: normal; letter-spacing: -.02em; }
+.page :global(.stat-tile-figure) { letter-spacing: -.03em; }
+.page :global(.stat-tile-figure[data-animated]) { letter-spacing: -.03em; }
+.page :global(.stat-tile) { padding: 18px 20px; }
+.page :global(.stat-tile-top .text-label) { font-size: 12px; }
+.page :global(.stat-tile-top) { margin-bottom: 12px; }
+.overviewHeading, .overviewHeading > div { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.overviewHeading { justify-content: space-between; margin-bottom: -6px; }
+.overviewHeading h2 { font-size: 14px; font-weight: 600; letter-spacing: -.015em; }
+.overviewIcon { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; background: #e6eee8; color: #0a6b49; }
+.overviewIcon svg { width: 15px; height: 15px; }
+.currency { font-size: 10px; color: #59697f; border: 1px solid #dfe6e1; border-radius: 5px; padding: 2px 5px; }
+.insights { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: stretch; }
+.activity, .attention { padding: 22px; min-width: 0; }
+.page :global(.card-heading h2) { font-size: 15px; font-weight: 600; letter-spacing: -.02em; color: #333; }
+.page :global(.card-heading p) { font-size: 12px; margin-top: 3px; }
+.dateRange { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #59697f; white-space: nowrap; }
+.dateRange svg { width: 13px; height: 13px; }
+.chartHeadline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 12px 0 4px; }
+.chartHeadline > strong { font-family: var(--font-figure); font-size: 24px; font-weight: 400; line-height: 1.2; letter-spacing: -.03em; color: #333; font-variant-numeric: tabular-nums; }
+.chartHeadline > span { font-size: 11px; color: #59697f; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-left: auto; font-size: 10px; color: #59697f; }
+.legend > span { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #06b6d4); }
+.legend > span:last-child i { background: linear-gradient(135deg, #6366f1, #a78bfa); }
+.chartFootnote { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; padding-top: 12px; border-top: 1px solid #edf0ed; font-size: 11px; color: #59697f; }
+.chartFootnote > span:first-child { display: inline-flex; align-items: center; gap: 6px; color: #0a6b49; }
+.chartFootnote svg { width: 14px; height: 14px; }
+.attention { display: flex; flex-direction: column; background: #f8f8f5; }
+.attentionIcon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: #eeeee8; color: #6a6d55; }
+.attentionIcon svg { width: 16px; height: 16px; }
+.attentionAmount { display: grid; gap: 6px; margin: 2px 0 20px; }
+.attentionAmount strong { font-family: var(--font-figure); font-size: 24px; font-weight: 400; letter-spacing: -.03em; color: #333; }
+.attentionAmount > span { font-size: 12px; color: #59697f; }
+.overdueList { display: grid; gap: 15px; }
+.overdueList button { display: flex; align-items: center; gap: 9px; padding: 0; border: 0; background: transparent; font: inherit; text-align: left; color: inherit; cursor: pointer; }
+.overdueList button > span:nth-child(2) { display: grid; gap: 4px; flex: 1; }
+.overdueList strong { font-size: 11px; font-weight: 500; }
+.overdueList small { font-size: 10px; color: #9a5d3e; }
+.overdueList b { font-size: 11px; font-weight: 500; }
+.overdueList button > svg { width: 13px; height: 13px; color: #718077; }
+.reviewButton { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding: 18px 0 0; border: 0; background: transparent; color: #526445; font: inherit; font-size: 12px; font-weight: 500; text-align: left; cursor: pointer; }
+.reviewButton svg { width: 15px; height: 15px; }
+.allCaughtUp { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #0a6b49; }
+.allCaughtUp svg { width: 16px; height: 16px; }
+.invoiceCard { scroll-margin-top: 90px; }
+.sampleBadge { font-size: 10px; color: #718077; background: #f2f5f2; padding: 4px 7px; border-radius: 6px; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+.filters > :first-child { flex: 1 1 230px; min-width: 0; }
+.invoiceCount { display: inline-grid; place-items: center; min-width: 23px; height: 23px; margin-left: 4px; border-radius: 7px; background: #edf3ef; color: #51695a; font-size: 11px; font-weight: 500; vertical-align: 1px; }
+.invoiceId { display: block; padding: 0; border: 0; background: transparent; font: inherit; color: #333; font-size: 0.875rem; font-weight: 600; cursor: pointer; }
+.invoiceId:hover { color: #0e8157; text-decoration: underline; text-underline-offset: 3px; }
+.amount { font-weight: 600; letter-spacing: -.04em; color: #333; }
+/* Same quiet table as the dashboard and appointments: sentence-case header, rows carry the separation. */
+table.invoices th { padding: 0 8px 12px 0; border-bottom: 0; color: var(--color-text-subtle); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+table.invoices td { padding: 14px 8px 14px 0; vertical-align: middle; }
+table.invoices tbody tr:first-child td { border-top: 1px solid var(--color-neutral-100); }
+table.invoices th:last-child, table.invoices td:last-child { padding-right: 0; }
+.colMore { width: 40px; text-align: right; }
+.statusDot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.openInvoice { display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 8px; background: transparent; color: #718077; cursor: pointer; }
+.openInvoice:hover { background: #e8f1eb; color: #0a6b49; }
+.openInvoice svg { width: 15px; height: 15px; }
+.tableFooter { padding-top: 4px; border-top: 1px solid var(--color-neutral-100); }
+.empty { padding: 30px; }
+.invoicePreview { padding: 20px; border: 1px solid #e4ebe6; border-radius: 16px; background: #fafcfb; }
+.receiptTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.receiptTop > span { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.receiptTop svg { width: 18px; height: 18px; color: #0a6b49; }
+.billedTo { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+.billedTo small { font-size: 11px; color: #59697f; }
+.billedTo h3 { margin-top: 5px; font-size: 15px; font-weight: 600; }
+.receiptFacts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
+.receiptFacts dt { font-size: 11px; color: #59697f; margin-bottom: 6px; }
+.receiptFacts dd { font-size: 12px; margin: 0; }
+.receiptLine, .receiptTotal { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0; border-top: 1px solid #e4ebe6; font-size: 13px; }
+.receiptLine strong { font-weight: 500; }
+.receiptTotal strong { font-family: var(--font-figure); font-size: 20px; letter-spacing: -.05em; font-weight: 400; color: #333; }
+.localNote { font-size: 11px; line-height: 1.6; color: #718077; }
+.invoiceForm { display: flex; flex-direction: column; min-height: 0; }
+.formFields { display: grid; gap: 18px; }
+.input { display: block; width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #dfe6e1; border-radius: 10px; background: #f7f9f7; font: inherit; font-size: 13px; color: inherit; }
+.formError { color: #b6311a; font-size: 12px; }
+@container (max-width: 1000px) { .insights { grid-template-columns: minmax(0, 1fr); } .attention { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1fr); gap: 0 30px; } .attention :global(.card-header) { grid-column: 1 / -1; } .overdueList { grid-column: 2; grid-row: 2 / 4; } .reviewButton { align-self: end; } }
+@container (max-width: 600px) { .page { gap: 18px; } .attention { display: flex; gap: 0; } .overdueList { margin-bottom: 18px; } .activity, .attention { padding: 18px; } .dateRange { display: none; } .chartHeadline { gap: 8px; } .legend { width: 100%; margin-left: 0; } .plot { gap: 12px; } .chart { grid-template-columns: 52px minmax(0, 1fr); gap: 8px; } .chartScale { font-size: 9px; } .barColumn > span { font-size: 9px; } .receiptFacts { gap: 10px; } }
+.trendChart { margin: 0 -8px; min-width: 0; }
+.collectionSummary { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; }
+.collectionRing { position: relative; width: 76px; height: 76px; flex: none; }
+.collectionRing svg { width: 100%; height: 100%; }
+.collectionRing > span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 15px; font-weight: 600; letter-spacing: -.05em; color: #333; }
+.collectionSummary .attentionAmount { margin: 0; gap: 5px; }
+.collectionSummary .attentionAmount strong { font-size: 22px; }
+.collectionSummary small { font-size: 10px; color: #718077; }
+@container (max-width: 1000px) { .attention { display: flex; } }

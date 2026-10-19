@@ -1,6 +1,7 @@
 import { LuCalendarDays, LuStethoscope, LuTrendingUp, LuUsers } from "react-icons/lu";
 import { StatGrid, StatTile } from "@/components/ui/stat-tile";
 import { buildTotals, type Department } from "./data";
+import styles from "./departments.module.css";
 
 /** Clinic-wide figures, derived from the department list. */
 export function DepartmentStats({ departments }: { departments: readonly Department[] }) {
@@ -13,10 +14,10 @@ export function DepartmentStats({ departments }: { departments: readonly Departm
   ] as const;
 
   return (
-    <StatGrid>
+    <div className={styles.summaryCards}><StatGrid>
       {tiles.map(({ id, ...tile }) => (
-        <StatTile key={id} {...tile} />
+        <StatTile key={id} {...tile} countUp />
       ))}
-    </StatGrid>
+    </StatGrid></div>
   );
 }

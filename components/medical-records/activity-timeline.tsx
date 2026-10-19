@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Select } from "@/components/ui/select";
 import { ToneTile } from "@/components/ui/tone-tile";
-import { ranges, recordMeta, type MedicalRecord, type Range } from "./data";
+import { recordMeta, type MedicalRecord, type Range } from "./data";
 import styles from "./medical-records.module.css";
 
 function RecordItem({ record }: { record: MedicalRecord }) {
@@ -19,37 +18,34 @@ function RecordItem({ record }: { record: MedicalRecord }) {
 
   return (
     <li className={styles.item} data-tone={tone}>
-      <span className={styles.dot} aria-hidden />
-
-      <div className={styles.row}>
-        <div className={styles.entry}>
-          <ToneTile tone={tone} size={48}>
-            <Icon />
-          </ToneTile>
-          <time className={`text-small text-muted num ${styles.date}`} dateTime={record.date}>
-            {formatDate(record.date, { month: "short", day: "numeric", year: "numeric" })}
-          </time>
-          <div className={styles.entryText}>
-            <h3 className="text-label">{record.title}</h3>
-            <p className="text-small text-muted">{[record.source, record.subtitle].filter(Boolean).join(" • ")}</p>
-            <p className={`text-small text-muted ${styles.summary}`}>{record.summary}</p>
-          </div>
-          <Chip tone={chip} variant="tag" size="sm" className={styles.type}>
+      <ToneTile tone={tone} size={40}>
+        <Icon />
+      </ToneTile>
+      <div className={styles.entry}>
+        <div className={styles.entryHead}>
+          <h4 className="text-label">{record.title}</h4>
+          <Chip tone={chip} variant="tag" size="sm">
             {record.type}
           </Chip>
-          <Button
-            variant="ghost"
-            size="sm"
-            iconOnly
-            className={styles.expand}
-            aria-expanded={open}
-            aria-controls={detailsId}
-            aria-label={`${open ? "Hide" : "Show"} details for ${record.title}`}
-            onClick={() => setOpen((value) => !value)}
-          >
-            <LuChevronRight />
-          </Button>
         </div>
+        <p className={`text-small text-muted ${styles.entryMeta}`}>
+          <time dateTime={record.date}>{formatDate(record.date, { month: "short", day: "numeric", year: "numeric" })}</time>
+          <span aria-hidden>·</span>
+          <span>{[record.source, record.subtitle].filter(Boolean).join(" • ")}</span>
+        </p>
+        <p className={styles.summary}>{record.summary}</p>
+        <Button
+          variant="ghost"
+          size="sm"
+          className={styles.expand}
+          aria-expanded={open}
+          aria-controls={detailsId}
+          aria-label={`${open ? "Hide" : "Show"} details for ${record.title}`}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? "Less" : "Details"}
+          <LuChevronRight />
+        </Button>
 
         {open && (
           <dl id={detailsId} className={styles.details}>
@@ -66,40 +62,59 @@ function RecordItem({ record }: { record: MedicalRecord }) {
   );
 }
 
+/** Records are already newest first, so a month heading starts whenever the month changes. */
+function groupByMonth(records: readonly MedicalRecord[]) {
+  const groups: { key: string; label: string; items: MedicalRecord[] }[] = [];
+  for (const record of records) {
+    const key = record.date.slice(0, 7);
+    let group = groups.at(-1);
+    if (group?.key !== key) {
+      group = { key, label: formatDate(record.date, { month: "long", year: "numeric" }), items: [] };
+      groups.push(group);
+    }
+    group.items.push(record);
+  }
+  return groups;
+}
+
 type ActivityTimelineProps = {
   title: string;
   description: string;
   records: readonly MedicalRecord[];
   range: Range;
   onRangeChange: (range: Range) => void;
-  /** Id and label of the tab that controls this panel. */
-  panelId: string;
-  labelledBy: string;
 };
 
-export function ActivityTimeline({ title, description, records, range, onRangeChange, panelId, labelledBy }: ActivityTimelineProps) {
+export function ActivityTimeline({ title, description, records, range, onRangeChange }: ActivityTimelineProps) {
   return (
     <Card
       rounded
-      id={panelId}
-      role="tabpanel"
-      aria-labelledby={labelledBy}
       title={title}
       description={description}
-      action={<Select aria-label="Time range" value={range} options={ranges} onChange={onRangeChange} />}
+      className={styles.timelineCard}
     >
       {records.length > 0 ? (
-        <ol className={styles.timeline}>
-          {records.map((record) => (
-            <RecordItem key={record.id} record={record} />
+        <div className={styles.groups}>
+          {groupByMonth(records).map(({ key, label, items }) => (
+            <section key={key} aria-label={label}>
+              <h3 className={styles.month}>
+                {label}
+                <span>{items.length}</span>
+              </h3>
+              <ol className={styles.timeline}>
+                {items.map((record) => (
+                  <RecordItem key={record.id} record={record} />
+                ))}
+              </ol>
+            </section>
           ))}
-        </ol>
+        </div>
       ) : (
         <EmptyState
           icon={LuFileSearch}
           size="compact"
-          title="No records in this period"
-          description="Try a longer time range, or add a new record."
+          title="No matching records"
+          description="Try another search or time range, or add a new record."
           action={
             range !== "All Time" ? (
               <Button variant="secondary" size="sm" onClick={() => onRangeChange("All Time")}>

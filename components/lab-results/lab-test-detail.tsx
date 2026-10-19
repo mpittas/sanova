@@ -1,22 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { LuMessageSquare } from "react-icons/lu";
+import { useRef } from "react";
+import { LuChevronDown, LuMessageSquare, LuPrinter } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { doctorByName } from "@/components/doctors/data";
 import { Avatar } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
-import { tabId, Tabs } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { ToneTile } from "@/components/ui/tone-tile";
-import { detailTabs, statusOfTest, testStatusMeta, type DetailTab, type LabTest } from "./data";
+import { statusOfTest, testStatusMeta, type LabTest } from "./data";
 import styles from "./lab-results.module.css";
 import { TestOverview } from "./test-overview";
 import { TestResults } from "./test-results";
 import { TestTrends } from "./test-trends";
-
-const PANEL_ID = "lab-detail-panel";
 
 function Comments({ test }: { test: LabTest }) {
   if (test.comments.length === 0) {
@@ -40,33 +38,31 @@ function Comments({ test }: { test: LabTest }) {
 }
 
 export function LabTestDetail({ test }: { test: LabTest }) {
-  const [tab, setTab] = useState<DetailTab>("Overview");
+  const resultsRef = useRef<HTMLElement>(null);
   const result = statusOfTest(test);
   const Icon = test.icon;
 
   return (
-    <Card rounded className={styles.detail}>
+    <Card rounded padding="none" className={styles.detail}>
+      <div className={styles.reportBar}><span>Lab report</span><Button variant="ghost" size="sm" iconLeft={<LuPrinter />} onClick={() => window.print()}>Print</Button></div>
       <header className={styles.detailHead}>
-        <ToneTile tone={test.tone} size={56}>
+        <ToneTile tone={test.tone} size={44}>
           <Icon />
         </ToneTile>
         <div className={styles.detailTitle}>
-          <h2 className="text-h3">{test.name}</h2>
+          <h2>{test.name}</h2>
           <p className="text-small text-muted">
-            {formatDate(test.date, { month: "short", day: "numeric", year: "numeric" })} • {test.parameters.length}{" "}
-            {test.parameters.length === 1 ? "parameter" : "parameters"} • Ordered by {test.orderedBy}
+            {formatDate(test.date, { month: "short", day: "numeric", year: "numeric" })} · {test.parameters.length} {test.parameters.length === 1 ? "marker" : "markers"}
           </p>
         </div>
-        <Chip tone={testStatusMeta[result].chip}>{result}</Chip>
+        <Chip tone={testStatusMeta[result].chip} variant="tag" size="sm">{result}</Chip>
       </header>
-
-      <Tabs aria-label="Test sections" panelId={PANEL_ID} value={tab} options={detailTabs} onChange={setTab} />
-
-      <div id={PANEL_ID} role="tabpanel" aria-labelledby={tabId(PANEL_ID, tab)} className={styles.panel}>
-        {tab === "Overview" && <TestOverview test={test} onViewAll={() => setTab("Results")} />}
-        {tab === "Results" && <TestResults test={test} />}
-        {tab === "Trends" && <TestTrends test={test} />}
-        {tab === "Comments" && <Comments test={test} />}
+      <div className={styles.panel}>
+        <TestOverview test={test} onViewAll={() => resultsRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" })} />
+        <section ref={resultsRef} className={styles.resultsSection} aria-label="All results"><div className={styles.sectionHeading}><h3>All results</h3><span>{test.parameters.length} {test.parameters.length === 1 ? "marker" : "markers"}</span></div><TestResults test={test} /></section>
+        <details className={styles.disclosure}><summary>Trends over time<LuChevronDown aria-hidden /></summary><div><TestTrends test={test} /></div></details>
+        <details className={styles.disclosure}><summary>Care-team notes<span>{test.comments.length}<LuChevronDown aria-hidden /></span></summary><div><Comments test={test} /></div></details>
+        <div className={styles.orderedBy}><Avatar name={test.orderedBy} src={doctorByName(test.orderedBy)?.photo} size={30} /><div><span>Ordered by</span><strong>{test.orderedBy}</strong></div></div>
       </div>
     </Card>
   );

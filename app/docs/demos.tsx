@@ -81,12 +81,21 @@ export function FilterChipsDemo({ many = false }: { many?: boolean }) {
 
 const tabNames = ["All Messages", "Patients", "Care Team"] as const;
 
-export function TabsDemo() {
+export function TabsDemo({ variant = "underline" }: { variant?: "underline" | "pill" }) {
   const [tab, setTab] = useState<(typeof tabNames)[number]>("All Messages");
+  const panelId = `demo-tabs-${variant}`;
   return (
     <div className={styles.tabsDemo}>
-      <Tabs aria-label="Message type" panelId="demo-tabs" value={tab} options={tabNames} onChange={setTab} />
-      <div id="demo-tabs" role="tabpanel" className={styles.tabsPanel}>
+      <Tabs
+        aria-label="Message type"
+        panelId={panelId}
+        value={tab}
+        options={tabNames}
+        variant={variant}
+        counts={variant === "pill" ? { "All Messages": 12, Patients: 8, "Care Team": 4 } : undefined}
+        onChange={setTab}
+      />
+      <div id={panelId} role="tabpanel" className={styles.tabsPanel}>
         <p className="text-small text-muted">Showing: {tab}</p>
       </div>
     </div>

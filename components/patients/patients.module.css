@@ -11,9 +11,67 @@
   color: var(--color-primary-700);
 }
 
+/* ---------- Table ---------- */
+
+/* Same look as the dashboard appointments table: quiet sentence-case header,
+   no tint or divider under it, rows carry the separation. The table stays
+   edge-to-edge, so the horizontal padding comes from the banded variant. */
+table.patients th {
+  padding-top: 14px;
+  padding-bottom: 12px;
+  border-top: 0;
+  border-bottom: 0;
+  background: transparent;
+  color: var(--color-text-subtle);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+table.patients td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+table.patients tbody tr:first-child td {
+  border-top: 1px solid var(--color-neutral-100);
+}
+
 /* ---------- Table cells ---------- */
 
 .muted {
   color: var(--color-neutral-600);
   white-space: nowrap;
 }
+
+/* Rows open the patient drawer. */
+.row { cursor: pointer; }
+.row:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: -2px; }
+
+/* ---------- Patient drawer ---------- */
+
+.drawer { display: flex; flex-direction: column; height: 100%; }
+.drawerMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--color-text-muted); font-size: 0.8125rem; }
+.drawerBody { display: grid; align-content: start; gap: 20px; flex: 1; min-height: 0; padding: 4px 28px 28px; overflow-y: auto; }
+.drawerActions { display: flex; gap: 10px; }
+.drawerActions > * { flex: 1; }
+.next { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 20px; background: #ddefe5; }
+.next[data-empty] { background: var(--color-amber-50); }
+.nextValue { margin: 2px 0 0; color: #333; font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; }
+.facts { display: grid; margin: 0; }
+.facts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--color-border); }
+.facts > div:first-child { border-top: 0; }
+.facts dt { display: flex; align-items: center; gap: 8px; flex: none; color: var(--color-text-muted); font-size: 0.875rem; }
+.facts dt svg { width: 16px; height: 16px; }
+.facts dd { margin: 0; min-width: 0; color: #333; font-size: 0.9375rem; font-weight: 500; text-align: right; overflow-wrap: anywhere; }
+.facts dd a { color: inherit; text-decoration: none; }
+.facts dd a:hover { color: var(--color-primary-600); text-decoration: underline; text-underline-offset: 3px; }
+.drawerHeading { margin: 6px 0 -6px; color: #333; font-size: 1rem; font-weight: 600; letter-spacing: -0.02em; }
+.links { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.links a { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border: 1px solid var(--color-border); border-radius: 18px; color: inherit; text-decoration: none; transition: border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard); }
+.links a:hover { border-color: #cbdcd1; background: #f8faf8; }
+.links a > span { display: grid; flex: 1; gap: 1px; min-width: 0; }
+.links strong { color: #333; font-size: 0.9375rem; font-weight: 600; }
+.links a > span > span { color: var(--color-text-muted); font-size: 0.8125rem; }
+.links a > svg { flex: none; width: 18px; height: 18px; color: var(--color-text-subtle); }

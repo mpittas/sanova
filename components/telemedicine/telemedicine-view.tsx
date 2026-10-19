@@ -1,22 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LuPlus, LuShieldCheck, LuVideo, LuSlidersHorizontal, LuVideoOff } from "react-icons/lu";
+import { LuPlus, LuVideo, LuSlidersHorizontal, LuVideoOff } from "react-icons/lu";
 import { appointments, TODAY } from "@/components/appointments/data";
 import { formatDate, formatTime, type ISODate } from "@/components/appointments/dates";
 import { PageHeader } from "@/components/layout/page-header";
-import { SplitLayout } from "@/components/layout/split-layout";
 import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
-import { ArchLineup, PageBanner } from "@/components/ui/page-banner";
-import { portraits } from "@/lib/portraits";
 import { usePagination } from "@/lib/use-pagination";
 import { Notice } from "@/components/ui/notice";
 import { Card } from "@/components/ui/card";
 import { Counter } from "@/components/ui/counter";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterBar, FilterField, FilterPanel } from "@/components/ui/filter-bar";
-import { FilterChips } from "@/components/ui/filter-chips";
 import { NoResults } from "@/components/ui/no-results";
 import { ResultsFooter } from "@/components/ui/results-footer";
 import { SearchInput } from "@/components/ui/search-input";
@@ -168,45 +163,19 @@ export function TelemedicineView() {
         }
       />
 
-      <PageBanner
-        title="Virtual Care, Real Impact"
-        description="Connect with your patients anytime, anywhere. Provide high-quality care through secure and convenient virtual consultations."
-        visual={
-          <ArchLineup photos={[portraits["Olivia Torres"], portraits["Dr. James Carter"]]}>
-            <span className={styles.callBadge}>
-              <LuVideo />
-            </span>
-            <Chip tone="success" variant="tag" className={styles.secure}>
-              <LuShieldCheck /> End-to-end encrypted
-            </Chip>
-          </ArchLineup>
-        }
-      />
-
-      <SplitLayout
-        sideLabel="Calendar and shortcuts"
-        aside={
-          <>
-            <WeekCalendar selected={calendarDate} sessions={diary} onSelect={setCalendarDate} onOpen={setOpenId} />
-            <QuickActions waiting={counts["Instant Consult"]} requests={counts.Requested} onInstant={() => changeTab("Instant Consult")} onRequests={() => changeTab("Requested")} />
-          </>
-        }
-      >
+      <section className={styles.summaryStrip} aria-label="Virtual care summary">
+        <div className={styles.summaryTitle}><span className={styles.summaryIcon}><LuVideo aria-hidden /></span><div><strong>Your virtual clinic</strong><span>Care, wherever your patients are.</span></div></div>
+        <dl className={styles.summaryStats}><div><dt>Upcoming</dt><dd>{counts.Upcoming}</dd></div><div><dt>Waiting now</dt><dd>{counts["Instant Consult"]}</dd></div><div><dt>Requests</dt><dd>{counts.Requested}</dd></div></dl>
+      </section>
         <Notice message={notice} onDismiss={() => setNotice(null)} />
-
-        <FilterBar
-          chips={
-            <FilterChips
-              aria-label="Session type"
-              value={tab}
-              options={tabs.map((value) => ({ value, count: counts[value] }))}
-              onChange={changeTab}
-            />
-          }
-        >
+      <div className={styles.workspace}>
+        <div className={styles.mainColumn}>
+        <Card rounded padding="none" className={styles.list}>
+        <header className={styles.listHeader}><div><h2>{heading[tab].title} <span>{counts[tab]}</span></h2><p>{heading[tab].description}</p></div><Select size="sm" aria-label="Session type" value={tab} options={tabs} onChange={changeTab} /></header>
+        <div className={styles.filters}>
+        <FilterBar>
           <SearchInput
             label="Search sessions"
-            tone="white"
             value={query}
             onChange={(event) => filter(setQuery)(event.target.value)}
             placeholder="Search patients..."
@@ -245,7 +214,7 @@ export function TelemedicineView() {
           </FilterPanel>
         )}
 
-        <Card rounded className={styles.list} title={heading[tab].title} description={heading[tab].description}>
+        </div>
           {visible.length > 0 ? (
             <ul className={styles.rows} aria-label={heading[tab].title}>
               {visible.map((session) => (
@@ -268,8 +237,7 @@ export function TelemedicineView() {
               }
             />
           )}
-        </Card>
-
+        <div className={styles.listFooter}>
         <ResultsFooter
           firstIndex={firstIndex}
           shown={visible.length}
@@ -279,7 +247,14 @@ export function TelemedicineView() {
           totalPages={totalPages}
           onPageChange={setPage}
         />
-      </SplitLayout>
+        </div>
+        </Card>
+        </div>
+        <aside className={styles.sidebar} aria-label="Calendar and shortcuts">
+          <WeekCalendar selected={calendarDate} sessions={diary} onSelect={setCalendarDate} onOpen={setOpenId} />
+          <QuickActions waiting={counts["Instant Consult"]} requests={counts.Requested} onInstant={() => changeTab("Instant Consult")} onRequests={() => changeTab("Requested")} />
+        </aside>
+      </div>
 
       <NewSessionModal open={newOpen} onClose={() => setNewOpen(false)} onBook={book} busy={busy} />
       <SessionDetailsModal session={openId ? find(openId) : undefined} handlers={handlers} onClose={() => setOpenId(undefined)} />

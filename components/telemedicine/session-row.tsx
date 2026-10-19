@@ -2,7 +2,7 @@ import { LuCalendar, LuPhone, LuVideo } from "react-icons/lu";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Chip, type ChipTone } from "@/components/ui/chip";
-import { countdown, fallbackIcon, isStartingSoon, reasonIcons, whenLabel, type Session } from "./data";
+import { countdown, isStartingSoon, whenLabel, type Session } from "./data";
 import styles from "./telemedicine.module.css";
 
 export type SessionHandlers = {
@@ -73,46 +73,34 @@ export function SessionActions({ session, handlers, size = "md" }: { session: Se
 export function SessionRow({ session, handlers }: { session: Session; handlers: SessionHandlers }) {
   const { id, patient, mrn, title, summary, callType, status } = session;
   const chip = statusChip(session);
-  const Reason = reasonIcons[title] ?? fallbackIcon;
   const CallIcon = callType === "Video Call" ? LuVideo : LuPhone;
   const live = status === "in-progress" || status === "waiting" || isStartingSoon(session);
   const showDetails = status === "completed" || status === "cancelled" || (status === "scheduled" && !isStartingSoon(session));
 
   return (
     <li className={styles.row} data-live={live || undefined}>
+      <div className={styles.rowHead}>
       <Avatar name={patient} size={64} online={live} />
-
       <div className={styles.who}>
         <button type="button" className={styles.name} onClick={() => handlers.onOpen(id)}>
           {patient}
         </button>
         <p className={`text-small ${styles.visit}`}>{title}</p>
-        <p className={`text-small text-muted ${styles.when}`}>
-          <LuCalendar aria-hidden />
-          <span className="num">{whenLabel(session)}</span>
-        </p>
       </div>
-
-      <ul className={styles.facts} aria-label="Visit">
-        <li>
-          <CallIcon aria-hidden />
-          <span>{callType}</span>
-        </li>
-        <li title={summary}>
-          <Reason aria-hidden />
-          <span className={styles.truncate}>{summary}</span>
-        </li>
-      </ul>
-
-      <div className={styles.end}>
-        <Chip className={styles.status} tone={chip.tone}>
+        <Chip className={styles.status} tone={chip.tone} variant="tag" size="sm">
           {chip.label}
         </Chip>
-
+      </div>
+      <p className={styles.sessionSummary}>{summary}</p>
+      <div className={styles.rowBottom}>
+        <ul className={styles.facts} aria-label="Visit">
+          <li><LuCalendar aria-hidden /><span>{whenLabel(session)}</span></li>
+          <li><CallIcon aria-hidden /><span>{callType === "Video Call" ? "Video" : "Audio"}</span></li>
+        </ul>
         <div className={styles.actions}>
-          <SessionActions session={session} handlers={handlers} />
+          <SessionActions session={session} handlers={handlers} size="sm" />
           {showDetails && (
-            <Button variant="secondary" aria-label={`${status === "completed" ? "View summary" : "View details"}: ${patient}, ${mrn}`} onClick={() => handlers.onOpen(id)}>
+            <Button variant="secondary" size="sm" aria-label={`${status === "completed" ? "View summary" : "View details"}: ${patient}, ${mrn}`} onClick={() => handlers.onOpen(id)}>
               {status === "completed" ? "View Summary" : "View Details"}
             </Button>
           )}

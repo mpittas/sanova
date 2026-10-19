@@ -1,17 +1,11 @@
 import { formatTime } from "@/components/appointments/dates";
-import { Person } from "@/components/ui/person";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Chip, type ChipTone } from "@/components/ui/chip";
-import { doctorByName, todaySchedule, type ScheduleStatus } from "./data";
+import { doctorByName, todaySchedule } from "./data";
 import styles from "./doctors.module.css";
 
-const statusTone: Record<ScheduleStatus, ChipTone> = {
-  Completed: "success",
-  "In Progress": "violet",
-  Upcoming: "info",
-};
-
+/** Today's first appointments as a timeline: a time, a status dot on the rail, then the doctor and visit. */
 export function DoctorSchedule() {
   return (
     <Card
@@ -24,19 +18,23 @@ export function DoctorSchedule() {
         </Button>
       }
     >
-      <ul className={styles.schedule}>
+      <ol className={styles.timeline}>
         {todaySchedule.map(({ id, time, doctor, visit, status }) => (
-          <li key={id}>
-            <Person name={doctor} src={doctorByName(doctor)?.photo} subtitle={visit} />
-            <span className={styles.scheduleMeta}>
-              <span className="text-small text-muted num">{formatTime(time)}</span>
-              <Chip size="sm" tone={statusTone[status]}>
-                {status}
-              </Chip>
+          <li key={id} className={styles.slot} data-status={status.toLowerCase().replace(" ", "-")}>
+            <span className={styles.slotTime}>{formatTime(time)}</span>
+            <span className={styles.slotDot} aria-hidden />
+            <span className={styles.slotBody}>
+              <Avatar name={doctor} src={doctorByName(doctor)?.photo} size={36} />
+              <span className="text-stack">
+                <span className="text-label">{doctor}</span>
+                <span className="text-small text-muted">{visit}</span>
+              </span>
+              {status === "In Progress" && <span className={styles.now}>Now</span>}
+              {status === "Completed" && <span className="sr-only">Completed</span>}
             </span>
           </li>
         ))}
-      </ul>
+      </ol>
     </Card>
   );
 }

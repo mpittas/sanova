@@ -1,79 +1,53 @@
-import { LuChevronRight, LuFilePlus } from "react-icons/lu";
+import { LuArrowUpRight, LuPill } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
+import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
-import { ToneTile } from "@/components/ui/tone-tile";
+import { MedicationVisual } from "./medication-visual";
 import { ranges, type Prescription, type Range } from "./data";
 import styles from "./prescriptions.module.css";
 
-type PrescriptionListProps = {
+type Props = {
   prescriptions: readonly Prescription[];
-  selectedId: string | undefined;
+  allPrescriptions: readonly Prescription[];
+  selectedId?: string;
   onSelect: (id: string) => void;
   range: Range;
   onRangeChange: (range: Range) => void;
+  query: string;
+  onQueryChange: (query: string) => void;
+  status: string;
+  onStatusChange: (status: string) => void;
 };
 
-/** Timeline of every prescription, newest first. One is selected at a time. */
-export function PrescriptionList({ prescriptions, selectedId, onSelect, range, onRangeChange }: PrescriptionListProps) {
+export function PrescriptionList({ prescriptions, allPrescriptions, selectedId, onSelect, range, onRangeChange, query, onQueryChange, status, onStatusChange }: Props) {
   return (
-    <Card
-      rounded
-      title="Prescription History"
-      description="View and manage all prescriptions for this patient."
-      action={<Select size="md" aria-label="Time range" value={range} options={ranges} onChange={onRangeChange} />}
-    >
-      {prescriptions.length > 0 ? (
-        <ol className={styles.timeline} aria-label="Prescriptions">
+    <Card rounded padding="none" className={styles.listCard}>
+      <header className={styles.listHeader}>
+        <div><h2>Medications <span>{allPrescriptions.length}</span></h2><p>A clear view of your patient’s treatment.</p></div>
+        <Select size="md" aria-label="Time range" value={range} options={ranges} onChange={onRangeChange} />
+      </header>
+      <div className={styles.filters}>
+        <SearchInput label="Search medications" placeholder="Search medication or prescriber…" value={query} onChange={(event) => onQueryChange(event.target.value)} />
+        <Select size="md" aria-label="Prescription status" value={status} options={["All", "Active", "Completed"]} onChange={onStatusChange} />
+      </div>
+      {prescriptions.length ? (
+        <ul className={styles.medications} aria-label="Prescriptions">
           {prescriptions.map((prescription) => {
-            const { id, medication, dosage, instructions, prescriber, indication, date, status, icon: Icon, tone } = prescription;
-            const selected = id === selectedId;
+            const { id, medication, dosage, prescriber, date, status: rxStatus, indication } = prescription;
             return (
-              <li key={id} className={styles.item} data-status={status}>
-                <span className={styles.dot} aria-hidden />
-                <div className={styles.when}>
-                  <time className="text-small text-muted num" dateTime={date}>
-                    {formatDate(date, { month: "short", day: "numeric", year: "numeric" })}
-                  </time>
-                  <Chip tone={status === "Active" ? "success" : "neutral"} variant="tag" size="sm">
-                    {status}
-                  </Chip>
-                </div>
-                <button type="button" className={styles.rx} aria-pressed={selected} data-tone={tone} onClick={() => onSelect(id)}>
-                  <ToneTile tone={tone} size={56}>
-                    <Icon />
-                  </ToneTile>
-                  <span className={styles.rxText}>
-                    <span className="text-label">{medication}</span>
-                    <span className="text-small text-muted">
-                      {dosage} • {instructions}
-                    </span>
-                    <span className="text-small text-muted">
-                      {prescriber} • {indication}
-                    </span>
-                  </span>
-                  <LuChevronRight className={styles.chevron} aria-hidden />
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      ) : (
-        <EmptyState
-          icon={LuFilePlus}
-          size="compact"
-          title="No prescriptions in this period"
-          description="Try a longer time range."
-          action={
-            <Button variant="secondary" size="sm" onClick={() => onRangeChange("All Time")}>
-              Show all time
-            </Button>
-          }
-        />
-      )}
+            <li key={id}>
+              <button type="button" className={styles.rx} aria-pressed={id === selectedId} onClick={() => onSelect(id)}>
+                <span className={styles.rxTop}><MedicationVisual prescription={prescription} /><span className={styles.rxText}><strong>{medication}</strong><span>{dosage} · {indication}</span></span><LuArrowUpRight className={styles.chevron} aria-hidden /></span>
+                <span className={styles.rxBottom}><Chip tone={rxStatus === "Active" ? "success" : "neutral"} variant="tag" size="sm">{rxStatus}</Chip><span>{prescriber}</span><time dateTime={date}>{formatDate(date, { month: "short", day: "numeric", year: "numeric" })}</time></span>
+              </button>
+            </li>
+          ); })}
+        </ul>
+      ) : <div className={styles.empty}><EmptyState icon={LuPill} title="No matching medications" description="Try a different search, status, or time range." /></div>}
+      <footer className={styles.listFooter}>{prescriptions.length} of {allPrescriptions.length} prescriptions</footer>
     </Card>
   );
 }

@@ -1,13 +1,13 @@
 "use client";
 
 import { LuChevronLeft, LuChevronRight, LuPhone, LuVideo, LuVideoOff } from "react-icons/lu";
-import { TODAY } from "@/components/appointments/data";
-import { addDays, formatDate, formatTime, type ISODate } from "@/components/appointments/dates";
+import { addMonths, formatDate, formatTime, type ISODate } from "@/components/appointments/dates";
+import { HyperCalendar } from "@/components/charts/hyper-calendar";
 import { Person } from "@/components/ui/person";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { startOfIsoWeek, type Session, type SessionStatus } from "./data";
+import { type Session, type SessionStatus } from "./data";
 import styles from "./telemedicine.module.css";
 
 const dotColor: Record<SessionStatus, string> = {
@@ -31,18 +31,25 @@ export function WeekCalendar({
   onSelect: (date: ISODate) => void;
   onOpen: (id: string) => void;
 }) {
-  const monday = startOfIsoWeek(selected);
-  const days = Array.from({ length: 7 }, (_, index) => addDays(monday, index));
-  const datesWithSessions = new Set(sessions.map((session) => session.date));
+  const [year, month, selectedDay] = selected.split("-").map(Number);
+  const values: Record<number, number> = {};
+  for (const session of sessions) {
+    if (session.date.slice(0, 7) === selected.slice(0, 7)) {
+      const date = Number(session.date.slice(8));
+      values[date] = (values[date] ?? 0) + 1;
+    }
+  }
   const day = sessions.filter((session) => session.date === selected).sort((a, b) => a.start.localeCompare(b.start));
 
   return (
     <Card
       rounded
-      title="Calendar"
+      title="Your schedule"
+      description="Consultations at a glance."
+      className={styles.widget}
       action={
         <Button href="/appointments" variant="ghost" size="sm">
-          View All
+          Full calendar
         </Button>
       }
     >
@@ -52,36 +59,16 @@ export function WeekCalendar({
           {formatDate(selected, { month: "long", year: "numeric" })}
         </h3>
         <span className="spacer" />
-        <Button variant="ghost" size="sm" iconOnly aria-label="Previous week" onClick={() => onSelect(addDays(selected, -7))}>
+        <Button variant="ghost" size="sm" iconOnly aria-label="Previous month" onClick={() => onSelect(addMonths(selected, -1))}>
           <LuChevronLeft />
         </Button>
-        <Button variant="ghost" size="sm" iconOnly aria-label="Next week" onClick={() => onSelect(addDays(selected, 7))}>
+        <Button variant="ghost" size="sm" iconOnly aria-label="Next month" onClick={() => onSelect(addMonths(selected, 1))}>
           <LuChevronRight />
         </Button>
       </div>
 
-      <div className={styles.week} role="group" aria-label="Week">
-        {days.map((date) => (
-          <button
-            key={date}
-            type="button"
-            className={styles.weekDay}
-            data-selected={date === selected || undefined}
-            data-today={date === TODAY || undefined}
-            data-has-sessions={datesWithSessions.has(date) || undefined}
-            aria-pressed={date === selected}
-            aria-label={formatDate(date, { weekday: "long", month: "long", day: "numeric" })}
-            onClick={() => onSelect(date)}
-          >
-            <span className={styles.weekName} aria-hidden>
-              {formatDate(date, { weekday: "short" })}
-            </span>
-            <span className={`${styles.weekNumber} num`} aria-hidden>
-              {Number(date.slice(8))}
-            </span>
-          </button>
-        ))}
-      </div>
+      <HyperCalendar year={year} month={month - 1} values={values} unit="sessions" empty="No sessions" label={`Consultations in ${formatDate(selected, { month: "long", year: "numeric" })}`} selected={selectedDay} onSelect={(date) => onSelect(`${selected.slice(0, 7)}-${String(date).padStart(2, "0")}` as ISODate)} />
+      <div className={styles.agendaHeading}><h3>{formatDate(selected, { weekday: "short", month: "short", day: "numeric" })}</h3><span>{day.length} {day.length === 1 ? "session" : "sessions"}</span></div>
 
       {day.length === 0 ? (
         <EmptyState size="compact" icon={LuVideoOff} title="No sessions" description={`Nothing is booked for ${formatDate(selected, { weekday: "long" })}.`} />

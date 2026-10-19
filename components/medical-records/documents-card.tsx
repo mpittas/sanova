@@ -1,4 +1,4 @@
-import { LuDownload, LuEllipsisVertical } from "react-icons/lu";
+import { LuChevronDown } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -33,29 +33,25 @@ export function DocumentsCard({ title, description, documents, onViewAll, panel 
         )
       }
     >
+      {documents.length === 0 && <p className="text-small text-muted">No documents match your filters. Try a different search or time range.</p>}
       <ul className={styles.documents}>
         {documents.map(({ id, name, date, type, size, icon: Icon, tone }) => (
-          <li key={id}>
+          <li key={id}><details><summary className={styles.documentSummary}>
             <ToneTile tone={tone} size={48}>
               <Icon />
             </ToneTile>
             <span className="text-stack">
               <span className="text-label">{name}</span>
-              <span className="text-small text-muted num">
-                {formatDate(date, { month: "short", day: "numeric", year: "numeric" })} • {type} • {size}
+              <span className="text-small text-muted">
+                <span className="num">{formatDate(date, { month: "short", day: "numeric", year: "numeric" })}</span> • {type} •{" "}
+                <span className="num">{size}</span>
               </span>
             </span>
-            <span className={styles.documentActions}>
-              <Button variant="ghost" size="sm" iconOnly aria-label={`Download ${name}`}>
-                <LuDownload />
-              </Button>
-              <Button variant="ghost" size="sm" iconOnly aria-label={`More actions for ${name}`}>
-                <LuEllipsisVertical />
-              </Button>
-            </span>
-          </li>
+            <LuChevronDown aria-hidden />
+            </summary><div className={styles.documentInfo}>File type: {type}<br />File size: {size}<br />Original file is not attached to this demo record.</div></details>          </li>
         ))}
       </ul>
     </Card>
   );
 }
+

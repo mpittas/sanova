@@ -1,20 +1,15 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import Link from "next/link";
-import { LuChevronRight, LuPill, LuPlus, LuShieldAlert } from "react-icons/lu";
-import { SplitLayout } from "@/components/layout/split-layout";
+import { LuPill, LuPlus } from "react-icons/lu";
 import { PageHeader } from "@/components/layout/page-header";
-import { healthFacts, patient } from "@/components/patient-record/data";
-import { PatientBanner } from "@/components/patient-record/patient-banner";
+import { patient } from "@/components/patient-record/data";
+import { PatientBanner } from "@/components/medical-records/patient-banner";
 import { PatientCrumbs } from "@/components/patient-record/patient-crumbs";
-import { RecordNav } from "@/components/patient-record/record-nav";
-import patientStyles from "@/components/patient-record/patient-record.module.css";
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { ToneTile } from "@/components/ui/tone-tile";
 import { rangeStart, renew, seedPrescriptions, type Prescription, type Range } from "./data";
 import { NewPrescriptionModal } from "./new-prescription-modal";
 import { PharmacyModal } from "./pharmacy-modal";
@@ -22,12 +17,12 @@ import { PrescriptionDetail } from "./prescription-detail";
 import { PrescriptionList } from "./prescription-list";
 import styles from "./prescriptions.module.css";
 
-const allergies = healthFacts.find(({ id }) => id === "allergies")!;
-
 export function PrescriptionsView() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>(seedPrescriptions);
   const [selectedId, setSelectedId] = useState<string>(seedPrescriptions[0].id);
   const [range, setRange] = useState<Range>("All Time");
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("All");
   const [newOpen, setNewOpen] = useState(false);
   const [pharmacyOpen, setPharmacyOpen] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -35,8 +30,9 @@ export function PrescriptionsView() {
 
   const visible = useMemo(() => {
     const start = rangeStart(range);
-    return prescriptions.filter((prescription) => prescription.date >= start).toSorted((a, b) => b.date.localeCompare(a.date));
-  }, [prescriptions, range]);
+    const needle = query.trim().toLowerCase();
+    return prescriptions.filter((prescription) => prescription.date >= start && (status === "All" || prescription.status === status) && `${prescription.medication} ${prescription.prescriber} ${prescription.indication}`.toLowerCase().includes(needle)).toSorted((a, b) => b.date.localeCompare(a.date));
+  }, [prescriptions, range, query, status]);
 
   // If the selected prescription is outside the time range, the first one that is left takes its place.
   const selected = visible.find((prescription) => prescription.id === selectedId) ?? visible[0];
@@ -52,6 +48,8 @@ export function PrescriptionsView() {
     setPrescriptions((current) => [prescription, ...current]);
     setSelectedId(prescription.id);
     setRange("All Time");
+    setQuery("");
+    setStatus("All");
     setNotice(`${prescription.medication} was prescribed.`);
   };
 
@@ -61,6 +59,8 @@ export function PrescriptionsView() {
     setPrescriptions((current) => renew(current, selected.id, id));
     setSelectedId(id);
     setRange("All Time");
+    setQuery("");
+    setStatus("All");
     setNotice(`${selected.medication} was renewed.`);
   };
 
@@ -83,29 +83,12 @@ export function PrescriptionsView() {
         }
       />
 
-      <PatientBanner
-        variant="card"
-        aside={
-          <Link href="/medical-records" className={patientStyles.alert}>
-            <ToneTile tone="coral" size={44}>
-              <LuShieldAlert />
-            </ToneTile>
-            <span className={patientStyles.alertText}>
-              <span className="text-caption text-muted">{allergies.label}</span>
-              <span className="text-label">{allergies.value}</span>
-            </span>
-            <LuChevronRight aria-hidden />
-          </Link>
-        }
-      />
-
-      <RecordNav current="Prescriptions" />
+      <PatientBanner />
 
       <Notice message={notice} onDismiss={() => setNotice(null)} />
 
-      <SplitLayout
-        side="lg"
-        aside={
+      <div className={styles.workspace}>
+        <PrescriptionList prescriptions={visible} allPrescriptions={prescriptions} selectedId={selected?.id} onSelect={select} range={range} onRangeChange={setRange} query={query} onQueryChange={setQuery} status={status} onStatusChange={setStatus} />
           <div ref={detailRef} className={styles.detailWrap}>
             {selected ? (
               <PrescriptionDetail prescription={selected} onRenew={renewSelected} onSend={() => setPharmacyOpen(true)} />
@@ -115,10 +98,7 @@ export function PrescriptionsView() {
               </Card>
             )}
           </div>
-        }
-      >
-        <PrescriptionList prescriptions={visible} selectedId={selected?.id} onSelect={select} range={range} onRangeChange={setRange} />
-      </SplitLayout>
+      </div>
 
       <NewPrescriptionModal open={newOpen} onClose={() => setNewOpen(false)} count={prescriptions.length} onAdd={addPrescription} />
       <PharmacyModal open={pharmacyOpen} onClose={() => setPharmacyOpen(false)} medication={selected?.medication ?? "this prescription"} onSend={sendSelected} />

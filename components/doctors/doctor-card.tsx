@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { LuBriefcase, LuCalendar, LuCalendarPlus, LuHeart, LuMapPin, LuStar, LuUsers } from "react-icons/lu";
+import { useId, useState } from "react";
+import { LuArrowUpRight, LuClock, LuHeart, LuStar } from "react-icons/lu";
 import { TODAY } from "@/components/appointments/data";
 import { addDays, formatDate, formatTime } from "@/components/appointments/dates";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
-import { ToneTile } from "@/components/ui/tone-tile";
-import { specialtyTone, type Doctor } from "./data";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalPanel } from "@/components/ui/modal";
+import { type Doctor } from "./data";
 import styles from "./doctors.module.css";
 
 /** "Today, 1:30 PM", "Tomorrow, 9:00 AM", or "May 16, 2024" once it is further out. */
@@ -20,85 +19,57 @@ function slotLabel({ date, time }: Doctor["next"]) {
 
 export function DoctorCard({ doctor }: { doctor: Doctor }) {
   const [favorite, setFavorite] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const titleId = useId();
   const onLeave = doctor.status === "On Leave";
 
   return (
-    <article className={styles.card} data-tone={specialtyTone[doctor.specialty]}>
-      <div className={styles.top}>
-        <Avatar name={doctor.name} src={doctor.photo} size={112} shape="rounded" radius={42} />
-        <div className={styles.identity}>
-          <Chip size="sm" tone={onLeave ? "warning" : "success"}>
-            {doctor.status}
-          </Chip>
-          <h3 className="text-h4">{doctor.name}</h3>
-          <p className="text-body text-muted">{doctor.title}</p>
-          <p className={styles.rating}>
-            <LuStar aria-hidden />
-            {doctor.reviews > 0 ? (
-              <span className="text-small num">
-                <strong>{doctor.rating.toFixed(1)}</strong> <span className="text-muted">({doctor.reviews} reviews)</span>
+    <>
+    <article className={styles.card}>
+      <Button
+        variant="ghost"
+        size="sm"
+        iconOnly
+        className={styles.favorite}
+        pressed={favorite}
+        aria-label={favorite ? `Remove ${doctor.name} from favorites` : `Add ${doctor.name} to favorites`}
+        onClick={() => setFavorite((value) => !value)}
+      >
+        <LuHeart />
+      </Button>
+
+      <div className={styles.identity}>
+        <Avatar name={doctor.name} src={doctor.photo} size={56} online={!onLeave} />
+        <div className={styles.identityText}><h3>{doctor.name}</h3><p>{doctor.title}</p></div>
+      </div>
+      <div className={styles.credentials}>
+        <p className={styles.rating}>
+          <LuStar aria-hidden />
+          {doctor.reviews > 0 ? (
+            <span className="text-small">
+              <strong>{doctor.rating.toFixed(1)}</strong>{" "}
+              <span className="text-muted">
+                ({doctor.reviews} reviews)
               </span>
-            ) : (
-              <span className="text-small text-muted">No reviews yet</span>
-            )}
-          </p>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          iconOnly
-          className={styles.favorite}
-          pressed={favorite}
-          aria-label={favorite ? `Remove ${doctor.name} from favorites` : `Add ${doctor.name} to favorites`}
-          onClick={() => setFavorite((value) => !value)}
-        >
-          <LuHeart />
-        </Button>
-      </div>
-
-      <dl className={styles.facts}>
-        <div>
-          <LuUsers aria-hidden />
-          <dt className="sr-only">Patients</dt>
-          <dd>
-            <span className="text-label num">{doctor.patients}</span>
-            <span className="text-caption text-muted">Patients</span>
-          </dd>
-        </div>
-        <div>
-          <LuBriefcase aria-hidden />
-          <dt className="sr-only">Experience</dt>
-          <dd>
-            <span className="text-label num">{doctor.experience} yrs</span>
-            <span className="text-caption text-muted">Experience</span>
-          </dd>
-        </div>
-        <div>
-          <LuMapPin aria-hidden />
-          <dt className="sr-only">Location</dt>
-          <dd>
-            <span className="text-label">{doctor.location.site}</span>
-            <span className="text-caption text-muted">{doctor.location.floor}</span>
-          </dd>
-        </div>
-      </dl>
-
-      <div className={styles.next}>
-        <ToneTile tone="primary" size={40}>
-          <LuCalendar />
-        </ToneTile>
-        <p className="text-stack">
-          <span className="text-caption text-muted">{onLeave ? "Back on" : "Next available"}</span>
-          <span className="text-label num">{slotLabel(doctor.next)}</span>
+            </span>
+          ) : (
+            <span className="text-small text-muted">No reviews yet</span>
+          )}
         </p>
+        <span>{doctor.experience} years’ experience</span>
       </div>
+
+      <p className={styles.next}>
+        <span className={styles.availabilityLabel}><LuClock aria-hidden />{onLeave ? "On leave · Returns" : "Next available"}</span>
+        <span className={styles.availabilityTime}>{slotLabel(doctor.next)}</span>
+      </p>
 
       <div className={styles.actions}>
-        <Button>View Profile</Button>
-        <Button variant="soft" href="/appointments" iconLeft={<LuCalendarPlus />}>
-          Book Appointment
-        </Button>
+        <button type="button" className={styles.profileLink} onClick={() => setProfileOpen(true)}>View profile <LuArrowUpRight /></button>
+        <Button href="/appointments" variant="soft" size="sm">Book visit</Button>
       </div>
     </article>
+    <Modal open={profileOpen} onClose={() => setProfileOpen(false)} labelledBy={titleId} width={480}><ModalPanel><ModalHeader title={doctor.name} titleId={titleId} description={doctor.title} leading={<Avatar name={doctor.name} src={doctor.photo} size={56} />} onClose={() => setProfileOpen(false)} /><ModalBody><dl className={styles.profileDetails}><div><dt>Experience</dt><dd>{doctor.experience} years</dd></div><div><dt>Patients</dt><dd>{doctor.patients}</dd></div><div><dt>Location</dt><dd>{doctor.location.site}, {doctor.location.floor}</dd></div><div><dt>{onLeave ? "Returns" : "Next available"}</dt><dd>{slotLabel(doctor.next)}</dd></div></dl></ModalBody><ModalFooter><Button variant="secondary" onClick={() => setProfileOpen(false)}>Close</Button><Button href="/appointments">Book visit</Button></ModalFooter></ModalPanel></Modal>
+    </>
   );
 }

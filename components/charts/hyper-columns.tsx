@@ -16,6 +16,7 @@ export function HyperColumns({
   mode = "stacked",
   ticks = 4,
   height = 240,
+  minimal = false,
   label,
 }: {
   categories: readonly string[];
@@ -23,6 +24,8 @@ export function HyperColumns({
   mode?: "stacked" | "grouped";
   ticks?: number;
   height?: number;
+  /** Drops the value axis and grid lines, leaving only a baseline. The tooltip still shows exact values. */
+  minimal?: boolean;
   /** Accessible description of the chart. */
   label: string;
 }) {
@@ -42,14 +45,16 @@ export function HyperColumns({
   const percent = (value: number) => `${ready ? (value / axisMax) * 100 : 0}%`;
 
   return (
-    <div className={styles.columns} style={{ "--plot-height": `${height}px` } as CSSProperties}>
-      <div className={styles.axis} aria-hidden>
-        {[...axis].reverse().map((value) => (
-          <span key={value} className="text-small num">
-            {value}
-          </span>
-        ))}
-      </div>
+    <div className={styles.columns} data-minimal={minimal || undefined} style={{ "--plot-height": `${height}px` } as CSSProperties}>
+      {!minimal && (
+        <div className={styles.axis} aria-hidden>
+          {[...axis].reverse().map((value) => (
+            <span key={value} className="text-small num">
+              {value}
+            </span>
+          ))}
+        </div>
+      )}
       <div className={styles.plot} role="img" aria-label={label} onMouseLeave={() => setActive(null)}>
         <div className={styles.grid} aria-hidden>
           {axis.map((value) => (
@@ -75,7 +80,12 @@ export function HyperColumns({
                   />
                 ))}
               </div>
-              <span className={`${styles.category} text-small`}>{category}</span>
+              <span className={`${styles.category} text-small`}>
+                <span className={styles.categoryFull}>{category}</span>
+                <span className={styles.categoryShort} aria-hidden>
+                  {category.slice(0, 1)}
+                </span>
+              </span>
               {active === index && (
                 <div
                   className={[

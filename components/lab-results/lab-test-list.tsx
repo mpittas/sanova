@@ -1,6 +1,6 @@
 "use client";
 
-import { LuChevronRight, LuSearch, LuSearchX, LuX } from "react-icons/lu";
+import { LuArrowUpRight, LuSearchX } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,8 +20,6 @@ type LabTestListProps = {
   onStatusChange: (status: StatusFilter) => void;
   query: string;
   onQueryChange: (query: string) => void;
-  searchOpen: boolean;
-  onSearchOpenChange: (open: boolean) => void;
   onClear: () => void;
 };
 
@@ -33,40 +31,16 @@ export function LabTestList({
   onStatusChange,
   query,
   onQueryChange,
-  searchOpen,
-  onSearchOpenChange,
   onClear,
 }: LabTestListProps) {
   return (
     <Card
       rounded
-      title="Lab Tests"
-      description="Browse and select a lab test to view detailed results."
-      action={
-        <div className={styles.listTools}>
-          <Button
-            variant="secondary"
-            iconOnly
-            pressed={searchOpen}
-            aria-label={searchOpen ? "Close search" : "Search lab tests"}
-            aria-expanded={searchOpen}
-            aria-controls="lab-search"
-            onClick={() => {
-              if (searchOpen) onQueryChange("");
-              onSearchOpenChange(!searchOpen);
-            }}
-          >
-            {searchOpen ? <LuX /> : <LuSearch />}
-          </Button>
-          <Select size="md" aria-label="Filter by result" value={status} options={statusFilters} onChange={onStatusChange} />
-        </div>
-      }
+      padding="none"
+      className={styles.listCard}
     >
-      {searchOpen && (
-        <div id="lab-search" className={styles.search}>
-          <SearchInput label="Search lab tests" autoFocus value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search lab tests..." />
-        </div>
-      )}
+      <header className={styles.listHeader}><div><h2>Lab tests <span>{tests.length}</span></h2><p>Your patient’s results, in one place.</p></div><Select size="sm" aria-label="Filter by result" value={status} options={statusFilters} onChange={onStatusChange} /></header>
+      <div className={styles.search}><SearchInput label="Search lab tests" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search tests or reason…" /></div>
 
       {tests.length > 0 ? (
         <ul className={styles.tests} aria-label="Lab tests">
@@ -77,20 +51,22 @@ export function LabTestList({
             return (
               <li key={test.id}>
                 <button type="button" className={styles.test} aria-pressed={selected} data-tone={test.tone} onClick={() => onSelect(test.id)}>
-                  <ToneTile tone={test.tone} size={52}>
+                  <ToneTile tone={test.tone} size={40}>
                     <Icon />
                   </ToneTile>
                   <span className={styles.testText}>
-                    <span className="text-small text-muted num">{formatDate(test.date, { month: "short", day: "numeric", year: "numeric" })}</span>
-                    <span className="text-label">{test.name}</span>
+                    <strong>{test.name}</strong>
                     <span className="text-small text-muted">
-                      {test.parameters.length} {test.parameters.length === 1 ? "parameter" : "parameters"} • {test.reason}
+                      {test.reason}
                     </span>
                   </span>
-                  <Chip tone={testStatusMeta[result].chip} variant="tag" size="sm" className={styles.testStatus}>
+                  <LuArrowUpRight className={styles.chevron} aria-hidden />
+                  <span className={styles.testFooter}>
+                  <Chip tone={testStatusMeta[result].chip} variant="tag" size="sm">
                     {result}
                   </Chip>
-                  <LuChevronRight className={styles.chevron} aria-hidden />
+                  <span>{test.parameters.length} {test.parameters.length === 1 ? "marker" : "markers"}</span><time dateTime={test.date}>{formatDate(test.date, { month: "short", day: "numeric", year: "numeric" })}</time>
+                  </span>
                 </button>
               </li>
             );
@@ -109,6 +85,7 @@ export function LabTestList({
           }
         />
       )}
+      <footer className={styles.listFooter}>{tests.length} {tests.length === 1 ? "test" : "tests"} · Newest first</footer>
     </Card>
   );
 }

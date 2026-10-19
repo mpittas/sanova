@@ -1,5 +1,6 @@
 import { AppHeader } from "@/components/dashboard/app-header";
 import { AppointmentTrends } from "@/components/dashboard/appointment-trends";
+import { AppointmentsCalendar } from "@/components/dashboard/appointments-calendar";
 import { DepartmentOverview } from "@/components/dashboard/department-overview";
 import { PatientDemographics } from "@/components/dashboard/patient-demographics";
 import { DashboardHeader } from "@/components/dashboard/page-header";
@@ -17,13 +18,18 @@ export default function DashboardPage() {
         <div className={styles.dash}>
           <DashboardHeader />
           <StatCards />
-          <div className={styles.row}>
-            <UpcomingAppointments />
-            <DepartmentOverview />
-          </div>
-          <div className={styles.row}>
-            <AppointmentTrends />
-            <PatientDemographics />
+          <div className={`${styles.row} ${styles.rowWide}`}>
+            <div className={styles.column}>
+              <UpcomingAppointments />
+              <div className={styles.pair}>
+                <AppointmentTrends />
+                <PatientDemographics />
+              </div>
+            </div>
+            <div className={styles.column}>
+              <AppointmentsCalendar />
+              <DepartmentOverview />
+            </div>
           </div>
         </div>
       </PageContent>

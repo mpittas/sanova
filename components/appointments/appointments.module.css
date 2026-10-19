@@ -1,83 +1,50 @@
 /* ---------- Schedule ---------- */
 
-.schedule {
-  container-type: inline-size;
+/* Card chrome and the table itself come from the dashboard styles; only what the schedule adds lives here. */
+
+.title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.title svg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  color: var(--color-text-muted);
 }
 
 .toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-10) var(--space-12);
-  padding-bottom: var(--space-16);
-  border-bottom: 1px solid var(--color-border);
+  gap: var(--space-8);
 }
 
-.filters {
-  padding: var(--space-12) 0 var(--space-4);
-}
-
-.stepper {
+.stepper,
+.monthNav {
   display: flex;
   gap: var(--space-6);
 }
 
-.toolbarTitle {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  margin: 0 var(--space-4);
-}
-
-.toolbarTitle svg {
-  width: var(--icon-lg);
-  height: var(--icon-lg);
-  color: var(--color-text-muted);
-}
-
-.list,
-.rows {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.list {
-  padding-top: var(--space-8);
-}
-
-.group + .group {
-  margin-top: var(--space-8);
+.monthTotal {
+  margin-bottom: 20px;
 }
 
 .groupHeader {
-  padding: var(--space-12) var(--space-12) var(--space-6);
+  padding: 20px 0 8px !important;
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
+  text-align: left;
   text-transform: uppercase;
 }
 
 .row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 82px 10px 40px minmax(0, 1fr) minmax(0, 1.2fr) auto 32px;
-  align-items: center;
-  gap: var(--space-14);
-  padding: var(--space-10) var(--space-12);
-  border-radius: var(--radius-md);
+  cursor: pointer;
+  outline: none;
   transition: background-color var(--duration-base) var(--ease-standard);
-}
-
-.row + .row::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 12px;
-  left: 12px;
-  height: 1px;
-  background: var(--color-neutral-100);
 }
 
 .row:hover {
@@ -85,126 +52,32 @@
 }
 
 .row[data-selected] {
-  background: var(--color-primary-50);
+  background: #ddefe5;
 }
 
-.row[data-selected]::before,
-.row[data-selected] + .row::before {
-  display: none;
-}
-
-.rowSelect {
-  position: absolute;
-  inset: 0;
-  padding: 0;
-  border: 0;
-  border-radius: inherit;
-  background: transparent;
-  cursor: pointer;
-}
-
-.rowSelect:focus-visible {
+.row:focus-visible {
   outline: 2px solid var(--color-primary-400);
   outline-offset: -2px;
 }
 
-.rowTime {
-  font-weight: 600;
-  white-space: nowrap;
+/* The schedule has room for the full visit summary. */
+.row span.visit {
+  max-width: 260px;
+}
+
+/* Status colour sits right beside the portrait. */
+.patient {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-width: 0;
 }
 
 .statusDot {
-  width: 10px;
-  height: 10px;
+  flex: none;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-}
-
-.rowPatient,
-.rowPatient > *,
-.rowVisit > * {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.rowMenu {
-  position: relative;
-  z-index: 1;
-}
-
-/* ---------- Mini calendar ---------- */
-
-.calendarHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-12);
-}
-
-.calendarGrid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  row-gap: var(--space-2);
-  justify-items: center;
-}
-
-.weekday {
-  padding: var(--space-6) 0 var(--space-8);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-}
-
-.day {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  font-size: var(--font-size-md);
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
-}
-
-.day:hover {
-  background: var(--color-neutral-100);
-}
-
-.day:focus-visible {
-  outline: 2px solid var(--color-primary-400);
-  outline-offset: 1px;
-}
-
-.day[data-outside] {
-  color: var(--color-neutral-300);
-}
-
-.day[data-has-appointments]::after {
-  content: "";
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--color-primary-500);
-  transform: translateX(-50%);
-}
-
-.day[data-selected] {
-  background: var(--color-primary-500);
-  color: var(--color-white);
-  font-weight: 600;
-  box-shadow: var(--shadow-cta);
-}
-
-.day[data-selected]::after {
-  background: var(--color-white);
 }
 
 /* ---------- Details ---------- */
@@ -234,28 +107,4 @@
   flex: 1;
   min-width: 0;
   padding: 0 var(--space-12);
-}
-
-/* ---------- Responsive ---------- */
-
-/* Schedule rows adapt to the width of the schedule card itself */
-@container (max-width: 760px) {
-  .row {
-    grid-template-columns: 78px 10px 40px minmax(0, 1fr) auto 32px;
-  }
-
-  .rowVisit {
-    display: none;
-  }
-}
-
-@container (max-width: 520px) {
-  .row {
-    grid-template-columns: 68px 10px 40px minmax(0, 1fr) 32px;
-    gap: var(--space-10);
-  }
-
-  .rowMode {
-    display: none;
-  }
 }

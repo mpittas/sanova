@@ -1,267 +1,81 @@
-/* Prescriptions page: only the layout that is specific to this page.
-   Cards, chips, selects, form fields, the dialog, etc. come from components/ui. */
-
-/* ---------- Layout ---------- */
-
-.detailWrap {
-  min-width: 0;
-  /* Leaves room under the sticky header when the detail is scrolled into view on narrow screens. */
-  scroll-margin-top: 88px;
+/* Prescription workspace: shared card surfaces, compact type, quiet selection. */
+.workspace { --color-text-muted: #59697f; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.detailWrap { min-width: 0; scroll-margin-top: 88px; }
+.listCard, .detail { overflow: hidden; }
+.listHeader { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 22px 24px 18px; }
+.listHeader h2 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: -0.025em; }
+.listHeader h2 span { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 7px; background: var(--color-neutral-100); font-size: 0.6875rem; color: var(--color-text-muted); }
+.listHeader p { margin: 5px 0 0; color: var(--color-text-muted); font-size: 0.8125rem; }
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 0 24px 20px; }
+.medications { display: grid; gap: 8px; margin: 0; padding: 0 14px 14px; list-style: none; }
+.rx { display: block; width: 100%; padding: 16px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface); color: var(--color-text); font: inherit; text-align: left; cursor: pointer; transition: background-color .15s, border-color .15s; }
+.rx:hover { background: #f7f9f7; border-color: #cbdcd1; }
+.rx[aria-pressed="true"] { background: #ddefe5; border-color: #ddefe5; }
+.rxTop { display: flex; align-items: center; gap: 16px; }
+.rxText { display: grid; gap: 4px; flex: 1; min-width: 0; }
+.rxText strong { font-size: 0.875rem; font-weight: 600; letter-spacing: -0.015em; }
+.rxText > span { color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.5; }
+.chevron { flex: none; width: 16px; height: 16px; color: var(--color-text-muted); }
+.rx[aria-pressed="true"] .chevron { color: var(--color-primary-600); }
+.rxBottom { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; color: var(--color-text-muted); font-size: 0.8125rem; }
+.rxBottom time { margin-left: auto; }
+.listFooter { padding: 14px 24px; border-top: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 0.8125rem; }
+.empty { padding: 24px; }
+.detailHeader { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-muted); }
+.detailBody { display: flex; flex-direction: column; gap: 22px; padding: 24px; }
+.drugHeading { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; z-index: 1; }
+.drugHeading h2 { margin: 0; font-size: clamp(1.375rem, 2.3cqw, 1.75rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.035em; }
+.description { grid-column: 1 / -1; margin: 0; color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.7; max-width: 54ch; }
+.directions { padding: 18px; border-radius: 12px; background: #f1f5f2; }
+.directions > span:first-child { color: #587261; font-size: 0.75rem; }
+.directions p { margin: 7px 0 10px; font-size: 0.9375rem; font-weight: 500; line-height: 1.6; }
+.directions > span:last-child { display: inline-block; border: 1px solid #d6e3da; border-radius: 6px; padding: 3px 8px; font-size: 0.6875rem; color: #3b664d; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; margin: 0; }
+.facts dt { font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 5px; }
+.facts dd { margin: 0; font-size: 0.8125rem; font-weight: 500; overflow-wrap: anywhere; }
+.prescriber { display: flex; align-items: center; gap: 10px; padding-top: 20px; border-top: 1px solid var(--color-border); }
+.prescriber > div { display: grid; gap: 3px; }
+.prescriber span { font-size: 0.8125rem; color: var(--color-text-muted); }
+.prescriber strong { font-size: 0.8125rem; font-weight: 500; }
+.notes { display: flex; align-items: flex-start; gap: 10px; padding: 16px; border: 1px solid var(--color-border); border-radius: 12px; }
+.notes > svg { flex: none; width: 16px; height: 16px; margin-top: 2px; color: var(--color-text-muted); }
+.notes h3 { margin: 0 0 5px; font-size: 0.75rem; font-weight: 600; }
+.notes p { margin: 0; color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.7; }
+.sent { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.75rem; color: var(--color-primary-700); }
+.sent svg { flex: none; width: 16px; height: 16px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 2px; }
+.actions > :first-child { flex: 1; }
+@container (max-width: 950px) { .workspace { grid-template-columns: minmax(0, 1fr); } }
+@container (max-width: 520px) {
+  .workspace { gap: 16px; }
+  .listHeader, .detailHeader { padding-left: 16px; padding-right: 16px; }
+  .filters { padding-left: 16px; padding-right: 16px; }
+  .detailBody { padding: 18px; }
+  .rx { padding: 12px; }
+  .rxBottom time { margin-left: 0; }
 }
+@media (prefers-reduced-motion: reduce) { .rx { transition: none; } }
+@media print { .workspace { --color-text-muted: #59697f; display: block; } .listCard, .actions, .detailHeader { display: none; } .detail { break-inside: avoid; } }
+.filters > :first-child { flex: 1 1 200px; min-width: 0; }
 
-/* ---------- Prescription history ---------- */
-
-.timeline {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+/* Photographic cutouts bring a little character to the clinical workspace. */
+.medicationVisual { position: relative; display: grid; place-items: center; flex: none; width: 52px; height: 52px; isolation: isolate; }
+.medicationVisual::before { content: ""; position: absolute; inset: 5px; z-index: -1; border-radius: 24px 20px 27px 18px; background: var(--tone-bg, #edf4ef); transform: rotate(-7deg); }
+.medicationVisual img { display: block; width: 100%; height: 100%; object-fit: contain; transform: rotate(-9deg) scale(1); transition: transform 180ms ease; }
+.rx { border-radius: 18px; padding: 14px 16px; }
+.rxBottom { margin-top: 12px; }
+.rx .chevron { display: block; box-sizing: content-box; padding: 7px; border-radius: 50%; background: #f2f5f2; }
+.rx[aria-pressed="true"] .chevron { background: var(--color-primary-600); color: white; }
+.drugShowcase { display: grid; grid-template-columns: minmax(0, 1fr) 105px; align-items: center; gap: 16px; padding: 22px; border-radius: 18px; background: color-mix(in srgb, var(--tone-bg) 52%, white); }
+.medicationVisual[data-large] { width: 105px; height: 105px; }
+.medicationVisual[data-large]::before { inset: 12px; border-radius: 42px 52px 38px 50px; background: color-mix(in srgb, var(--tone-bg) 75%, white); transform: rotate(12deg); }
+.medicationVisual[data-large] img { transform: rotate(8deg) scale(1); }
+.strength { display: inline-block; color: var(--color-text-muted); font-size: .8125rem; font-weight: 500; }
+@media (hover: hover) { .rx:hover .medicationVisual img { transform: rotate(-3deg) scale(1.05); } }
+@container (max-width: 520px) {
+  .drugShowcase { grid-template-columns: minmax(0, 1fr) 80px; padding: 16px; gap: 12px; }
+  .medicationVisual[data-large] { width: 80px; height: 80px; }
+  .medicationVisual { width: 44px; height: 44px; }
+  .rxTop { gap: 12px; }
 }
-
-.item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 24px 120px minmax(0, 1fr);
-  align-items: center;
-  padding: 5px 0;
-}
-
-/* The rail: a line through the dots, from the first prescription to the last. */
-.item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 4px;
-  width: 2px;
-  background: var(--color-neutral-100);
-}
-
-.item:first-child::before {
-  top: 50%;
-}
-
-.item:last-child::before {
-  bottom: 50%;
-}
-
-.item:only-child::before {
-  display: none;
-}
-
-.dot {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--color-neutral-300);
-  box-shadow: 0 0 0 3px var(--color-surface);
-}
-
-.item[data-status="Active"] .dot {
-  background: var(--color-primary-500);
-}
-
-.when {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-6);
-  padding-right: var(--space-8);
-}
-
-.rx {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: var(--space-16);
-  align-items: center;
-  width: 100%;
-  padding: var(--space-14) var(--space-16);
-  border: 1px solid transparent;
-  border-radius: var(--radius-lg);
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
-}
-
-.rx:hover {
-  background: var(--color-neutral-50);
-}
-
-.rx[aria-pressed="true"] {
-  border-color: var(--color-primary-200);
-  background: var(--color-primary-50);
-}
-
-/* The medication tile is round, like a pill. */
-.rx > :first-child {
-  border-radius: 50%;
-}
-
-.rxText {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-
-.chevron {
-  width: 18px;
-  height: 18px;
-  color: var(--color-text-subtle);
-}
-
-.rx[aria-pressed="true"] .chevron {
-  color: var(--color-primary-600);
-}
-
-/* ---------- Prescription detail ---------- */
-
-.hero {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 176px;
-  padding: var(--space-24);
-  --banner-glow: 85% 40%;
-}
-
-.heroText {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-14);
-  max-width: 62%;
-}
-
-.heroText > div {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.ring {
-  position: absolute;
-  top: 50%;
-  right: -28px;
-  display: grid;
-  place-items: center;
-  width: 156px;
-  height: 156px;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--tone-fg) 14%, var(--color-surface));
-  color: var(--tone-fg);
-  box-shadow:
-    0 0 0 22px color-mix(in srgb, var(--tone-fg) 8%, transparent),
-    0 0 0 46px color-mix(in srgb, var(--tone-fg) 5%, transparent);
-}
-
-.ring svg {
-  width: 64px;
-  height: 64px;
-  margin-right: 26px;
-  opacity: 0.85;
-  stroke-width: 1.5;
-}
-
-.detailBody {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-24);
-  padding: var(--space-20) var(--space-24) var(--space-24);
-}
-
-.details {
-  margin-top: var(--space-12);
-}
-
-.notes {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-14);
-  margin-top: var(--space-18);
-  padding: 0 var(--space-4);
-}
-
-.notesIcon {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  margin-top: var(--space-6);
-  color: var(--color-text-muted);
-}
-
-.sent {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  margin-top: -8px;
-  color: var(--color-primary-700);
-  font-weight: 500;
-}
-
-.sent svg {
-  flex: none;
-  width: var(--icon-md);
-  height: var(--icon-md);
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-12);
-}
-
-.actions > * {
-  flex: 1 1 auto;
-}
-
-.actions > :first-child {
-  flex-grow: 1.6;
-}
-
-/* ---------- Responsive ---------- */
-
-/* These follow the width of the content area, so they adapt to the sidebar being open or collapsed. */
-@container (max-width: 640px) {
-  /* The date and status sit above each prescription, so it keeps the full width. */
-  .item {
-    grid-template-columns: 24px minmax(0, 1fr);
-    align-items: start;
-    row-gap: var(--space-4);
-  }
-
-  .dot {
-    margin-top: var(--space-6);
-  }
-
-  .item:first-child::before {
-    top: 11px;
-  }
-
-  .item:last-child::before {
-    bottom: calc(100% - 11px);
-  }
-
-  .when {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-10);
-    grid-column: 2;
-  }
-
-  .rx {
-    grid-column: 2;
-  }
-
-  .heroText {
-    max-width: 100%;
-  }
-
-  .ring {
-    opacity: 0.35;
-  }
-}
+@media (prefers-reduced-motion: reduce) { .medicationVisual img { transition: none; } }

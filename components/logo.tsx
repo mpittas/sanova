@@ -3,12 +3,12 @@ import { palette } from "@/lib/tokens";
 /** The mark fills its viewBox edge to edge (no padding), so `size` is the height of the visible shape. */
 const RATIO = 216 / 182;
 
-/** The Sanova mark, in the brand green. `size` is its height; it is a little wider than tall. */
-export function LogoMark({ size = 44 }: { size?: number }) {
+/** The Sanova mark, in the brand green unless `color` says otherwise. `size` is its height; it is a little wider than tall. */
+export function LogoMark({ size = 44, color = palette.primary[500] }: { size?: number; color?: string }) {
   return (
     <svg style={{ display: "block" }} width={size * RATIO} height={size} viewBox="54 47 216 182" fill="none" aria-hidden>
       <path
-        fill={palette.primary[500]}
+        fill={color}
         fillRule="nonzero"
         d="M95 66a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM143 116a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM113.75 85A29.66 29.66 0 0 1 143.01 115.48L162.25 97A29.66 29.66 0 0 1 132.99 66.52ZM191 66a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM191.01 66.52A29.66 29.66 0 0 1 161.75 97L180.99 115.48A29.66 29.66 0 0 1 210.25 85ZM97 116a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM143 164a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM116.3 135A26.35 26.35 0 0 1 143.03 162.89L161.7 145A26.35 26.35 0 0 1 134.97 117.11ZM189 116a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM189.03 117.11A26.35 26.35 0 0 1 162.3 145L180.97 162.89A26.35 26.35 0 0 1 207.7 135ZM54 126a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM97 167a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM143 210a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM75.77 144.8A18.68 18.68 0 0 1 97.09 165.12L113.23 148.2A18.68 18.68 0 0 1 91.91 127.88ZM118.11 185.88A22.43 22.43 0 0 1 143.02 209.16L159.89 191.12A22.43 22.43 0 0 1 134.98 167.84ZM232 126a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM189 167a19 19 0 1 0 38 0a19 19 0 1 0 -38 0ZM232.09 127.88A18.68 18.68 0 0 1 210.77 148.2L226.91 165.12A18.68 18.68 0 0 1 248.23 144.8ZM189.02 167.84A22.43 22.43 0 0 1 164.11 191.12L180.98 209.16A22.43 22.43 0 0 1 205.89 185.88ZM61.5 87a14.5 14.5 0 1 0 29 0a14.5 14.5 0 1 0 -29 0ZM233.5 87a14.5 14.5 0 1 0 29 0a14.5 14.5 0 1 0 -29 0Z"
       />

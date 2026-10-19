@@ -2,9 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import { LuFlaskConical } from "react-icons/lu";
-import { SplitLayout } from "@/components/layout/split-layout";
 import { PageHeader } from "@/components/layout/page-header";
-import { PatientBanner } from "@/components/patient-record/patient-banner";
+import { PatientBanner } from "@/components/medical-records/patient-banner";
 import { PatientCrumbs } from "@/components/patient-record/patient-crumbs";
 import { patient } from "@/components/patient-record/data";
 import { Card } from "@/components/ui/card";
@@ -19,7 +18,6 @@ export function LabResultsView() {
   const [range, setRange] = useState<Range>("All Time");
   const [status, setStatus] = useState<StatusFilter>("All Tests");
   const [query, setQuery] = useState("");
-  const [searchOpen, setSearchOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string>(labTests[0].id);
   const detailRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +44,6 @@ export function LabResultsView() {
   const clearFilters = () => {
     setStatus("All Tests");
     setQuery("");
-    setSearchOpen(false);
     setRange("All Time");
   };
 
@@ -59,14 +56,13 @@ export function LabResultsView() {
         actions={<Select size="md" aria-label="Time range" value={range} options={ranges} onChange={setRange} />}
       />
 
-      <PatientBanner variant="card" tagline="Tracking progress for a healthier tomorrow." />
+      <PatientBanner />
 
-      <SplitLayout
-        columns="minmax(0, 5fr) minmax(0, 7fr)"
-        aside={
+      <div className={styles.workspace}>
+        <LabTestList tests={visible} selectedId={selected?.id} onSelect={select} status={status} onStatusChange={setStatus} query={query} onQueryChange={setQuery} onClear={clearFilters} />
           <div ref={detailRef} className={styles.detailWrap}>
             {selected ? (
-              // Keyed by test, so the tab and the trend parameter start fresh for each one.
+              // Reset the trend parameter when a different test is selected.
               <LabTestDetail key={selected.id} test={selected} />
             ) : (
               <Card rounded>
@@ -74,21 +70,7 @@ export function LabResultsView() {
               </Card>
             )}
           </div>
-        }
-      >
-        <LabTestList
-          tests={visible}
-          selectedId={selected?.id}
-          onSelect={select}
-          status={status}
-          onStatusChange={setStatus}
-          query={query}
-          onQueryChange={setQuery}
-          searchOpen={searchOpen}
-          onSearchOpenChange={setSearchOpen}
-          onClear={clearFilters}
-        />
-      </SplitLayout>
+      </div>
     </>
   );
 }

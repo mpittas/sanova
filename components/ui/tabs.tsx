@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Counter } from "./counter";
 
 type TabsProps<T extends string> = {
   value: T;
@@ -8,13 +9,17 @@ type TabsProps<T extends string> = {
   panelId: string;
   /** Optional icon shown before a tab's label. */
   icons?: Partial<Record<T, ReactNode>>;
+  /** Optional count badge after a tab's label. */
+  counts?: Partial<Record<T, number>>;
+  /** `underline` (default) sits on a divider; `pill` outlines the active tab, for tabs above a table or list inside a card. */
+  variant?: "underline" | "pill";
   "aria-label": string;
 };
 
-/** Underline tabs that switch the content of a single panel. */
-export function Tabs<T extends string>({ value, options, onChange, panelId, icons, ...rest }: TabsProps<T>) {
+/** Tabs that switch the content of a single panel: underline or pill style, optionally with icons and counts. */
+export function Tabs<T extends string>({ value, options, onChange, panelId, icons, counts, variant = "underline", ...rest }: TabsProps<T>) {
   return (
-    <div className="tabs" role="tablist" {...rest}>
+    <div className={variant === "pill" ? "tabs tabs-pill" : "tabs"} role="tablist" {...rest}>
       {options.map((option) => (
         <button
           key={option}
@@ -27,6 +32,11 @@ export function Tabs<T extends string>({ value, options, onChange, panelId, icon
         >
           {icons?.[option]}
           {option}
+          {counts?.[option] !== undefined && (
+            <Counter size="sm" tone={option === value ? "primary" : "neutral"} aria-hidden>
+              {counts[option]}
+            </Counter>
+          )}
         </button>
       ))}
     </div>

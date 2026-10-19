@@ -16,6 +16,7 @@ import { Person } from "@/components/ui/person";
 import { Select } from "@/components/ui/select";
 import { Table, Th } from "@/components/ui/table";
 import { usePagination } from "@/lib/use-pagination";
+import { PatientDrawer } from "./patient-drawer";
 import { ageOn, patients, providers, type Patient, type PatientStatus } from "./data";
 import styles from "./patients.module.css";
 
@@ -68,6 +69,7 @@ export function PatientsView() {
   const [sort, setSort] = useState<Sort>(null);
   const [pageSize, setPageSize] = useState<(typeof pageSizeOptions)[number]>("6 per page");
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
+  const [open, setOpen] = useState<Patient | null>(null);
 
   const extraFilters = (appointment !== "Any appointment" ? 1 : 0) + (age !== "Any age" ? 1 : 0);
   const hasFilters = query !== "" || status !== "All Statuses" || provider !== "All Providers" || extraFilters > 0;
@@ -193,7 +195,7 @@ export function PatientsView() {
         </div>
       )}
 
-      <Table variant="banded" minWidth={980}>
+      <Table variant="banded" className={styles.patients} minWidth={980}>
         <thead>
           <tr>
             <th className="table-check">
@@ -222,12 +224,24 @@ export function PatientsView() {
           {rows.map((patient) => {
             const isSelected = selected.has(patient.id);
             return (
-              <tr key={patient.id} data-selected={isSelected || undefined}>
+              <tr
+                key={patient.id}
+                data-selected={isSelected || undefined}
+                className={styles.row}
+                tabIndex={0}
+                aria-label={`Open ${patient.name}`}
+                onClick={(event) => {
+                  if (!(event.target as HTMLElement).closest("button, input, label, a")) setOpen(patient);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && event.target === event.currentTarget) setOpen(patient);
+                }}
+              >
                 <td className="table-check">
                   <Checkbox aria-label={`Select ${patient.name}`} checked={isSelected} onChange={() => toggleRow(patient.id)} />
                 </td>
                 <td>
-                  <Person name={patient.name} src={patient.photo} subtitle={`MRN: ${patient.mrn}`} />
+                  <Person name={patient.name} src={patient.photo} subtitle={`MRN: ${patient.mrn}`} size={48} />
                 </td>
                 <td>
                   <span className="text-stack">
@@ -273,6 +287,8 @@ export function PatientsView() {
       <ResultsFooter inset firstIndex={firstIndex} shown={rows.length} total={total} noun={["patient", "patients"]} page={page} totalPages={totalPages} onPageChange={setPage}>
         <Select aria-label="Rows per page" value={pageSize} options={pageSizeOptions} onChange={filter(setPageSize)} />
       </ResultsFooter>
+
+      <PatientDrawer patient={open} onClose={() => setOpen(null)} />
     </Card>
   );
 }

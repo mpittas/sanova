@@ -7,7 +7,6 @@ import { PageHeader } from "@/components/layout/page-header";
 import { SplitLayout } from "@/components/layout/split-layout";
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
-import { ArchLineup, PageBanner } from "@/components/ui/page-banner";
 import { Counter } from "@/components/ui/counter";
 import { FilterBar, FilterField, FilterPanel } from "@/components/ui/filter-bar";
 import { FilterChips } from "@/components/ui/filter-chips";
@@ -17,20 +16,19 @@ import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
 import { usePagination } from "@/lib/use-pagination";
 import { AddDoctorModal } from "./add-doctor-modal";
-import { doctorByName, doctors as seedDoctors, specialties, type Doctor, type Specialty } from "./data";
+import { doctors as seedDoctors, specialties, type Doctor, type Specialty } from "./data";
 import { DoctorCard } from "./doctor-card";
 import { DoctorSchedule } from "./doctor-schedule";
 import { SpecialtyDistribution } from "./specialty-distribution";
 import { TeamOverview } from "./team-overview";
+import { TeamStrip } from "./team-strip";
 import styles from "./doctors.module.css";
 
 type SpecialtyFilter = "All Doctors" | Specialty;
 
 const statusOptions = ["All Statuses", "Active", "On Leave"] as const;
 const slotOptions = ["Any time", "Available today"] as const;
-const PAGE_SIZE = 6;
-
-const lineup = ["Dr. Olivia Bennett", "Dr. Noah Wilson", "Dr. Liam Carter"].map((name) => doctorByName(name)!.photo);
+const PAGE_SIZE = 9;
 
 export function DoctorsView() {
   const [team, setTeam] = useState<Doctor[]>(seedDoctors);
@@ -105,10 +103,19 @@ export function DoctorsView() {
         }
       />
 
-      <PageBanner
-        title="Exceptional care starts with great people."
-        description="Manage your doctors, view their specialties and schedules, and keep the whole team in one place."
-        visual={<ArchLineup photos={lineup} />}
+      <TeamStrip
+        doctors={team}
+        availableSelected={slot === "Available today" && status !== "On Leave"}
+        leaveSelected={status === "On Leave"}
+        onShowAll={clearFilters}
+        onShowAvailable={() => {
+          clearFilters();
+          if (slot !== "Available today") setSlot("Available today");
+        }}
+        onShowLeave={() => {
+          clearFilters();
+          if (status !== "On Leave") setStatus("On Leave");
+        }}
       />
 
       <SplitLayout
