@@ -5,6 +5,9 @@
 .chartHead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
 .cardNote { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--color-neutral-100); }
 .departmentLegend { margin-top: 12px; }
+.donutWrap { position: relative; margin: 8px auto 0; }
+.donutCenter { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; pointer-events: none; }
+.donutTotal { color: #333; font-family: var(--font-figure); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.03em; line-height: 1; }
 .exportRow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .month { font-weight: 600; }
 /* Same quiet table as the dashboard, appointments and billing. */

@@ -108,15 +108,46 @@ export function QualityChart({ categories, wait, satisfaction }: { categories: r
 
 /** Share of visits by department as a ring with the total in the middle. */
 export function DepartmentDonut({ names, values, colors, total }: { names: readonly string[]; values: readonly number[]; colors: readonly string[]; total: string }) {
-  const options = useMemo<ApexOptions>(() => base({
-    chart: { type: "donut" },
-    labels: [...names],
-    colors: [...colors],
-    stroke: { width: 4, colors: ["#fff"] },
-    plotOptions: { pie: { expandOnClick: false, donut: { size: "74%", labels: { show: true, name: { show: true, offsetY: 18, color: AXIS, fontSize: "12px" }, value: { show: true, offsetY: -14, fontFamily: "var(--font-martian-mono), monospace", fontSize: "24px", fontWeight: 400, color: "#333", formatter: (value) => String(value) }, total: { show: true, showAlways: true, label: "visits", color: AXIS, fontSize: "12px", formatter: () => total } } } } },
-    tooltip: { theme: "light", fillSeriesColor: false, y: { formatter: (value) => `${value} visits` } },
-  }), [names, colors, total]);
-  return <Chart type="donut" height={200} options={options} series={[...values]} />;
+  const size = 188;
+  const stroke = 10;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const gap = stroke + 7; // round caps stick out by half the stroke at each end, so add that back to leave a visible space
+  const sum = values.reduce((a, b) => a + b, 0);
+  let offset = 0;
+  return (
+    <div className={styles.donutWrap} style={{ width: size, height: size }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Visits by department">
+        {values.map((value, index) => {
+          const share = value / sum;
+          const length = Math.max(share * circumference - gap, 0.01);
+          const segment = (
+            <circle
+              key={names[index]}
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              fill="none"
+              stroke={colors[index]}
+              strokeWidth={stroke}
+              strokeLinecap="round"
+              strokeDasharray={`${length} ${circumference - length}`}
+              strokeDashoffset={-(offset + gap / 2)}
+              transform={`rotate(-90 ${size / 2} ${size / 2})`}
+            >
+              <title>{`${names[index]}: ${value} visits`}</title>
+            </circle>
+          );
+          offset += share * circumference;
+          return segment;
+        })}
+      </svg>
+      <div className={styles.donutCenter}>
+        <span className={styles.donutTotal}>{total}</span>
+        <span className="text-small text-muted">visits</span>
+      </div>
+    </div>
+  );
 }
 
 /** Average visits per weekday, the busiest day picked out in the brand green and the rest in a soft tint. */
