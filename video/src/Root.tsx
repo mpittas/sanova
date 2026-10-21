@@ -5,11 +5,11 @@ import { FPS, HEIGHT, WIDTH, DURATION } from "./theme";
 
 /** The five portfolio stills: a different page and a different camera angle each. */
 export const shots: { id: string; props: ShotProps }[] = [
-  { id: "Shot1", props: { image: "dashboard", rx: 7, ry: -15, rz: 2.2, blur: "right", amount: 12 } },
-  { id: "Shot2", props: { image: "appointments", rx: 9, ry: 14, rz: -2.4, blur: "left", amount: 12 } },
-  { id: "Shot3", props: { image: "reports", rx: -8, ry: -11, rz: -1.6, blur: "bottom", amount: 12 } },
-  { id: "Shot4", props: { image: "billing", rx: 12, ry: 18, rz: 2.8, blur: "left", amount: 10 } },
-  { id: "Shot5", props: { image: "doctors", rx: 6, ry: 9, rz: 1.6, blur: "top", amount: 12 } },
+  { id: "Shot1", props: { image: "dashboard", rx: 0, ry: 0, rz: 0, blur: "right", amount: 0 } },
+  { id: "Shot2", props: { image: "appointments", rx: 0, ry: 0, rz: 0, blur: "left", amount: 0 } },
+  { id: "Shot3", props: { image: "reports", rx: 0, ry: 0, rz: 0, blur: "top", amount: 0 } },
+  { id: "Shot4", props: { image: "billing", rx: 0, ry: 0, rz: 0, blur: "left", amount: 0 } },
+  { id: "Shot5", props: { image: "doctors", rx: 0, ry: 0, rz: 0, blur: "right", amount: 0 } },
 ];
 
 export const Root = () => (

@@ -13,7 +13,7 @@ const browser = await puppeteer.launch({ executablePath: edge, headless: true, a
 const page = await browser.newPage();
 await page.setViewport({ width: 1600, height: 1000, deviceScaleFactor: 2 });
 for (const [name, path] of pages) {
-  await page.goto(`http://localhost:3001${path}`, { waitUntil: "load", timeout: 120000 });
+  await page.goto(`http://localhost:3000${path}`, { waitUntil: "load", timeout: 120000 });
   await new Promise((r) => setTimeout(r, 4500));
   await page.evaluate(() => {
     document.querySelectorAll("nextjs-portal, [data-nextjs-toast], [data-next-badge-root]").forEach((e) => e.remove());
