@@ -1,0 +1,63 @@
+/* Follow-ups: overdue invoices on a "how late" ruler, then the oldest ones as a list.
+   Lateness has three levels (up to 3 days, up to 2 weeks, later) that colour both the dot and the row's caption. */
+
+.card { --recent: var(--color-amber-400); --later: var(--color-amber-600); --late: var(--color-coral-500); display: flex; flex-direction: column; min-width: 0; padding: 22px; background: #f8f8f5; }
+.card [data-level="later"] { --level: var(--later); }
+.card [data-level="recent"] { --level: var(--recent); }
+.card [data-level="late"] { --level: var(--late); }
+
+/* ---------- Ruler ---------- */
+
+/* Positions are 0 to 1 (--p) inside a lane inset by 14px, so the biggest dot never clips at either end. */
+.ruler { --inset: 14px; margin-top: var(--space-16); }
+.track {
+  position: relative;
+  height: 88px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #fff 0%, #fff 35%, var(--color-coral-50) 100%);
+  box-shadow: inset 0 0 0 1px #ecebe4;
+}
+.track::before { content: ""; position: absolute; top: 50%; left: var(--inset); right: var(--inset); height: 1px; background: #e4e3da; }
+.tick, .dot, .scale span { --at: calc(var(--inset) + (100% - 2 * var(--inset)) * var(--p)); }
+.tick { position: absolute; top: 10px; bottom: 10px; left: var(--at); border-left: 1px dashed #dddcd2; }
+.dot {
+  position: absolute;
+  top: calc(50% + var(--lift) * 22px);
+  left: var(--at);
+  width: var(--size);
+  height: var(--size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--level);
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px -2px rgb(120 70 20 / 0.35);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.dot[data-active] { box-shadow: 0 0 0 2px #fff, 0 0 0 6px color-mix(in srgb, var(--level) 28%, transparent); transform: translate(-50%, -50%) scale(1.12); }
+.dot[data-dim] { opacity: 0.3; }
+.scale { position: relative; height: 22px; }
+.scale span { position: absolute; top: 7px; left: var(--at); transform: translateX(-50%); color: #718077; font-size: 0.6875rem; white-space: nowrap; }
+.scale span:last-child { transform: translateX(calc(-100% + var(--inset))); }
+
+/* ---------- List ---------- */
+
+.list { display: grid; gap: 2px; margin: var(--space-16) -10px 0; padding: 0; list-style: none; }
+.list button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: var(--radius-md); background: transparent; font: inherit; color: inherit; text-align: left; cursor: pointer; transition: background 0.2s ease; }
+.list button[data-active] { background: #efeee7; }
+.who { display: grid; flex: 1; gap: 3px; min-width: 0; }
+.list strong { font-size: 0.75rem; font-weight: 500; }
+.list small { overflow: hidden; color: color-mix(in srgb, var(--level) 70%, #5b3a1c); font-size: 0.6875rem; text-overflow: ellipsis; white-space: nowrap; }
+.list b { font-size: 0.75rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.list button > svg { width: 13px; height: 13px; color: #718077; }
+
+.review { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding: 18px 0 0; border: 0; background: transparent; color: #526445; font: inherit; font-size: 0.75rem; font-weight: 500; text-align: left; cursor: pointer; }
+.review:hover { color: var(--color-primary-700); }
+.review svg { width: 15px; height: 15px; }
+.caughtUp { display: flex; align-items: center; gap: 8px; margin-top: var(--space-16); color: var(--color-primary-700); font-size: 0.75rem; }
+.caughtUp svg { width: 16px; height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dot, .list button { transition: none; }
+}

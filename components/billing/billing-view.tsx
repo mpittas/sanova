@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LuArrowDownToLine, LuArrowUpRight, LuCalendarDays, LuCircleCheck, LuClock3, LuFileText, LuPlus, LuReceipt, LuTriangleAlert, LuWallet } from "react-icons/lu";
+import { LuArrowDownToLine, LuArrowUpRight, LuCalendarDays, LuFileText, LuPlus, LuReceipt, LuWallet } from "react-icons/lu";
 import { TODAY } from "@/components/appointments/data";
 import { addDays, daysBetween, formatDate } from "@/components/appointments/dates";
 import { PageHeader } from "@/components/layout/page-header";
@@ -16,11 +16,12 @@ import { Person } from "@/components/ui/person";
 import { ResultsFooter } from "@/components/ui/results-footer";
 import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
-import { StatGrid, StatTile } from "@/components/ui/stat-tile";
 import { Table, Th } from "@/components/ui/table";
 import { usePagination } from "@/lib/use-pagination";
 import { InvoiceForm } from "./invoice-form";
 import { BillingChart } from "./billing-chart";
+import { BillingSummary } from "./billing-summary";
+import { OverdueFollowUp } from "./overdue-follow-up";
 import { money, seedInvoices, statusOf, type Invoice, type InvoiceStatus } from "./data";
 import styles from "./billing.module.css";
 
@@ -57,7 +58,8 @@ export function BillingView() {
   const unpaid = billed.filter((invoice) => invoice.state === "Unpaid");
   const overdue = unpaid.filter((invoice) => statusOf(invoice) === "Overdue").toSorted((a, b) => a.due.localeCompare(b.due));
   const totalBilled = sum(billed), totalPaid = sum(paid), totalUnpaid = sum(unpaid), totalOverdue = sum(overdue);
-  const collectionRate = totalBilled ? Math.round(totalPaid / totalBilled * 100) : 0;
+  // The same number of days just before this period, for the change on the billed total. All time has nothing before it.
+  const previous = period === "All time" ? undefined : { cents: sum(invoices.filter((invoice) => invoice.state !== "Draft" && invoice.issued >= addDays(start, -(daysBetween(start, TODAY) + 1)) && invoice.issued < start)), label: `previous ${period === "Last 30 days" ? 30 : 90} days` };
   const filtered = useMemo(() => inPeriod.filter((invoice) => (status === "All statuses" || statusOf(invoice) === status) && (payer === "All payers" || invoice.payer === payer) && `${invoice.id} ${invoice.patient} ${invoice.service}`.toLowerCase().includes(query.trim().toLowerCase())).toSorted((a, b) => b.issued.localeCompare(a.issued)), [inPeriod, status, payer, query]);
   const pagination = usePagination(filtered, 6);
   const selected = invoices.find((invoice) => invoice.id === selectedId);
@@ -78,18 +80,13 @@ export function BillingView() {
     <PageHeader title="Billing" description="A clear picture of your clinic’s finances, down to the last invoice." actions={<><Button variant="secondary" iconLeft={<LuArrowDownToLine />} onClick={() => exportInvoices(filtered)}>Export CSV</Button><Button iconLeft={<LuPlus />} onClick={() => setNewOpen(true)}>Create invoice</Button></>} />
     <Notice message={notice} onDismiss={() => setNotice(null)} />
     <div className={styles.overviewHeading}><div><span className={styles.overviewIcon}><LuWallet /></span><h2>Financial overview</h2><span className={styles.currency}>USD</span></div><Select size="sm" aria-label="Billing period" options={periods} value={period} onChange={(value) => { setPeriod(value); pagination.reset(); }} /></div>
-    <StatGrid><StatTile label="Total billed" value={money(totalBilled)} icon={LuReceipt} tone="primary" countUp /><StatTile label="Collected" value={money(totalPaid)} icon={LuCircleCheck} tone="blue" countUp /><StatTile label="Outstanding" value={money(totalUnpaid)} icon={LuClock3} tone="violet" countUp /><StatTile label="Overdue" value={money(totalOverdue)} icon={LuTriangleAlert} tone="amber" countUp /></StatGrid>
+    <BillingSummary key={period} billed={{ cents: totalBilled, count: billed.length }} collected={{ cents: totalPaid, count: paid.length }} outstanding={{ cents: totalUnpaid, count: unpaid.length }} overdue={{ cents: totalOverdue, count: overdue.length, oldestDays: overdue[0] && daysBetween(overdue[0].due, TODAY) }} insurance={sum(billed.filter((invoice) => invoice.payer === "Insurance"))} previous={previous} />
     <div className={styles.insights}>
-      <Card rounded className={styles.activity} title="Billing trend" description="Invoice value by issue date" action={<span className={styles.dateRange}><LuCalendarDays />{shortDate(start)} – {shortDate(TODAY)}</span>}>
-        <div className={styles.chartHeadline}><strong>{money(totalBilled)}</strong><span>{billed.length} invoices issued</span><div className={styles.legend}><span><i />Collected</span><span><i />Outstanding</span></div></div>
+      <Card rounded className={styles.activity} title="Billing trend" description="Invoice value by issue date, split by whether it has been paid." action={<span className={styles.dateRange}><LuCalendarDays />{shortDate(start)} – {shortDate(TODAY)}</span>}>
+        <div className={styles.legend}><span><i />Collected</span><span><i />Outstanding</span></div>
         <div className={styles.trendChart} role="group" aria-label={`Invoices by issue date: ${money(totalPaid)} collected and ${money(totalUnpaid)} outstanding.`}><BillingChart points={chartPoints} /></div>
-        <div className={styles.chartFootnote}><span><LuCircleCheck />{collectionRate}% of billed value collected</span><span>{paid.length} paid · {unpaid.length} open</span></div>
       </Card>
-      <Card rounded className={styles.attention} title="Needs attention" description="Keep the small things from adding up." action={<span className={styles.attentionIcon}><LuClock3 /></span>}>
-        <div className={styles.collectionSummary}><div className={styles.collectionRing} role="img" aria-label={`${collectionRate}% of billed value collected`}><svg viewBox="0 0 80 80" aria-hidden><circle cx="40" cy="40" r="32" fill="none" stroke="#e3eae5" strokeWidth="7" /><circle cx="40" cy="40" r="32" fill="none" stroke="#139a68" strokeWidth="7" strokeLinecap="round" pathLength="100" strokeDasharray={`${collectionRate} 100`} transform="rotate(-90 40 40)" /></svg><span>{collectionRate}%</span></div><div className={styles.attentionAmount}><strong>{money(totalOverdue)}</strong><span>{overdue.length} overdue {overdue.length === 1 ? "invoice" : "invoices"}</span><small>{collectionRate}% collected overall</small></div></div>
-        <div className={styles.overdueList}>{overdue.slice(0, 3).map((invoice) => <button key={invoice.id} type="button" onClick={() => setSelectedId(invoice.id)}><Avatar name={invoice.patient} size={32} /><span><strong>{invoice.patient}</strong><small>{daysBetween(invoice.due, TODAY)} {daysBetween(invoice.due, TODAY) === 1 ? "day" : "days"} overdue</small></span><b>{money(invoice.amount)}</b><LuArrowUpRight /></button>)}{!overdue.length && <p className={styles.allCaughtUp}><LuCircleCheck />All caught up. No overdue invoices.</p>}</div>
-        <button type="button" className={styles.reviewButton} onClick={() => { setStatus("Overdue"); setQuery(""); setPayer("All payers"); pagination.reset(); document.getElementById("billing-invoices")?.scrollIntoView({ block: "start" }); }}>Review overdue invoices <LuArrowUpRight /></button>
-      </Card>
+      <OverdueFollowUp invoices={overdue} onOpen={setSelectedId} onReviewAll={() => { setStatus("Overdue"); setQuery(""); setPayer("All payers"); pagination.reset(); document.getElementById("billing-invoices")?.scrollIntoView({ block: "start" }); }} />
     </div>
     <Card rounded className={styles.invoiceCard} id="billing-invoices" title={<>Invoices <span className={styles.invoiceCount}>{inPeriod.length}</span></>} description="Every patient, payment, and piece of paperwork." action={<span className={styles.sampleBadge}>Sample data</span>}>
       <div className={styles.filters}><SearchInput label="Search invoices" placeholder="Search patient, invoice or service…" value={query} onChange={(event) => { setQuery(event.target.value); pagination.reset(); }} /><Select size="md" aria-label="Invoice status" value={status} options={statusOptions} onChange={(value) => { setStatus(value); pagination.reset(); }} /><Select size="md" aria-label="Invoice payer" value={payer} options={payerOptions} onChange={(value) => { setPayer(value); pagination.reset(); }} />{(query || status !== "All statuses" || payer !== "All payers") && <Button size="sm" variant="ghost" onClick={clearFilters}>Clear</Button>}</div>

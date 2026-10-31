@@ -1,0 +1,153 @@
+/* Billing overview: the billed total on the brand surface, and how it splits.
+   The meter is 48 equal slivers coloured by where that share of the money stands; the swatches beside each label are the same sliver shape. */
+
+.summary {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --paid: var(--color-primary-500);
+  --open: var(--color-violet-400);
+  --late: repeating-linear-gradient(135deg, var(--color-amber-400) 0 3px, var(--color-amber-300) 3px 6px);
+  display: grid;
+  grid-template-columns: minmax(260px, 0.36fr) minmax(0, 1fr);
+}
+
+/* ---------- Billed total ---------- */
+
+.total {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-24);
+  overflow: hidden;
+  /* Rounded on every side: the card clips the outer corners, so the inner edge reads as a rounded tile against the white. */
+  border-radius: var(--radius-2xl);
+  background: var(--hero-surface);
+  color: var(--hero-ink);
+}
+.total::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("/branding/sanova-organic-contours.svg") center / cover no-repeat;
+  filter: brightness(0) invert(1);
+  opacity: 0.06;
+  pointer-events: none;
+}
+.totalTop { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); }
+.totalLabel { color: var(--hero-muted); font-size: 0.8125rem; font-weight: 500; }
+.change {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 3px var(--space-8) 3px var(--space-6);
+  border-radius: var(--radius-pill);
+  background: var(--hero-tile);
+  box-shadow: inset 0 0 0 1px var(--hero-line);
+  color: var(--hero-ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.change svg { width: 13px; height: 13px; color: var(--hero-accent); }
+.totalFigure {
+  margin-top: var(--space-16);
+  font-family: var(--font-figure);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.totalCaption { max-width: 34ch; margin-top: var(--space-10); color: var(--hero-muted); font-size: 0.8125rem; line-height: 1.5; }
+
+/* Who the money was billed to: two figures over a two-part line, both ends anchored to the panel edges. */
+.payers { margin-top: auto; padding-top: var(--space-24); }
+.payers dl { display: flex; justify-content: space-between; gap: var(--space-12); }
+.payers dl > div { display: grid; gap: var(--space-4); }
+.payers dl > div:last-child { justify-items: end; }
+.payers dt { display: flex; align-items: center; gap: var(--space-6); color: var(--hero-muted); font-size: 0.75rem; }
+.payers dt i { width: 6px; height: 10px; border-radius: 2px; background: var(--hero-ink); }
+.payers dl > div:last-child dt i { background: rgb(255 255 255 / 0.32); }
+.payers dd { margin: 0; font-family: var(--font-figure); font-size: 0.9375rem; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.payerBar { display: flex; gap: 3px; height: 6px; margin-top: var(--space-10); }
+.payerBar span { min-width: 3px; border-radius: 3px; background: var(--hero-ink); }
+.payerBar span:last-child { background: rgb(255 255 255 / 0.32); }
+
+/* ---------- The split ---------- */
+
+.split { display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-24); padding: var(--space-24) var(--space-24) var(--space-20); min-width: 0; }
+.parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.part { padding: 0 var(--space-20); border-left: 1px solid var(--color-neutral-100); transition: opacity 0.25s ease; min-width: 0; }
+.part:first-child { padding-left: 0; border-left: 0; }
+.part:last-child { padding-right: 0; }
+.partLabel { display: flex; align-items: center; gap: var(--space-8); color: var(--color-text-muted); font-size: 0.8125rem; font-weight: 500; }
+.partLabel i { width: 6px; height: 14px; border-radius: 2px; background: var(--paid); }
+.part[data-kind="outstanding"] .partLabel i { background: linear-gradient(var(--open) 50%, var(--color-amber-400) 50%); }
+.part[data-kind="overdue"] .partLabel i { background: var(--late); }
+.partFigure {
+  margin-top: var(--space-12);
+  color: #333;
+  font-family: var(--font-figure);
+  font-size: 1.625rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.partCaption { margin-top: var(--space-6); color: var(--color-text-muted); font-size: 0.75rem; }
+
+/* ---------- Meter ---------- */
+
+.slivers { display: grid; grid-template-columns: repeat(48, minmax(0, 1fr)); gap: 3px; height: 40px; }
+.slivers i {
+  border-radius: 3px;
+  background: var(--color-neutral-100);
+  transform-origin: bottom;
+  transition: opacity 0.25s ease, background 0.4s ease;
+  animation: fill 0.5s var(--ease) backwards;
+  animation-delay: calc(var(--i) * 14ms);
+}
+.slivers i[data-kind="paid"] { background: var(--paid); }
+.slivers i[data-kind="open"] { background: var(--open); }
+.slivers i[data-kind="overdue"] { background: var(--late); }
+@keyframes fill { from { transform: scaleY(0.2); opacity: 0; } }
+
+/* Dimension lines: a capped rule under each part of the meter, with its share of the billed total beneath. */
+.dimensions { display: grid; grid-template-columns: repeat(48, minmax(0, 1fr)); gap: 3px; margin-top: var(--space-8); }
+.dimensions span { --line: var(--color-primary-300); --ink: var(--color-primary-700); position: relative; display: flex; justify-content: center; padding-top: var(--space-14); transition: opacity 0.25s ease; }
+.dimensions span[data-kind="open"] { --line: var(--color-violet-300); --ink: var(--color-violet-700); }
+.dimensions span[data-kind="overdue"] { --line: var(--color-amber-400); --ink: var(--color-amber-700); }
+.dimensions span::before { content: ""; position: absolute; top: 4px; left: 0; right: 0; height: 1px; background: var(--line); }
+.dimensions span::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 9px; border-inline: 1px solid var(--line); }
+.dimensions b { color: var(--ink); font-size: 0.75rem; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
+.dimensions span[data-narrow] b { visibility: hidden; }
+
+/* Point at a figure and only its slivers and line stay lit; point at the meter and its figure stays lit. Outstanding covers open and overdue. */
+.slivers i, .part { cursor: default; }
+.parts:has(.part:hover) .part:not(:hover),
+.summary:has(.meter [data-kind="paid"]:hover) .part:not([data-kind="paid"]),
+.summary:has(.meter [data-kind="open"]:hover) .part:not([data-kind="outstanding"]),
+.summary:has(.meter [data-kind="overdue"]:hover) .part:not([data-kind="overdue"]) { opacity: 0.45; }
+
+.summary:has(.part[data-kind="paid"]:hover, .meter [data-kind="paid"]:hover) :is(.slivers i, .dimensions span):not([data-kind="paid"]),
+.summary:has(.part[data-kind="outstanding"]:hover) :is(.slivers i, .dimensions span)[data-kind="paid"],
+.summary:has(.meter [data-kind="open"]:hover) :is(.slivers i, .dimensions span):not([data-kind="open"]),
+.summary:has(.part[data-kind="overdue"]:hover, .meter [data-kind="overdue"]:hover) :is(.slivers i, .dimensions span):not([data-kind="overdue"]) { opacity: 0.18; }
+
+@container (max-width: 1000px) {
+  .summary { grid-template-columns: minmax(0, 1fr); }
+  .payers { max-width: 420px; }
+}
+@container (max-width: 600px) {
+  .total, .split { padding: var(--space-20); }
+  .parts { grid-template-columns: minmax(0, 1fr); gap: var(--space-16); }
+  .part, .part:first-child { padding: var(--space-16) 0 0; border-left: 0; border-top: 1px solid var(--color-neutral-100); }
+  .part:first-child { padding-top: 0; border-top: 0; }
+  .slivers { gap: 2px; height: 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slivers i { animation: none; transition: none; }
+}
