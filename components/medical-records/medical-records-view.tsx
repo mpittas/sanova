@@ -2,7 +2,7 @@
 
 import styles from "./medical-records.module.css";
 import { useEffect, useMemo, useState } from "react";
-import { LuMail, LuPhone, LuPlus } from "react-icons/lu";
+import { LuMail, LuPhone, LuPlus, LuSearch, LuX } from "react-icons/lu";
 import { PageHeader } from "@/components/layout/page-header";
 import { patient } from "@/components/patient-record/data";
 import { SearchInput } from "@/components/ui/search-input";
@@ -42,6 +42,7 @@ export function MedicalRecordsView() {
   const [tab, setTab] = useState<RecordTab>("Overview");
   const [range, setRange] = useState<Range>("All Time");
   const [query, setQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -91,11 +92,13 @@ export function MedicalRecordsView() {
 
       <div className={styles.workspace}>
         <Card rounded padding="none" className={styles.recordWorkspace} aria-label="Patient records">
-          <div className={styles.workspaceHeading}><div><h2 className="text-h3">Patient records</h2><p className="text-small text-muted">Clinical history, results and supporting documents.</p></div><span className={styles.recordCount}>{records.length} records</span></div>
-          <div className={styles.toolbar}>
-            <SearchInput label="Search patient records" placeholder={tab === "Documents" ? "Search documents..." : "Search records, clinicians or notes..."} value={query} onChange={(event) => setQuery(event.target.value)} />
-            <Select aria-label="Record type" value={tab} options={tabs} onChange={setTab} />
-            <Select aria-label="Time range" value={range} options={ranges} onChange={setRange} />
+          <div className={styles.workspaceHeading}>
+            {searchOpen ? <SearchInput autoFocus wrapperClassName={styles.headerSearch} label="Search patient records" placeholder={tab === "Documents" ? "Search documents..." : "Search records, clinicians or notes..."} value={query} onChange={(event) => setQuery(event.target.value)} /> : <h2>Patient records <span className={styles.recordCount} aria-label={`${records.length} records`}>{records.length}</span></h2>}
+            <div className={styles.headerTools}>
+              <button type="button" className={styles.searchToggle} aria-label={searchOpen ? "Close search" : "Search patient records"} aria-expanded={searchOpen} onClick={() => { if (searchOpen) setQuery(""); setSearchOpen(!searchOpen); }}>{searchOpen ? <LuX /> : <LuSearch />}</button>
+              <Select size="md" aria-label="Record type" value={tab} options={tabs} onChange={setTab} />
+              <Select size="md" aria-label="Time range" value={range} options={ranges} onChange={setRange} />
+            </div>
           </div>
           {(query || range !== "All Time") && <div className={styles.filterSummary}><span className="text-small text-muted">Filters applied</span><Button variant="ghost" size="sm" onClick={() => { setQuery(""); setRange("All Time"); }}>Clear filters</Button></div>}
           {tab === "Documents" ? (

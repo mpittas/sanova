@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Inter, Martian_Mono } from "next/font/google";
+import { BookingProvider } from "@/components/booking/booking-context";
 import { ThemeStyle } from "@/components/theme-style";
 import "./globals.css";
 import "./ui.css";
@@ -32,12 +33,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${martianMono.variable} ${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${martianMono.variable} ${inter.variable}`}>
       <head>
+        {/* Before first paint, mark a remembered collapsed sidebar so the page loads as a rail instead of shrinking after hydration. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem("sanova:sidebar-collapsed")==="1")document.documentElement.setAttribute("data-sidebar-boot","")}catch(e){}` }} />
         <ThemeStyle />
         <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async />
       </head>
-      <body>{children}</body>
+      <body>
+        <BookingProvider>{children}</BookingProvider>
+      </body>
     </html>
   );
 }

@@ -31,6 +31,24 @@
   pointer-events: none;
 }
 
+/* ---------- Hero surface: deep emerald with a soft mint glow ----------
+   The look of the page-level hero banners (care team, patient card) and the featured stat tile. White type, frosted
+   tiles, a faint contour pattern on top. The module styles read these variables so the three stay in step. */
+
+:root {
+  --hero-surface:
+    radial-gradient(90% 140% at 100% 0%, rgb(63 181 131 / 0.42) 0, transparent 58%),
+    radial-gradient(70% 110% at 0% 100%, rgb(123 207 170 / 0.14) 0, transparent 60%),
+    linear-gradient(135deg, #0d5a40 0%, #08382a 100%);
+  --hero-ink: #fff;
+  --hero-muted: rgb(255 255 255 / 0.74);
+  --hero-tile: rgb(255 255 255 / 0.1);
+  --hero-tile-hover: rgb(255 255 255 / 0.18);
+  --hero-line: rgb(255 255 255 / 0.16);
+  --hero-accent: var(--color-primary-300);
+  --hero-shadow: 0 12px 28px -14px rgb(8 56 42 / 0.55);
+}
+
 /* ---------- Tones: colour pairs for tinted tiles, bars and chips ---------- */
 
 [data-tone="primary"] { --tone-bg: var(--color-primary-50); --tone-fg: var(--color-primary-500); --tone-strong: var(--color-primary-600); }
@@ -494,13 +512,31 @@
   padding: var(--space-16) var(--space-20, 20px);
 }
 
-/* Featured: same grey surface and organic-contour pattern as the clinical patient banner, so the priority figure reads first. */
+/* Featured: the same deep emerald hero surface and contour pattern as the page banners, so the priority figure reads first. */
 .stat-tile[data-featured] {
+  --tone-bg: var(--hero-tile-hover);
+  --tone-fg: var(--hero-ink);
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border-color: #ece8e3;
-  background: #ece8e3;
+  border-color: transparent;
+  background: var(--hero-surface);
+  box-shadow: var(--hero-shadow);
+  color: var(--hero-ink);
+}
+
+.stat-tile[data-featured] .text-muted,
+.stat-tile[data-featured] .stat-tile-top .text-label {
+  color: var(--hero-muted);
+}
+
+.stat-tile[data-featured] .stat-tile-figure {
+  color: var(--hero-ink);
+}
+
+.stat-tile[data-featured] .tone-tile {
+  background: var(--hero-tile-hover);
+  color: var(--hero-ink);
 }
 
 .stat-tile[data-featured]::before {
@@ -513,11 +549,12 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  opacity: 0.06;
+  filter: brightness(0) invert(1);
+  opacity: 0.04;
 }
 
 .stat-tile[data-featured] .stat-tile-meta {
-  border-top-color: #ded9d2;
+  border-top-color: var(--hero-line);
 }
 
 .stat-tile-top {
@@ -536,7 +573,7 @@
 .stat-tile-figure {
   color: #333;
   font-family: var(--font-figure);
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.025em;
@@ -545,7 +582,7 @@
 
 .stat-tile-figure[data-animated] {
   font-family: var(--font-figure);
-  font-size: 24px;
+  font-size: 32px;
   font-stretch: normal;
   font-weight: 400;
   letter-spacing: -0.025em;
@@ -1546,20 +1583,6 @@
   padding: var(--space-28) var(--space-32) var(--space-48);
 }
 
-/* Glass backdrop: a few very soft white and light-grey washes behind the cards, so the blur has something to catch. */
-.page-content::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(640px 420px at 12% 0%, rgb(255 255 255 / 0.95), transparent 70%),
-    radial-gradient(720px 520px at 88% 30%, rgb(214 218 224 / 0.55), transparent 72%),
-    radial-gradient(680px 520px at 22% 78%, rgb(222 225 230 / 0.6), transparent 72%),
-    radial-gradient(560px 420px at 92% 100%, rgb(255 255 255 / 0.8), transparent 70%);
-}
-
 .page-header {
   display: flex;
   flex-wrap: wrap;
@@ -1584,12 +1607,15 @@
   line-height: 1.25;
 }
 
-.page-header-desc {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-md);
-  line-height: 1.5;
-}
+.page-header-heading { display: flex; align-items: center; gap: 9px; }
+.page-content:has(.page-header-info:hover), .page-content:has(.page-header-info:focus-within) { z-index: 101; }
+.page-header-info { position: relative; display: inline-flex; }
+.page-header-info button { display: grid; place-items: center; padding: 2px; border: 0; background: transparent; color: var(--color-text-muted); cursor: help; }
+.page-header-info button svg { width: 16px; height: 16px; }
+.page-header-info [role="tooltip"] { position: absolute; z-index: 30; bottom: calc(100% + 10px); left: 50%; transform: translate(-50%, 5px); width: max-content; max-width: min(280px, 75vw); padding: 12px 15px; border: 1px solid #292929; border-radius: 14px; background: #171717; color: #fff; font-size: 0.875rem; font-weight: 400; line-height: 1.5; box-shadow: 0 10px 28px rgb(0 0 0 / 0.22); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 180ms ease, transform 180ms ease, visibility 180ms; }
+.page-header-info [role="tooltip"]::after { content: ""; position: absolute; top: 100%; left: 50%; width: 8px; height: 8px; background: #171717; transform: translate(-50%, -50%) rotate(45deg); }
+.page-header-info:hover [role="tooltip"], .page-header-info:focus-within [role="tooltip"] { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { .page-header-info [role="tooltip"] { transition: none; } }
 
 .page-header-actions {
   display: flex;
@@ -3077,4 +3103,195 @@
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.2;
+}
+
+/* ---------- Listbox: a select that can show people and descriptions ---------- */
+
+.listbox {
+  position: relative;
+  min-width: 0;
+}
+
+/* The trigger matches a large form select: 50px, tinted, soft corners. */
+.listbox-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  width: 100%;
+  height: var(--control-lg);
+  padding: 0 var(--space-40) 0 var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-neutral-50);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--font-size-base);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
+}
+
+.listbox-trigger:hover {
+  border-color: var(--color-neutral-300);
+}
+
+.listbox-trigger:focus-visible,
+.listbox-trigger[aria-expanded="true"] {
+  border-color: var(--color-primary-400);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+.listbox[data-invalid] .listbox-trigger {
+  border-color: var(--color-coral-400);
+}
+
+.listbox-trigger[data-placeholder] {
+  padding-left: var(--space-16);
+  color: var(--color-text-subtle);
+}
+
+.listbox-icon {
+  display: flex;
+  flex: none;
+  color: var(--color-text-subtle);
+}
+
+.listbox-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.listbox-chevron {
+  position: absolute;
+  top: 50%;
+  right: 17px;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--color-text-muted);
+  transform: translateY(-50%);
+  transition: transform var(--duration-base) var(--ease-standard);
+  pointer-events: none;
+}
+
+.listbox-trigger[aria-expanded="true"] ~ .listbox-chevron,
+.listbox-trigger[aria-expanded="true"] .listbox-chevron {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.listbox-value {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.listbox-label {
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.listbox-description {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.listbox-panel {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgb(15 23 42 / 0.08);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: 0 24px 56px -20px rgb(15 23 42 / 0.35), 0 2px 8px rgb(15 23 42 / 0.06);
+  outline: none;
+}
+
+.listbox-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  padding: 0 var(--space-14);
+  border-bottom: 1px solid var(--color-neutral-100);
+}
+
+.listbox-search svg {
+  flex: none;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--color-text-subtle);
+}
+
+.listbox-search input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--font-size-base);
+  outline: none;
+}
+
+.listbox-search input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.listbox-list {
+  margin: 0;
+  padding: var(--space-6);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.listbox-list [role="option"] {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-10);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+}
+
+.listbox-list [role="option"][data-active] {
+  background: var(--color-neutral-50);
+}
+
+.listbox-list [role="option"][aria-selected="true"] {
+  background: var(--color-primary-50);
+}
+
+.listbox-list [role="option"][aria-selected="true"] .listbox-label {
+  color: var(--color-primary-700);
+}
+
+.listbox-trailing {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.listbox-check {
+  flex: none;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--color-primary-600);
+}
+
+.listbox-empty {
+  padding: var(--space-20) var(--space-12);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  text-align: center;
 }

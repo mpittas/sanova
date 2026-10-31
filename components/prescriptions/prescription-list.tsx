@@ -1,4 +1,5 @@
-import { LuArrowUpRight, LuPill } from "react-icons/lu";
+import { useState } from "react";
+import { LuArrowUpRight, LuPill, LuSearch, LuX } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
@@ -23,16 +24,17 @@ type Props = {
 };
 
 export function PrescriptionList({ prescriptions, allPrescriptions, selectedId, onSelect, range, onRangeChange, query, onQueryChange, status, onStatusChange }: Props) {
+  const [searchOpen, setSearchOpen] = useState(false);
   return (
     <Card rounded padding="none" className={styles.listCard}>
       <header className={styles.listHeader}>
-        <div><h2>Medications <span>{allPrescriptions.length}</span></h2><p>A clear view of your patient’s treatment.</p></div>
-        <Select size="md" aria-label="Time range" value={range} options={ranges} onChange={onRangeChange} />
+        {searchOpen ? <SearchInput autoFocus label="Search medications" placeholder="Search medications…" value={query} onChange={(event) => onQueryChange(event.target.value)} wrapperClassName={styles.headerSearch} /> : <h2>Medications <span>{allPrescriptions.length}</span></h2>}
+        <div className={styles.listTools}>
+          <button type="button" className={styles.searchToggle} aria-label={searchOpen ? "Close search" : "Search medications"} aria-expanded={searchOpen} onClick={() => { if (searchOpen) onQueryChange(""); setSearchOpen(!searchOpen); }}>{searchOpen ? <LuX /> : <LuSearch />}</button>
+          <Select size="md" aria-label="Time range" value={range} options={ranges} onChange={onRangeChange} />
+          <Select size="md" aria-label="Prescription status" value={status} options={["All", "Active", "Completed"]} onChange={onStatusChange} />
+        </div>
       </header>
-      <div className={styles.filters}>
-        <SearchInput label="Search medications" placeholder="Search medication or prescriber…" value={query} onChange={(event) => onQueryChange(event.target.value)} />
-        <Select size="md" aria-label="Prescription status" value={status} options={["All", "Active", "Completed"]} onChange={onStatusChange} />
-      </div>
       {prescriptions.length ? (
         <ul className={styles.medications} aria-label="Prescriptions">
           {prescriptions.map((prescription) => {

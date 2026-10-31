@@ -80,7 +80,7 @@ export function SessionRow({ session, handlers }: { session: Session; handlers: 
   return (
     <li className={styles.row} data-live={live || undefined}>
       <div className={styles.rowHead}>
-      <Avatar name={patient} size={64} online={live} />
+      <Avatar name={patient} size={48} online={live} />
       <div className={styles.who}>
         <button type="button" className={styles.name} onClick={() => handlers.onOpen(id)}>
           {patient}

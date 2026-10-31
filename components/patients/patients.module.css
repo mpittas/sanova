@@ -75,3 +75,126 @@ table.patients tbody tr:first-child td {
 .links strong { color: #333; font-size: 0.9375rem; font-weight: 600; }
 .links a > span > span { color: var(--color-text-muted); font-size: 0.8125rem; }
 .links a > svg { flex: none; width: 18px; height: 18px; color: var(--color-text-subtle); }
+
+/* ---------- Stat roster cards ---------- */
+
+.roster {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.rosterLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-text-muted);
+}
+
+.rosterLabel svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--tone-fg);
+}
+
+.rosterBody {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.rosterText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.rosterFigure {
+  color: #333;
+  font-family: var(--font-figure);
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+.rosterCaption {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.rosterDelta {
+  margin-top: auto;
+  padding-top: var(--space-8);
+}
+
+/* A 2 x 2 block of round portraits that touch each other. */
+.quilt {
+  display: grid;
+  flex: none;
+  grid-template-columns: repeat(2, 54px);
+  grid-auto-rows: 54px;
+  gap: 0;
+  align-self: end;
+}
+
+/* A hovered portrait grows a little over its neighbours. It sits above them while scaled, and z-index only drops back
+   after the shrink has finished, so it never dips under a neighbour mid-animation. */
+.tile {
+  position: relative;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  transition:
+    transform 220ms var(--ease-standard),
+    box-shadow 220ms var(--ease-standard),
+    z-index 0s 220ms;
+  animation: tileIn 420ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--i) * 70ms + 200ms);
+}
+
+.tile:hover {
+  z-index: 1;
+  transform: scale(1.07);
+  box-shadow: 0 6px 14px rgb(30 41 59 / 0.18);
+  transition-delay: 0s;
+}
+
+.tile :global(.avatar) {
+  display: block;
+  box-shadow: none;
+}
+
+/* The count of everyone else sits on the last photo, under a tint of the card colour. */
+.tileCount {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--tone-strong) 62%, transparent);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+@keyframes tileIn {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    animation: none;
+    transition: none;
+  }
+}

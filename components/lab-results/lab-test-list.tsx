@@ -39,7 +39,7 @@ export function LabTestList({
       padding="none"
       className={styles.listCard}
     >
-      <header className={styles.listHeader}><div><h2>Lab tests <span>{tests.length}</span></h2><p>Your patient’s results, in one place.</p></div><Select size="sm" aria-label="Filter by result" value={status} options={statusFilters} onChange={onStatusChange} /></header>
+      <header className={styles.listHeader}><h2>Lab tests <span>{tests.length}</span></h2><Select size="sm" aria-label="Filter by result" value={status} options={statusFilters} onChange={onStatusChange} /></header>
       <div className={styles.search}><SearchInput label="Search lab tests" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search tests or reason…" /></div>
 
       {tests.length > 0 ? (

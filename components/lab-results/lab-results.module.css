@@ -4,8 +4,8 @@
 .detailWrap { min-width: 0; scroll-margin-top: 88px; }
 .listCard, .detail { overflow: hidden; }
 .listHeader { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 22px 20px 18px; }
-.listHeader h2 { display: flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 600; letter-spacing: -.025em; }
-.listHeader h2 span { display: grid; place-items: center; min-width: 22px; height: 22px; border-radius: 7px; background: #edf4ef; color: #4d705a; font-size: .6875rem; }
+.listHeader h2 { display: flex; align-items: center; gap: 8px; font-size: 1.125rem; font-weight: 600; letter-spacing: -.025em; }
+.listHeader h2 span { display: grid; place-items: center; min-width: 22px; height: 22px; border-radius: 7px; background: var(--color-neutral-100); color: var(--color-text-muted); font-size: .6875rem; }
 .listHeader p { margin-top: 5px; font-size: .8125rem; color: var(--color-text-muted); }
 .search { padding: 0 20px 18px; }
 .tests { display: grid; gap: 8px; margin: 0; padding: 0 12px 14px; list-style: none; }

@@ -1,4 +1,4 @@
-import { LuCircleCheck, LuFileText, LuPrinter, LuRefreshCw, LuSend } from "react-icons/lu";
+import { LuCircleCheck, LuClipboardList, LuFileText, LuPill, LuPrinter, LuRefreshCw, LuSend } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -18,14 +18,14 @@ export function PrescriptionDetail({ prescription, onRenew, onSend }: Props) {
       <div className={styles.detailBody}>
         <div className={styles.drugShowcase} data-tone={prescription.tone}>
           <div className={styles.drugHeading}>
-            <Chip tone={status === "Active" ? "success" : "neutral"} variant="tag" size="sm">{status}</Chip>
+            <Chip className={status === "Completed" ? styles.completedBadge : undefined} tone={status === "Active" ? "success" : "neutral"} variant="tag" size="sm">{status}</Chip>
             <h2>{medication}</h2>
-            <span className={styles.strength}>{dosage}</span>
+            <span className={styles.strength}><LuPill aria-hidden />{dosage}</span>
           </div>
           <MedicationVisual prescription={prescription} large />
           <p className={styles.description}>{description}</p>
         </div>
-        <section className={styles.directions} aria-label="Directions for use"><span>Directions for use</span><p>{instructions}</p><span>{dosage}</span></section>
+        <section className={styles.directions} aria-label="Directions for use"><span><LuClipboardList aria-hidden /> Directions for use</span><p>{instructions}</p><span>{dosage}</span></section>
         <dl className={styles.facts}>
           <div><dt>Quantity</dt><dd>{quantity}</dd></div>
           <div><dt>Refills</dt><dd>{refillsLabel(refills)}</dd></div>

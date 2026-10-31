@@ -66,7 +66,9 @@ export const doctors: Doctor[] = [
   { id: "d14", name: "Dr. Marcus Reed", specialty: "Orthopedics", title: "Orthopedic Surgeon", patients: 170, experience: 10, location: { site: "East Wing", floor: "2nd Floor" }, rating: 4.6, reviews: 49, status: "Active", next: { date: "2024-05-10", time: "11:30" }, photo: portraitUrl("men", 63) },
 ];
 
-export const doctorByName = (name: string) => doctors.find((doctor) => doctor.name === name);
+export const doctorById = (id: string) => doctors.find((doctor) => doctor.id === id);
+
+export const doctorByName =(name: string) => doctors.find((doctor) => doctor.name === name);
 
 // ---------------------------------------------------------------------------------------------
 // Team overview: every figure is derived from the list above, so it always matches the cards.

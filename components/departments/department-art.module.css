@@ -104,9 +104,9 @@
 
 /* Small inline artwork keeps the department name and description as the focal point. */
 .compact {
-  flex: 0 0 100px;
-  width: 100px;
-  height: 100px;
+  flex: 0 0 110px;
+  width: 110px;
+  height: 110px;
   margin: 0;
 }
 .art.compact::before {
@@ -121,8 +121,8 @@
   box-shadow: none;
 }
 .compact .model {
-  width: 88px;
-  height: 88px;
+  width: 98px;
+  height: 98px;
   top: 6px;
 }
 

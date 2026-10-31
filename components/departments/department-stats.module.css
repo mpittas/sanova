@@ -1,0 +1,165 @@
+/* Department summary tiles: label and icon, figure with a note chip beside it, and a soft area wave, all in the
+   tile's tone (data-tone sets --tone-bg / --tone-fg). */
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-16) var(--space-20) var(--space-20);
+  overflow: hidden;
+}
+
+/* A soft wash of the tone in the top-right corner, behind the icon. */
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(220px 140px at 100% 0%, color-mix(in srgb, var(--tone-bg) 90%, transparent), transparent 70%);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.label {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.figure {
+  color: var(--color-text);
+  font-family: var(--font-figure);
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.unit {
+  margin-left: 2px;
+  color: var(--color-text-subtle);
+  font-size: 20px;
+}
+
+.note {
+  overflow: hidden;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--tone-bg);
+  color: var(--tone-strong);
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---------- The wave: edge to edge along the bottom, in the tile's tone ---------- */
+
+.wave {
+  --wave-draw: 1400ms;
+  --wave-ease: cubic-bezier(0.45, 0, 0.2, 1);
+  position: relative;
+  /* Above the label, figure and note, so the dot is never hidden behind them. */
+  z-index: 2;
+  height: 46px;
+  margin: var(--space-4) calc(-1 * var(--space-20)) calc(-1 * var(--space-20));
+  color: var(--tone-fg);
+}
+
+.wave svg {
+  display: block;
+  overflow: visible;
+}
+
+.waveLine {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  animation: draw var(--wave-draw) var(--wave-ease) both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+/* The wash is revealed left to right in step with the line. */
+.waveWash {
+  animation: reveal var(--wave-draw) var(--wave-ease) both;
+}
+
+@keyframes reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Rides the tip of the line along the same path, with the same timing, then settles with one soft pulse. */
+.waveDot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 2px #fff, 0 1px 4px 2px color-mix(in srgb, currentColor 30%, transparent);
+  offset-rotate: 0deg;
+  offset-distance: 100%;
+  animation: ride var(--wave-draw) var(--wave-ease) both;
+}
+
+@keyframes ride {
+  from {
+    offset-distance: 0%;
+  }
+}
+
+.waveDot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  animation: pulse 900ms ease-out var(--wave-draw) both;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.35;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waveLine,
+  .waveWash,
+  .waveDot,
+  .waveDot::after {
+    animation: none;
+  }
+}

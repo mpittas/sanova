@@ -1,5 +1,6 @@
 import { LuCalendar, LuPlus } from "react-icons/lu";
 import { PageHeader } from "@/components/layout/page-header";
+import { BookAppointmentButton } from "@/components/booking/book-appointment-button";
 import { Button } from "@/components/ui/button";
 import { doctor } from "./data";
 import { TodayLine } from "./today-line";
@@ -14,7 +15,7 @@ export function DashboardHeader() {
           <Button variant="secondary" iconLeft={<LuCalendar />}>
             Calendar
           </Button>
-          <Button iconLeft={<LuPlus />}>Book appointment</Button>
+          <BookAppointmentButton iconLeft={<LuPlus />}>Book appointment</BookAppointmentButton>
         </>
       }
     />

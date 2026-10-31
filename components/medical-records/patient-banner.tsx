@@ -1,10 +1,11 @@
+import { LuDroplet, LuMapPin, LuShieldAlert } from "react-icons/lu";
 import { formatDate } from "@/components/appointments/dates";
 import { healthFacts, patient, patientAge } from "@/components/patient-record/data";
 import styles from "./medical-records.module.css";
 
 const fact = (id: string) => healthFacts.find((item) => item.id === id)?.value ?? "";
 
-/** Shared clinical banner: patient identity and two clearly separated health facts. */
+/** Shared clinical banner: who the patient is, and the two health facts a clinician needs at a glance. */
 export function PatientBanner() {
   const facts = [
     { label: "Blood type", value: fact("blood"), icon: LuDroplet },
@@ -17,7 +18,7 @@ export function PatientBanner() {
         <div className={styles.pcPortrait}>
           {/* Small remote portrait: a plain <img> avoids image-optimizer setup for placeholder photos. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={patient.photo} alt={patient.name} width={80} height={80} referrerPolicy="no-referrer" />
+          <img src={patient.photo} alt={patient.name} width={96} height={96} referrerPolicy="no-referrer" />
         </div>
         <div className={styles.pcIdentity}>
           <h2 className={styles.pcName}>
@@ -27,8 +28,10 @@ export function PatientBanner() {
           <p className={styles.pcMeta}>
             {patient.id} · {patientAge} years · {patient.gender}
           </p>
-          <p className={styles.pcBirth}>Born {formatDate(patient.dob, { month: "short", day: "numeric", year: "numeric" })}</p>
-          <p className={styles.pcLocation}><LuMapPin aria-hidden />{patient.location}</p>
+          <p className={styles.pcBirth}>
+            <span>Born {formatDate(patient.dob, { month: "short", day: "numeric", year: "numeric" })}</span>
+            <span><LuMapPin aria-hidden />{patient.location}</span>
+          </p>
         </div>
       </div>
 
@@ -43,4 +46,3 @@ export function PatientBanner() {
     </section>
   );
 }
-import { LuDroplet, LuMapPin, LuShieldAlert } from "react-icons/lu";

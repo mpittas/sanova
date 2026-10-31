@@ -47,12 +47,24 @@
   transition: background-color var(--duration-base) var(--ease-standard);
 }
 
-.row:hover {
+/* The tint is painted on the cells so the first and last one can round the row's ends. */
+.row:hover td {
   background: var(--color-neutral-50);
 }
 
-.row[data-selected] {
+.row[data-selected] td {
   background: #ddefe5;
+  border-bottom-color: transparent;
+}
+
+.row:hover td:first-child,
+.row[data-selected] td:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.row:hover td:last-child,
+.row[data-selected] td:last-child {
+  border-radius: 0 12px 12px 0;
 }
 
 .row:focus-visible {
@@ -107,4 +119,213 @@
   flex: 1;
   min-width: 0;
   padding: 0 var(--space-12);
+}
+
+/* ---------- Stat tickets ---------- */
+
+/* Each figure sits on the same card as the other pages; a dashed rule sets the change apart from the strip. */
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.ticketTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.ticketLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-width: 0;
+  color: var(--color-text-muted);
+}
+
+.ticketLabel svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--tone-fg);
+}
+
+.ticketShare {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--tone-bg);
+  color: var(--tone-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ticketFigure {
+  margin-top: var(--space-8);
+  color: #333;
+  font-family: var(--font-figure);
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+/* One bar per weekday of the month, drawn from the schedule. The bars rise in a wave when the page loads; hover or focus
+   one to read that day while the rest dim. A dot under the bar marks today. */
+.strip {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 34px;
+  margin: var(--space-8) 0 var(--space-16);
+  border-radius: 6px;
+  cursor: crosshair;
+}
+
+.strip:focus-visible {
+  outline: 2px solid var(--tone-fg);
+  outline-offset: 4px;
+}
+
+.day {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  align-self: stretch;
+  min-width: 0;
+}
+
+.day[data-today]::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--tone-fg);
+}
+
+.bar {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1px;
+  width: 100%;
+  height: calc(18% + var(--h) * 82%);
+  border-radius: 3px;
+  overflow: hidden;
+  transform-origin: bottom;
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+  animation: barRise 620ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--i) * 22ms + 120ms);
+}
+
+.day[data-empty] .bar {
+  height: 3px;
+  background: var(--color-neutral-200);
+}
+
+.strip[data-active] .day:not([data-current]) .bar {
+  opacity: 0.35;
+}
+
+.day[data-current] .bar {
+  transform: scaleY(1.12) scaleX(1.25);
+}
+
+.bar i {
+  min-height: 0;
+  background: var(--tone-fg);
+}
+
+.bar i[data-stage="Upcoming"],
+.tip i[data-stage="Upcoming"] { background: var(--color-amber-500); }
+.bar i[data-stage="Completed"],
+.tip i[data-stage="Completed"] { background: var(--color-success-500); }
+.bar i[data-stage="Cancelled"],
+.tip i[data-stage="Cancelled"] { background: var(--color-coral-500); }
+
+@keyframes barRise {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+/* One tooltip that glides between bars, kept inside the ticket's edges. */
+.tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: clamp(52px, calc(var(--x) * 100%), calc(100% - 52px));
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 96px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--color-neutral-900, #1f2933);
+  color: #fff;
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition:
+    left 160ms var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.tip[data-show] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.tip strong {
+  font-weight: 600;
+}
+
+.tip > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.tip i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
+
+  .bar,
+  .tip {
+    transition: none;
+  }
+}
+
+.ticketStub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-8);
+  margin-top: auto;
+  padding-top: var(--space-12);
+  border-top: 1px dashed var(--color-neutral-200);
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { appointments, nextUp, stageOf, TODAY } from "./data";
+import { useBooking } from "@/components/booking/booking-context";
+import { appointments as seedAppointments, nextUp, stageOf, TODAY } from "./data";
 import {
   addDays,
   addMonths,
@@ -40,6 +41,8 @@ function step(view: View, date: ISODate, direction: -1 | 1) {
 }
 
 export function AppointmentsView() {
+  const { booked } = useBooking();
+  const appointments = useMemo(() => [...seedAppointments, ...booked], [booked]);
   const [selectedDate, setSelectedDate] = useState<ISODate>(TODAY);
   const [month, setMonth] = useState<ISODate>(TODAY);
   const [view, setView] = useState<View>("Day");
@@ -63,7 +66,7 @@ export function AppointmentsView() {
       byDate.set(item.date, group);
     }
     return { groups: [...byDate.values()], visible: shown, counts };
-  }, [view, selectedDate, filter]);
+  }, [appointments, view, selectedDate, filter]);
 
   // If the chosen appointment isn't in the current range, fall back to the first one.
   const current = visible.find((item) => item.id === selectedId) ?? visible[0];

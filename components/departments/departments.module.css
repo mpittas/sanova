@@ -3,23 +3,6 @@
 
 /* ---------- Department cards ---------- */
 
-/* Clinic totals lead the page; department names and local figures are a step quieter. */
-.summaryCards :global(.stat-tile-top .text-label) {
-  color: #59697f;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.5;
-}
-
-.summaryCards :global(.stat-tile-figure) {
-  font-family: var(--font-figure);
-  font-stretch: normal;
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 1.3;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -185,6 +168,16 @@
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: var(--space-20);
+}
+
+.bottom :global(.card-heading) {
+  gap: 4px;
+}
+
+.bottom :global(.card-heading h2) {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .activity {

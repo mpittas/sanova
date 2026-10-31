@@ -3,30 +3,29 @@
 
 /* ---------- Team strip ---------- */
 
-/* Same banner as the patient card on Medical Records: soft grey, contour lines, quiet tiles. */
-.strip { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .8fr); gap: 24px; align-items: center; padding: 24px; border: 0; border-radius: 18px; background: #ece8e3; color: #332d27; position: relative; isolation: isolate; overflow: hidden; }
-.strip::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: url("/branding/sanova-organic-contours.svg"); background-repeat: no-repeat; background-position: center; background-size: cover; opacity: .06; }
-.bannerTeam { display: grid; gap: 20px; min-width: 0; }
-.bannerTeam h2 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -.035em; line-height: 1.3; }
-.bannerTeam p { margin: 6px 0 0; color: #615a52; font-size: 13px; line-height: 1.5; }
-.bannerPeople { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.stack { display: flex; margin: 0; padding: 0; list-style: none; }
-.stack li { display: flex; border-radius: 50%; box-shadow: 0 0 0 2px #ece8e3; }
-.stack li + li { margin-left: -7px; }
-.bannerPeople button { display: inline-flex; align-items: center; gap: 6px; padding: 4px 0; border: 0; background: transparent; color: #615a52; font: inherit; font-size: 12px; cursor: pointer; }
-.bannerPeople button svg { width: 14px; height: 14px; }
-.bannerPeople button:hover { color: #332d27; }
-.bannerQueues { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.queue { display: grid; gap: 16px; padding: 16px; border: 0; border-radius: 12px; background: #ded9d2; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); color: #332d27; font: inherit; text-align: left; cursor: pointer; }
-.queue:hover, .queue[aria-pressed="true"] { background: white; }
-.queueTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.queueTop svg { width: 17px; height: 17px; }
-.queueTop svg:last-child { width: 14px; height: 14px; }
-.queueValue { font-family: var(--font-figure); display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; font-size: 24px; font-weight: 400; line-height: 1.2; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.queueValue > span { font-family: var(--font-sans); color: #615a52; font-size: 12px; font-weight: 400; letter-spacing: 0; line-height: 1.5; }
-.queue:focus-visible, .bannerPeople button:focus-visible { outline: 2px solid var(--color-primary-300); outline-offset: 4px; }
-@container (max-width: 700px) { .strip { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px; } .bannerTeam { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; } .bannerPeople { justify-content: flex-end; } }
-@container (max-width: 460px) { .bannerTeam { grid-template-columns: minmax(0, 1fr); gap: 14px; } .bannerPeople { justify-content: flex-start; } .queue { padding: 14px; } }
+/* Deep emerald banner (see --hero-* in ui.css): an oversized headcount, then three facts. Two of the facts filter the list. */
+.strip { display: grid; gap: 24px; padding: 28px; border: 0; border-radius: 18px; background-color: #08382a; background-image: linear-gradient(90deg, rgb(8 56 42 / .88) 0, rgb(8 56 42 / .25) 100%), url("/branding/backgrounds/sanova-gradients/01-emerald-arch.png"); background-size: cover; background-position: center; box-shadow: var(--hero-shadow); color: var(--hero-ink); position: relative; isolation: isolate; overflow: hidden; }
+.bannerHead { display: flex; align-items: center; gap: 28px; min-width: 0; }
+.bigFigure { font-family: var(--font-figure); font-size: clamp(56px, 9vw, 84px); font-weight: 300; line-height: .85; letter-spacing: -.07em; color: var(--color-primary-200); }
+.bannerHead h2 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -.035em; line-height: 1.3; }
+.bannerHead p { margin: 6px 0 0; color: var(--hero-muted); font-size: 13px; line-height: 1.5; }
+.bannerLink { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 4px 0; border: 0; background: transparent; color: var(--hero-muted); font: inherit; font-size: 12px; cursor: pointer; }
+.bannerLink svg { width: 14px; height: 14px; }
+.bannerLink:hover { color: var(--hero-ink); }
+.bannerFacts { display: flex; flex-wrap: wrap; gap: 10px; }
+.fact { display: inline-flex; align-items: center; gap: 8px; padding: 6px 8px 6px 12px; margin: 0; border: 1px solid var(--hero-line); border-radius: 0; background: var(--hero-tile); color: var(--hero-ink); font: inherit; text-align: left; transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+.fact svg { flex: none; width: 16px; height: 16px; color: var(--hero-accent); }
+.fact span { color: var(--hero-ink); font-size: 13px; font-weight: 500; }
+.fact b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 0; background: rgb(255 255 255 / .16); font-family: var(--font-figure); font-size: 12px; font-weight: 400; font-variant-numeric: tabular-nums; }
+button.fact { cursor: pointer; }
+button.fact:hover { background: var(--hero-tile-hover); border-color: rgb(255 255 255 / .3); }
+button.fact[aria-pressed="true"] { background: #fff; border-color: #fff; color: var(--color-primary-800); }
+button.fact[aria-pressed="true"] svg { color: var(--color-primary-600); }
+button.fact[aria-pressed="true"] span { color: var(--color-primary-800); }
+button.fact[aria-pressed="true"] b { background: var(--color-primary-100); color: var(--color-primary-800); }
+.bannerLink:focus-visible, button.fact:focus-visible { outline: 2px solid var(--hero-accent); outline-offset: 2px; }
+@container (max-width: 700px) { .strip { gap: 18px; padding: 20px; } .bannerHead { gap: 20px; } }
+@container (max-width: 460px) { .bannerHead { flex-direction: column; align-items: flex-start; gap: 14px; } .bannerFacts { gap: 8px; } }
 /* ---------- Doctor cards ---------- */
 
 .grid {
@@ -63,13 +62,18 @@
 .availabilityLabel svg { width: 13px; height: 13px; }
 .availabilityTime { font-size: .8125rem; font-weight: 500; font-variant-numeric: tabular-nums; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; }
-.profileLink { display: flex; align-items: center; gap: 5px; padding: 0; border: 0; background: transparent; color: #59697f; font: inherit; font-size: .75rem; cursor: pointer; }
-.profileLink svg { width: 13px; height: 13px; }
-.profileLink:hover { color: var(--color-primary-700); }
-.profileDetails { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin: 0; font-family: var(--font-sans); }
-.profileDetails dt { color: #59697f; font-size: .75rem; margin-bottom: 6px; }
-.profileDetails dd { margin: 0; font-size: .8125rem; line-height: 1.6; }
-/* ---------- Side cards ---------- */
+.profileLink { display: flex; align-items: center; gap: 5px; padding: 0; color: #59697f; font-size: .75rem; transition: color .15s ease; }
+
+/* The whole card opens the profile: the name's link stretches over it, and the buttons sit above that. */
+.card[data-linked] { transition: border-color .15s ease; }
+.card[data-linked]:hover { border-color: var(--color-primary-300); }
+.card[data-linked]:hover .profileLink { color: var(--color-primary-700); }
+.cardLink { color: inherit; text-decoration: none; }
+.cardLink::after { content: ""; position: absolute; inset: 0; z-index: 0; border-radius: inherit; }
+.cardLink:focus-visible { outline: none; }
+.cardLink:focus-visible::after { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
+.card .favorite, .card .book { z-index: 1; }
+.card .book { position: relative; }/* ---------- Side cards ---------- */
 
 /* Team overview: a big count, one dot per doctor, three facts under a hairline. */
 .overviewHero {

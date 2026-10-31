@@ -1,6 +1,5 @@
-import { LuArrowUpRight, LuCalendarCheck, LuCoffee } from "react-icons/lu";
+import { LuArrowUpRight, LuCalendarOff, LuStethoscope, LuUserCheck } from "react-icons/lu";
 import { TODAY } from "@/components/appointments/data";
-import { Avatar } from "@/components/ui/avatar";
 import type { Doctor } from "./data";
 import styles from "./doctors.module.css";
 
@@ -21,22 +20,22 @@ export function TeamStrip({ doctors, availableSelected, leaveSelected, onShowAva
 
   return (
     <section className={styles.strip} aria-label="Care team overview">
-      <div className={styles.bannerTeam}>
-        <div><h2>Your care team</h2><p>{doctors.length} doctors across {specialties} specialties.</p></div>
-        <div className={styles.bannerPeople}>
-          <ul className={styles.stack} aria-hidden>{doctors.slice(0, 4).map((doctor) => <li key={doctor.id}><Avatar name={doctor.name} src={doctor.photo} size={32} /></li>)}</ul>
-          <button type="button" onClick={onShowAll}>View all doctors <LuArrowUpRight aria-hidden /></button>
+      <div className={styles.bannerHead}>
+        <span className={styles.bigFigure} aria-hidden>{doctors.length}</span>
+        <div>
+          <h2>Your care team</h2>
+          <p>{doctors.length} doctors across {specialties} specialties.</p>
+          <button type="button" className={styles.bannerLink} onClick={onShowAll}>View all doctors <LuArrowUpRight aria-hidden /></button>
         </div>
       </div>
-      <div className={styles.bannerQueues}>
-        <button type="button" className={styles.queue} aria-label="Show doctors available today" aria-pressed={availableSelected} onClick={onShowAvailable}>
-          <span className={styles.queueTop}><LuCalendarCheck aria-hidden /><LuArrowUpRight aria-hidden /></span>
-          <span className={styles.queueValue}>{availableToday}<span>Available today</span></span>
+      <div className={styles.bannerFacts}>
+        <button type="button" className={styles.fact} aria-label="Show doctors available today" aria-pressed={availableSelected} onClick={onShowAvailable}>
+          <LuUserCheck aria-hidden /><span>Available today</span><b>{availableToday}</b>
         </button>
-        <button type="button" className={styles.queue} aria-label="Show doctors on leave" aria-pressed={leaveSelected} onClick={onShowLeave}>
-          <span className={styles.queueTop}><LuCoffee aria-hidden /><LuArrowUpRight aria-hidden /></span>
-          <span className={styles.queueValue}>{onLeave}<span>On leave</span></span>
+        <button type="button" className={styles.fact} aria-label="Show doctors on leave" aria-pressed={leaveSelected} onClick={onShowLeave}>
+          <LuCalendarOff aria-hidden /><span>On leave</span><b>{onLeave}</b>
         </button>
+        <div className={styles.fact}><LuStethoscope aria-hidden /><span>Specialties</span><b>{specialties}</b></div>
       </div>
     </section>
   );

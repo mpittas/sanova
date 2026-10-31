@@ -1,0 +1,124 @@
+/* Care team banners, second round (/demo-banner). Each banner holds one idea and little else: a row of faces, a sentence,
+   one booking card, the day as a line, one specialty bar. Brand greens throughout; figures and times in the figure face. */
+
+.list { --spring: linear(0, .036, .128, .258, .408, .563, .711, .844, .957, 1.045, 1.11, 1.152, 1.174, 1.179, 1.171, 1.153, 1.128, 1.101, 1.073, 1.047, 1.024, 1.005, .99, .979, .972, .968, .968, .97, .973, .978, .983, .988, .992, .996, 1);
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  display: grid; gap: 40px; margin: 0; padding: 0; list-style: none; }
+.item { display: grid; gap: 10px; min-width: 0; container-type: inline-size; }
+.caption { display: flex; align-items: center; gap: 10px; margin: 0; }
+.index { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--color-primary-600); color: #fff; font-family: var(--font-figure); font-size: 12px; }
+
+/* ---------- Shared shell ---------- */
+
+.banner { position: relative; isolation: isolate; display: grid; gap: 24px; min-width: 0; padding: 30px 32px; border-radius: 20px; overflow: hidden; color: var(--color-text); }
+.banner h2 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -.035em; line-height: 1.3; }
+.banner p { margin: 6px 0 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.55; }
+.link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 4px 0; border: 0; background: transparent; color: var(--color-primary-700); font: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; }
+.link svg { width: 14px; height: 14px; transition: transform .35s var(--spring); }
+.link:hover svg { transform: translate(2px, -2px); }
+.link:focus-visible, .book:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- 1. Faces ---------- */
+
+.faces { grid-template-columns: minmax(0, 1fr) auto; align-items: center; border: 1px solid rgb(13 90 64 / .07);
+  background: linear-gradient(90deg, rgb(255 255 255 / .92) 30%, rgb(255 255 255 / .55)), url("/branding/backgrounds/sanova-gradients/02-pearl-light.png") center / cover; }
+.faceGroup { display: grid; justify-items: end; gap: 10px; }
+.faceRow { display: flex; margin: 0; padding: 0 0 0 12px; list-style: none; }
+.faceRow li { display: inline-flex; margin-left: -12px; border-radius: 50%; box-shadow: 0 0 0 3px #fff; transition: margin .6s var(--spring), transform .35s var(--spring); }
+.faceRow li[data-away] { filter: grayscale(1); opacity: .5; }
+/* Hovering the row opens it out so each face can be seen; the face under the pointer lifts. */
+.faceRow:hover li { margin-left: 4px; transition-delay: calc(var(--i) * 12ms), 0s; }
+.faceRow li:hover { transform: translateY(-4px); }
+.faceGroup .faceNote { margin: 0; font-size: 12px; }
+
+/* ---------- 2. One sentence ---------- */
+
+.sentence { gap: 0; padding: 36px 40px 30px; background: var(--hero-surface); box-shadow: var(--hero-shadow); color: var(--hero-ink); }
+.sentence h2 { max-width: 30ch; font-size: clamp(22px, 3.2cqi, 32px); font-weight: 400; letter-spacing: -.035em; line-height: 1.35; text-wrap: balance; }
+.inlineFaces { display: inline-flex; vertical-align: -.3em; padding-left: 8px; }
+.inlineFaces .avatar { margin-left: -8px; box-shadow: 0 0 0 2.5px #0d5a40; }
+.sentence p { margin-top: 14px; color: var(--hero-muted); font-size: 13.5px; }
+.sentence .link { color: var(--color-primary-200); }
+.sentence .link:hover { color: #fff; }
+
+/* ---------- 3. Next opening ---------- */
+
+.ribbon { grid-template-columns: minmax(0, 1fr) auto; align-items: center; min-height: 168px;
+  background: linear-gradient(90deg, rgb(247 246 242 / .9) 0, rgb(247 246 242 / .55) 38%, transparent 62%), url("/branding/backgrounds/sanova-gradients/06-emerald-ribbon.png") 70% 45% / cover; }
+.ribbon p { color: #4c5a54; }
+.glass { display: flex; align-items: center; gap: 14px; padding: 12px 12px 12px 12px; border: 1px solid rgb(255 255 255 / .38); border-radius: 18px; background: rgb(255 255 255 / .16); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); color: #fff; box-shadow: 0 18px 40px -20px rgb(4 50 32 / .6); }
+.glassText { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.glassText span { color: rgb(255 255 255 / .8); font-size: 12px; }
+.glassText strong { font-family: var(--font-figure); font-size: 22px; font-weight: 400; letter-spacing: -.04em; line-height: 1.25; }
+.glassText small { color: rgb(255 255 255 / .85); font-size: 12px; white-space: nowrap; }
+.book { align-self: stretch; margin-left: 10px; padding: 0 20px; border: 0; border-radius: 12px; background: #fff; color: var(--color-primary-800); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: transform .35s var(--spring), background-color .2s ease; }
+.book:hover { background: var(--color-primary-50); transform: scale(1.04); }
+
+/* ---------- 4. Today's line ---------- */
+
+.line { gap: 8px; border: 1px solid rgb(13 90 64 / .07); background: radial-gradient(60% 120% at 100% 0, var(--color-primary-50), transparent 70%), #fff; }
+.lineHead { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 24px; }
+.date { color: var(--color-text-muted); font-size: 12.5px; }
+/* Pins hang above the rail at their time (--at, a share of the day); the part of the day already gone is solid green. */
+.day { position: relative; padding-top: 74px; }
+.rail { position: relative; display: block; height: 2px; border-radius: 2px; background: repeating-linear-gradient(90deg, var(--color-primary-200) 0 4px, transparent 4px 8px); }
+.rail::before { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(var(--now) * 100%); border-radius: inherit; background: var(--color-primary-600); }
+.rail::after { content: ""; position: absolute; top: 50%; left: calc(var(--now) * 100%); width: 9px; height: 9px; border-radius: 50%; background: var(--color-primary-600); box-shadow: 0 0 0 4px var(--color-primary-100); transform: translate(-50%, -50%); }
+.pins { position: absolute; inset: 0 0 auto; height: 75px; margin: 0; padding: 0; list-style: none; }
+.pins li { --stem: 18px; position: absolute; bottom: 0; left: calc(var(--at) * 100%); display: flex; flex-direction: column; align-items: center; transform: translateX(-50%);
+  animation: drop .8s var(--spring) backwards; animation-delay: calc(200ms + var(--i) * 90ms); }
+.pins li[data-tall] { --stem: 40px; }
+.pins li .avatar { box-shadow: 0 0 0 3px #fff, 0 6px 14px -6px rgb(13 90 64 / .45); transition: transform .35s var(--spring); }
+.pins li:hover .avatar { transform: translateY(-3px) scale(1.06); }
+/* The stem runs from the portrait down to a dot on the rail. */
+.pins li::after { content: ""; width: 1px; height: var(--stem); background: var(--color-primary-300); }
+.pins li::before { content: ""; position: absolute; bottom: -4px; width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 2px var(--color-primary-500); }
+/* Each time sits under its dot, on the same baseline as the day's end labels. */
+.pins time { position: absolute; top: calc(100% + 11px); color: var(--color-primary-800); font-family: var(--font-figure); font-size: 10px; white-space: nowrap; transition: color .2s ease; }
+.pins li:hover time { color: var(--color-primary-600); }
+.hours { display: flex; justify-content: space-between; margin-top: 12px; }
+.day .hours { margin: 12px 0 0; font-size: 11px; }
+@keyframes drop { from { opacity: 0; transform: translate(-50%, -16px); } }
+
+/* ---------- 5. Specialty spectrum ---------- */
+
+.spectrum { gap: 30px; background: radial-gradient(80% 140% at 0 100%, rgb(31 122 86 / .4), transparent 60%), linear-gradient(160deg, #0f3a2d, #082219); box-shadow: var(--hero-shadow); color: var(--hero-ink); }
+.spectrum p { color: var(--hero-muted); }
+/* Segment widths follow headcount; the labels sit under their segment. */
+.bar { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.bar li { flex: var(--count) 1 0; display: grid; gap: 10px; min-width: 0; transition: opacity .3s ease; }
+.bar i { height: 8px; border-radius: 999px; background: var(--tone-fg); transform-origin: left; animation: grow .7s var(--ease) backwards; animation-delay: calc(150ms + var(--i) * 70ms); transition: transform .4s var(--spring); }
+.bar span { overflow: hidden; color: var(--hero-muted); font-size: 11.5px; white-space: nowrap; text-overflow: ellipsis; }
+.bar b { margin-left: 6px; color: #fff; font-family: var(--font-figure); font-size: 11px; font-weight: 400; }
+.bar:hover li:not(:hover) { opacity: .35; }
+.bar li:hover i { transform: scaleY(1.5); }
+@keyframes grow { from { transform: scaleX(0); } }
+
+/* ---------- Narrow containers ---------- */
+
+@container (max-width: 760px) {
+  .faces, .ribbon { grid-template-columns: minmax(0, 1fr); }
+  .faceGroup { justify-items: start; }
+  .faceRow li { margin-left: -16px; }
+  .faceRow li .avatar { --size: 36px !important; }
+  /* Stacked, the light wash runs top to bottom so the text keeps the pale side and the card sits on the green. */
+  .ribbon { background: linear-gradient(180deg, rgb(247 246 242 / .95) 0, rgb(247 246 242 / .75) 38%, transparent 62%), url("/branding/backgrounds/sanova-gradients/06-emerald-ribbon.png") 75% 50% / cover; }
+  .glass { background: rgb(6 70 46 / .38); }
+  /* Labels no longer fit under thin segments, so they wrap as a legend below the bar. */
+  .bar { flex-wrap: wrap; row-gap: 8px; }
+  .bar li { flex-basis: auto; display: flex; align-items: center; gap: 6px; }
+  .bar i { width: 8px; height: 8px; }
+}
+@container (max-width: 460px) {
+  .banner { padding: 22px; }
+  .sentence { padding: 26px 22px 22px; }
+  .faceRow { flex-wrap: wrap; row-gap: 6px; }
+  .glass { flex-wrap: wrap; }
+  .pins time { display: none; }
+  .book { align-self: auto; height: 36px; margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pins li, .bar i { animation: none; }
+  .faceRow li, .pins li .avatar, .bar i, .book, .link svg { transition: none; }
+}

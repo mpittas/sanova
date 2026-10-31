@@ -16,12 +16,12 @@ import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
 import { usePagination } from "@/lib/use-pagination";
 import { AddDoctorModal } from "./add-doctor-modal";
+import { CareTeamIndex } from "./care-team-index";
 import { doctors as seedDoctors, specialties, type Doctor, type Specialty } from "./data";
 import { DoctorCard } from "./doctor-card";
 import { DoctorSchedule } from "./doctor-schedule";
 import { SpecialtyDistribution } from "./specialty-distribution";
 import { TeamOverview } from "./team-overview";
-import { TeamStrip } from "./team-strip";
 import styles from "./doctors.module.css";
 
 type SpecialtyFilter = "All Doctors" | Specialty;
@@ -52,6 +52,8 @@ export function DoctorsView() {
       })),
     [team],
   );
+
+  const summary = `${team.length} doctors across ${new Set(team.map((doctor) => doctor.specialty)).size} specialties.`;
 
   /** Changing a filter always returns to the first page. */
   const filter = <T,>(setter: (value: T) => void) => (value: T) => {
@@ -103,20 +105,7 @@ export function DoctorsView() {
         }
       />
 
-      <TeamStrip
-        doctors={team}
-        availableSelected={slot === "Available today" && status !== "On Leave"}
-        leaveSelected={status === "On Leave"}
-        onShowAll={clearFilters}
-        onShowAvailable={() => {
-          clearFilters();
-          if (slot !== "Available today") setSlot("Available today");
-        }}
-        onShowLeave={() => {
-          clearFilters();
-          if (status !== "On Leave") setStatus("On Leave");
-        }}
-      />
+      <CareTeamIndex title="Your care team" summary={summary} doctors={team} />
 
       <SplitLayout
         sideLabel="Team summary"

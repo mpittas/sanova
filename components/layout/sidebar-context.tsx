@@ -29,6 +29,10 @@ function subscribe(onChange: () => void) {
   };
 }
 
+function subscribeNever() {
+  return () => {};
+}
+
 function getSnapshot() {
   try {
     return localStorage.getItem(STORAGE_KEY) === "1";
@@ -61,6 +65,12 @@ const SidebarContext = createContext<SidebarContextValue | null>(null);
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const collapsed = useSyncExternalStore(subscribe, getSnapshot, () => false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const hydrated = useSyncExternalStore(subscribeNever, () => true, () => false);
+
+  // The boot attribute (set before first paint, see app/layout.tsx) holds the rail until `collapsed` has caught up; only then hand over to data-collapsed.
+  useEffect(() => {
+    if (hydrated) document.documentElement.removeAttribute("data-sidebar-boot");
+  }, [hydrated]);
 
   const toggleCollapsed = useCallback(() => writeCollapsed(!getSnapshot()), []);
 

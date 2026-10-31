@@ -1,5 +1,7 @@
 .page { display: grid; gap: 20px; min-width: 0; }
 .page > :global(.page-header) { margin-bottom: 0; }
+.page :global(.card-heading) { gap: 4px; }
+.page :global(.card-heading h2) { font-size: 1.25rem; font-weight: 600; line-height: 1.3; }
 .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .rowWide { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); }
 .chartHead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }

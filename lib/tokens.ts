@@ -131,8 +131,8 @@ export const semantic = [
   { name: "surface", value: "#FFFFFF", usage: "Cards and inputs" },
   { name: "border", value: "#E6ECF5", usage: "Hairlines and dividers" },
   { name: "text", value: "#0F172A", usage: "Primary text" },
-  { name: "text-muted", value: "#64748B", usage: "Secondary text" },
-  { name: "text-subtle", value: "#94A3B8", usage: "Hints, axis labels, placeholders" },
+  { name: "text-muted", value: "#475569", usage: "Secondary text" },
+  { name: "text-subtle", value: "#64748B", usage: "Hints, axis labels, placeholders" },
   { name: "white", value: "#FFFFFF", usage: "Text on solid brand and status fills, reversed logo" },
 ] as const;
 

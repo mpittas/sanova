@@ -1,31 +1,23 @@
 "use client";
 
-import { useId, useState } from "react";
-import { LuArrowUpRight, LuClock, LuHeart, LuStar } from "react-icons/lu";
-import { TODAY } from "@/components/appointments/data";
-import { addDays, formatDate, formatTime } from "@/components/appointments/dates";
+import Link from "next/link";
+import { useState } from "react";
+import { LuHeart, LuStar } from "react-icons/lu";
 import { Avatar } from "@/components/ui/avatar";
+import { BookAppointmentButton } from "@/components/booking/book-appointment-button";
 import { Button } from "@/components/ui/button";
-import { Modal, ModalBody, ModalFooter, ModalHeader, ModalPanel } from "@/components/ui/modal";
-import { type Doctor } from "./data";
+import { doctorById, type Doctor } from "./data";
+import { slotLabel } from "./slot-label";
 import styles from "./doctors.module.css";
-
-/** "Today, 1:30 PM", "Tomorrow, 9:00 AM", or "May 16, 2024" once it is further out. */
-function slotLabel({ date, time }: Doctor["next"]) {
-  if (date === TODAY) return `Today, ${formatTime(time)}`;
-  if (date === addDays(TODAY, 1)) return `Tomorrow, ${formatTime(time)}`;
-  return formatDate(date, { month: "short", day: "numeric", year: "numeric" });
-}
 
 export function DoctorCard({ doctor }: { doctor: Doctor }) {
   const [favorite, setFavorite] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const titleId = useId();
   const onLeave = doctor.status === "On Leave";
+  // Doctors added during this session have no profile page yet, so their card stays a plain card.
+  const profileHref = doctorById(doctor.id) ? `/doctors/${doctor.id}` : null;
 
   return (
-    <>
-    <article className={styles.card}>
+    <article className={styles.card} data-linked={profileHref ? "" : undefined}>
       <Button
         variant="ghost"
         size="sm"
@@ -40,7 +32,13 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
 
       <div className={styles.identity}>
         <Avatar name={doctor.name} src={doctor.photo} size={56} online={!onLeave} />
-        <div className={styles.identityText}><h3>{doctor.name}</h3><p>{doctor.title}</p></div>
+        <div className={styles.identityText}>
+          <h3>
+            {/* The link's ::after covers the whole card, so clicking anywhere opens the profile. */}
+            {profileHref ? <Link href={profileHref} className={styles.cardLink}>{doctor.name}</Link> : doctor.name}
+          </h3>
+          <p>{doctor.title}</p>
+        </div>
       </div>
       <div className={styles.credentials}>
         <p className={styles.rating}>
@@ -60,16 +58,18 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
       </div>
 
       <p className={styles.next}>
-        <span className={styles.availabilityLabel}><LuClock aria-hidden />{onLeave ? "On leave · Returns" : "Next available"}</span>
+        <span className={styles.availabilityLabel}>{onLeave ? "On leave · Returns" : "Next available"}</span>
         <span className={styles.availabilityTime}>{slotLabel(doctor.next)}</span>
       </p>
 
       <div className={styles.actions}>
-        <button type="button" className={styles.profileLink} onClick={() => setProfileOpen(true)}>View profile <LuArrowUpRight /></button>
-        <Button href="/appointments" variant="soft" size="sm">Book visit</Button>
+        {profileHref && <span className={styles.profileLink} aria-hidden>View profile</span>}
+        {onLeave ? (
+          <Button variant="soft" size="sm" className={styles.book} disabled>Book visit</Button>
+        ) : (
+          <BookAppointmentButton prefill={{ doctorId: doctor.id }} variant="soft" size="sm" className={styles.book}>Book visit</BookAppointmentButton>
+        )}
       </div>
     </article>
-    <Modal open={profileOpen} onClose={() => setProfileOpen(false)} labelledBy={titleId} width={480}><ModalPanel><ModalHeader title={doctor.name} titleId={titleId} description={doctor.title} leading={<Avatar name={doctor.name} src={doctor.photo} size={56} />} onClose={() => setProfileOpen(false)} /><ModalBody><dl className={styles.profileDetails}><div><dt>Experience</dt><dd>{doctor.experience} years</dd></div><div><dt>Patients</dt><dd>{doctor.patients}</dd></div><div><dt>Location</dt><dd>{doctor.location.site}, {doctor.location.floor}</dd></div><div><dt>{onLeave ? "Returns" : "Next available"}</dt><dd>{slotLabel(doctor.next)}</dd></div></dl></ModalBody><ModalFooter><Button variant="secondary" onClick={() => setProfileOpen(false)}>Close</Button><Button href="/appointments">Book visit</Button></ModalFooter></ModalPanel></Modal>
-    </>
   );
 }

@@ -1,0 +1,49 @@
+/* Book Appointment dialog: only what is specific to choosing a mode, a day and a time.
+   Fields, the dropdowns, buttons and the dialog frame come from components/ui. */
+
+/* Visit mode: two clear choices. The chosen one is solid green, the other stays white with a visible edge. */
+.modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.modes button { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--control-lg); padding: 0 12px; border: 1px solid var(--color-neutral-300); border-radius: var(--radius-xl); background: var(--color-surface); color: var(--color-text); font: inherit; font-size: var(--font-size-base); font-weight: 500; cursor: pointer; transition: border-color .15s ease, background-color .15s ease, color .15s ease; }
+.modes button svg { flex: none; width: 18px; height: 18px; color: var(--color-text-muted); }
+.modes button:hover { border-color: var(--color-primary-400); }
+.modes button[aria-checked="true"] { border-color: var(--color-primary-600); background: var(--color-primary-600); color: #fff; }
+.modes button[aria-checked="true"] svg { color: #fff; }
+.modes button:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
+
+/* Date and time share one soft panel so they read as a single decision. */
+.schedule { display: flex; flex-direction: column; gap: var(--space-16); padding: var(--space-16) var(--space-20) var(--space-20); border: 1px solid var(--color-neutral-100); border-radius: var(--radius-2xl); background: var(--color-neutral-50); }
+.scheduleHead { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-12); }
+.scheduleHead h3 { margin: 0; font-size: var(--font-size-base); font-weight: 600; letter-spacing: -.01em; }
+
+.days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border: 1px solid var(--color-neutral-200); border-radius: 14px; background: var(--color-surface); color: var(--color-text); font: inherit; cursor: pointer; transition: border-color .15s ease; }
+.day span { color: var(--color-text-muted); font-size: 12px; }
+.day strong { font-size: 1.125rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.3; }
+.day:hover:not(:disabled) { border-color: var(--color-primary-400); }
+.day[aria-pressed="true"] { border-color: var(--color-primary-600); background: var(--color-primary-600); color: #fff; }
+.day[aria-pressed="true"] span { color: rgb(255 255 255 / .82); }
+.day:disabled { cursor: not-allowed; opacity: .45; }
+
+.periods { display: flex; flex-direction: column; gap: var(--space-12); outline: none; }
+.period { display: flex; flex-direction: column; gap: var(--space-8); }
+.period p { margin: 0; }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.slots button { height: 38px; border: 1px solid var(--color-neutral-200); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font: inherit; font-size: var(--font-size-md); font-variant-numeric: tabular-nums; cursor: pointer; transition: border-color .15s ease; }
+.slots button:hover { border-color: var(--color-primary-400); }
+.slots button[aria-pressed="true"] { border-color: var(--color-primary-600); background: var(--color-primary-600); color: #fff; }
+.day:focus-visible, .slots button:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
+
+/* The footer says who and when, with the actions on the right. */
+.footer { align-items: center; }
+.summary { display: flex; flex: 1; align-items: center; gap: var(--space-12); min-width: 0; }
+.summary p { display: flex; flex-direction: column; gap: 1px; margin: 0; min-width: 0; line-height: 1.3; }
+.summary strong { overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.summary span { display: inline-flex; align-items: center; gap: 5px; }
+.summary svg { width: 13px; height: 13px; }
+
+@media (max-width: 640px) {
+  .days { grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); }
+  .schedule { padding: var(--space-14); }
+  .footer { flex-wrap: wrap; }
+  .summary { flex-basis: 100%; }
+}

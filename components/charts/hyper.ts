@@ -15,6 +15,35 @@ export function hyperGradient(color: HyperColor, direction = "to top") {
   return `linear-gradient(${direction}, ${from}, ${to})`;
 }
 
+// ---------------------------------------------------------------------------------------------
+// Line charts (trends and stat-tile sparklines) share one look, so they are defined once here.
+// ---------------------------------------------------------------------------------------------
+
+/** Stroke colour of a line: the 500 step of its tone, or the 300 step for the quieter second series. */
+export const lineColor = ({ tone, soft }: HyperColor) => palette[tone][soft ? 300 : 500];
+
+/** The wash under every line fades from this opacity to nothing, in the line's own colour. */
+export const LINE_WASH_OPACITY = 0.16;
+
+/** Dashed hairline guides, as fractions of the plot height. */
+export const LINE_GUIDES = [0.25, 0.5, 0.75] as const;
+
+/** Smooth curve through the points (Catmull-Rom as cubic Béziers), kept inside the plot so it never overshoots. */
+export function smoothPath(points: readonly (readonly [number, number])[], height: number) {
+  const [first, ...rest] = points;
+  const clamp = (y: number) => Math.min(Math.max(y, 0), height);
+  let path = `M${first[0]},${first[1]}`;
+  rest.forEach((point, index) => {
+    const before = points[Math.max(index - 1, 0)];
+    const start = points[index];
+    const after = points[Math.min(index + 2, points.length - 1)];
+    const c1 = [start[0] + (point[0] - before[0]) / 6, clamp(start[1] + (point[1] - before[1]) / 6)];
+    const c2 = [point[0] - (after[0] - start[0]) / 6, clamp(point[1] - (after[1] - start[1]) / 6)];
+    path += ` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${point[0]},${point[1]}`;
+  });
+  return path;
+}
+
 /** Rounds an axis step up to the next tidy number (1, 2, 2.5, 4, 5, 8, 10 × 10ⁿ), keeping the axis close to the data. */
 export function niceStep(raw: number) {
   const power = 10 ** Math.floor(Math.log10(raw || 1));

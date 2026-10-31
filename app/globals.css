@@ -25,7 +25,12 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-bg);
+  /* Pearl page: off-white with a soft glow at the top right. Cards are white, so they stand out on it. */
+  background-color: #f4f6f5;
+  background-image:
+    radial-gradient(60% 50% at 80% 0%, rgb(255 255 255 / 0.95), transparent 100%),
+    linear-gradient(145deg, #fbfbfa 0%, #eef3f1 55%, #e6efea 100%);
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);

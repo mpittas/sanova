@@ -39,7 +39,7 @@ export const stats: {
     period: "vs last month",
     icon: LuUsers,
     tone: "primary",
-    trend: [38, 46, 54, 48, 38, 34, 44, 58, 64, 56, 52, 62],
+    trend: [44, 38, 46, 54, 48, 38, 34, 44, 58, 64, 56, 52, 62],
   },
   {
     id: "appointments",
@@ -49,13 +49,14 @@ export const stats: {
     period: "vs last week",
     icon: LuCalendarCheck,
     tone: "blue",
-    trend: [44, 36, 28, 34, 46, 56, 50, 38, 30, 40, 54, 48],
+    // Bookings per hour, 8am to 6pm. They add up to the 28 above.
+    trend: [2, 3, 4, 3, 1, 3, 4, 3, 2, 2, 1],
   },
   {
     id: "doctors",
     label: "Available Doctors",
     value: "14",
-    change: "2%",
+    change: "2",
     period: "vs last month",
     icon: LuUserRound,
     tone: "violet",

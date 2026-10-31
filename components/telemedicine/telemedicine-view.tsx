@@ -171,7 +171,7 @@ export function TelemedicineView() {
       <div className={styles.workspace}>
         <div className={styles.mainColumn}>
         <Card rounded padding="none" className={styles.list}>
-        <header className={styles.listHeader}><div><h2>{heading[tab].title} <span>{counts[tab]}</span></h2><p>{heading[tab].description}</p></div><Select size="sm" aria-label="Session type" value={tab} options={tabs} onChange={changeTab} /></header>
+        <header className={styles.listHeader}><h2>{heading[tab].title} <span>{counts[tab]}</span></h2><Select size="sm" aria-label="Session type" value={tab} options={tabs} onChange={changeTab} /></header>
         <div className={styles.filters}>
         <FilterBar>
           <SearchInput

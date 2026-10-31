@@ -4,7 +4,7 @@ import { AppointmentsCalendar } from "@/components/dashboard/appointments-calend
 import { DepartmentOverview } from "@/components/dashboard/department-overview";
 import { PatientDemographics } from "@/components/dashboard/patient-demographics";
 import { DashboardHeader } from "@/components/dashboard/page-header";
-import { StatCards } from "@/components/dashboard/stat-cards";
+import { KpiCards } from "@/components/dashboard/kpi-cards";
 import { UpcomingAppointments } from "@/components/dashboard/upcoming-appointments";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageContent } from "@/components/layout/page-content";
@@ -17,7 +17,7 @@ export default function DashboardPage() {
       <PageContent>
         <div className={styles.dash}>
           <DashboardHeader />
-          <StatCards />
+          <KpiCards />
           <div className={`${styles.row} ${styles.rowWide}`}>
             <div className={styles.column}>
               <UpcomingAppointments />

@@ -1,0 +1,99 @@
+/* "Your care team" banner on the Doctors page: today as a timeline, with each available doctor at their next free slot. */
+
+.ruler { position: relative; isolation: isolate; overflow: hidden; display: grid; gap: 12px; padding: 22px 24px 18px; border-radius: 18px; background: radial-gradient(55% 80% at 100% 0%, rgb(236 242 255 / .6) 0, transparent 70%), #fff; color: var(--color-text); box-shadow: 0 0 0 1px var(--color-border), 0 1px 2px rgb(15 23 42 / .04), 0 16px 36px -22px rgb(30 50 110 / .22); container-type: inline-size; }
+.ruler h2 { margin: 0; color: var(--color-text); font-size: 21px; font-weight: 600; letter-spacing: -.035em; line-height: 1.3; }
+.ruler p { margin: 6px 0 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.5; }
+.rulerHead { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; }
+.rulerStats { display: flex; gap: 14px 0; flex-wrap: wrap; }
+.stat { display: grid; gap: 3px; color: var(--color-text); }
+.stat + .stat { margin-left: 26px; padding-left: 26px; border-left: 1px solid var(--color-border); }
+.stat b { font-family: var(--font-figure); font-size: 22px; font-weight: 400; line-height: 1.2; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.stat small { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-muted); white-space: nowrap; }
+.stat small > * { box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--tone-bg); border-radius: 50%; }
+
+.glass { margin: 0 -24px; padding: 0 38px; }
+.stage { position: relative; height: 182px; }
+/* A soft blue band behind the timeline, fading out on every side. */
+.stage::before { content: ""; position: absolute; inset: 12px -38px 0; background: linear-gradient(90deg, rgb(236 242 255 / .6) 0%, rgb(241 245 255 / .6) 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%), linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%), linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%); mask-composite: intersect; pointer-events: none; }
+
+/* Hour gridlines, dashed like graph paper. */
+.grid { position: absolute; inset: 30px 0 30px; }
+.grid i { position: absolute; top: 0; bottom: 0; width: 1px; background: repeating-linear-gradient(180deg, rgb(30 50 110 / .07) 0 3px, transparent 3px 7px); }
+
+/* The part of the day that has passed sweeps in from the left and stops at the current time. */
+.elapsed { position: absolute; top: 30px; bottom: 30px; left: 0; width: calc(var(--now) * 100%); background: linear-gradient(90deg, rgb(205 220 255 / 0) 0%, rgb(205 220 255 / .5) 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%), linear-gradient(180deg, transparent 0%, #000 45%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 55%), linear-gradient(180deg, transparent 0%, #000 45%); mask-composite: intersect; transform-origin: left; animation: sweep 1.1s cubic-bezier(.22, 1, .36, 1) backwards .15s; }
+@keyframes sweep { from { transform: scaleX(0); opacity: 0; } }
+
+.nowMark { position: absolute; top: 0; bottom: 30px; z-index: 2; width: 0; pointer-events: none; animation: markIn .7s cubic-bezier(.22, 1, .36, 1) backwards .9s; }
+@keyframes markIn { from { opacity: 0; transform: translateY(-8px); } }
+.nowPill { position: absolute; top: 0; left: 0; display: inline-flex; align-items: center; gap: 7px; padding: 3px 10px 3px 8px; border-radius: 999px; background: var(--color-neutral-800); color: #fff; font-size: 11px; font-weight: 600; white-space: nowrap; transform: translateX(-50%); box-shadow: 0 6px 14px -6px rgb(15 23 42 / .5); }
+.nowPill::after { content: ""; position: absolute; top: 100%; left: 50%; border: 4px solid transparent; border-top-color: var(--color-neutral-800); transform: translateX(-50%); }
+.nowPill i { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--color-primary-300); }
+.nowPill i::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 1.5px solid var(--color-primary-300); opacity: 0; animation: pulse 2s ease-out infinite 1.4s; }
+@keyframes pulse { 0% { transform: scale(.6); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
+.nowLine { position: absolute; top: 26px; bottom: 0; left: -.75px; width: 1.5px; background: linear-gradient(180deg, var(--color-neutral-800) 0%, var(--color-neutral-700) 100%); }
+.nowLine::after { content: ""; position: absolute; bottom: -4px; left: 50%; width: 8px; height: 8px; border-radius: 50%; background: var(--color-neutral-800); box-shadow: 0 0 0 2.5px #fff, 0 0 0 6px rgb(30 41 59 / .1); transform: translateX(-50%); }
+
+/* A slot: portrait, time chip and a dotted stem down to the axis. Levels lift it so close slots do not overlap. Each takes the pastel of its specialty. */
+.slot { position: absolute; bottom: 30px; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; transform: translateX(-50%); transition: opacity .25s var(--ease-standard); animation: slotIn .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i) * 90ms + 1000ms); }
+@keyframes slotIn { from { opacity: 0; transform: translateX(-50%) translateY(18px) scale(.7); } }
+.slot[data-level="0"] .stem { height: 8px; }
+.slot[data-level="1"] .stem { height: 74px; }
+.slot:focus-visible { outline: none; }
+.face { position: relative; display: flex; border-radius: 50%; box-shadow: 0 0 0 3px var(--tone-bg), 0 0 0 4px #fff, 0 4px 10px -2px rgb(30 50 110 / .18); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1), box-shadow .3s var(--ease-standard); }
+.slot:hover .face, .slot:focus-visible .face, .slot[data-current] .face { transform: translateY(-4px) scale(1.12); box-shadow: 0 0 0 3px var(--tone-bg), 0 0 0 5px var(--tone-fg), 0 10px 18px -6px rgb(30 50 110 / .3); }
+/* The next free slot (the one named in the header) breathes a soft ring in its colour. */
+.slot[data-next] .face::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid var(--tone-fg); opacity: 0; pointer-events: none; animation: halo 2.6s ease-out infinite 2s; }
+@keyframes halo { 0% { transform: scale(.9); opacity: .55; } 100% { transform: scale(1.4); opacity: 0; } }
+.chip { margin-top: 5px; padding: 1px 9px; border-radius: 999px; background: var(--tone-bg); color: var(--tone-strong); font-family: var(--font-figure); font-size: 11px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone-fg) 14%, transparent); transition: background-color .25s var(--ease-standard), color .25s var(--ease-standard); }
+.slot[data-next] .chip, .slot[data-current] .chip { background: var(--tone-fg); color: #fff; box-shadow: 0 3px 8px -3px var(--tone-fg); }
+.stem { position: relative; width: 1.5px; margin-top: 3px; background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--tone-fg) 55%, transparent) 0 2px, transparent 2px 5px); }
+.stem::after { content: ""; position: absolute; bottom: -4px; left: 50%; width: 7px; height: 7px; border-radius: 50%; background: var(--tone-fg); box-shadow: 0 0 0 2px #fff; transform: translateX(-50%); transition: transform .25s var(--ease-standard), box-shadow .25s var(--ease-standard); }
+.slot:hover .stem::after, .slot[data-current] .stem::after { transform: translateX(-50%) scale(1.3); box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--tone-bg); }
+.glass[data-active] .slot:not([data-current]) { opacity: .4; }
+.slot[data-current] { z-index: 5; }
+.slot[data-past] .face { filter: grayscale(.8); opacity: .7; }
+.slot[data-past] .chip { background: var(--color-neutral-100); color: var(--color-text-subtle); box-shadow: none; }
+.slot[data-past] .stem { background: repeating-linear-gradient(180deg, var(--color-neutral-300) 0 2px, transparent 2px 5px); }
+.slot[data-past] .stem::after { background: var(--color-neutral-400); }
+
+/* The card beside the hovered portrait. */
+.tip { position: absolute; top: 0; left: calc(50% + 30px); display: grid; gap: 1px; min-width: 150px; padding: 10px 14px; border-radius: 12px; background: rgb(255 255 255 / .94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--color-text); text-align: left; white-space: nowrap; box-shadow: 0 0 0 1px var(--color-border), 0 14px 28px -14px rgb(30 50 110 / .3); opacity: 0; pointer-events: none; transform: translateX(-6px) scale(.96); transform-origin: left top; transition: opacity .2s var(--ease-standard), transform .25s cubic-bezier(.34, 1.56, .64, 1); }
+.slot[data-flip] .tip { right: calc(50% + 30px); left: auto; transform: translateX(6px) scale(.96); transform-origin: right top; }
+.slot[data-current] .tip { z-index: 3; opacity: 1; transform: none; }
+.tip strong { font-size: 13px; font-weight: 600; letter-spacing: -.01em; }
+.tip small { font-size: 11px; color: var(--color-text-muted); }
+.tip em { width: fit-content; margin-top: 6px; padding: 1px 8px; border-radius: 999px; background: var(--tone-bg); color: var(--tone-strong); font-size: 11px; font-style: normal; font-weight: 600; }
+
+/* The axis is a ruler: half-hour ticks hang below it, and the part of the day that has passed is inked in blue. */
+.ticks { position: absolute; right: 0; bottom: 30px; left: 0; height: 0; }
+.ticks::before, .ticks::after { content: ""; position: absolute; top: 0; height: 1px; }
+.ticks::before { right: -14px; left: -14px; background: var(--color-neutral-200); }
+.ticks::after { left: 0; width: calc(var(--now) * 100%); height: 2px; margin-top: -.5px; border-radius: 2px; background: linear-gradient(90deg, var(--color-blue-200), var(--color-blue-500)); transform-origin: left; animation: sweep 1.1s cubic-bezier(.22, 1, .36, 1) backwards .15s; }
+.ticks i { position: absolute; top: 1px; width: 1px; height: 4px; background: var(--color-neutral-300); transform: translateX(-.5px); }
+.ticks i[data-kind="hour"] { height: 7px; }
+.ticks i[data-past] { background: var(--color-blue-300); }
+
+.hours { position: absolute; right: 0; bottom: 0; left: 0; height: 16px; margin: 0; padding: 0; list-style: none; }
+.hours li { position: absolute; transform: translateX(-50%); color: var(--color-text-muted); font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hours li[data-minor] { opacity: 0; }
+.hours li[data-past] { color: var(--color-neutral-400); }
+
+.rulerFoot { display: flex; align-items: center; justify-content: space-between; gap: 8px 20px; flex-wrap: wrap; padding-top: 12px; border-top: 1px dashed var(--color-border); color: var(--color-text-muted); font-size: 11px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; padding: 0; list-style: none; }
+.legend li { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 7px; height: 7px; border-radius: 50%; background: var(--tone-fg); box-shadow: 0 0 0 3px var(--tone-bg); }
+
+/* Narrow: smaller portraits so neighbouring slots fit side by side (the levels use CLOSE_PX in day-ruler.tsx). */
+@container (max-width: 520px) {
+  .stat + .stat { margin-left: 20px; padding-left: 20px; }
+  .face > :global(.avatar) { --size: 30px !important; }
+  .chip { padding: 0 7px; font-size: 10px; }
+  .tip { left: calc(50% + 26px); }
+  .slot[data-flip] .tip { right: calc(50% + 26px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elapsed, .ticks::after, .nowMark, .slot, .nowPill i::after, .slot[data-next] .face::after { animation: none; }
+  .slot, .face, .tip, .stem::after { transition: none; }
+}

@@ -2,29 +2,33 @@
 
 /* ---------- Patient card ---------- */
 
-/* Shared with clinical pages: soft mint, clear identity, and quiet health tiles. */
-.patientCard { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .9fr); align-items: center; gap: 24px; padding: 24px; border: 1px solid #ece8e3; border-radius: 18px; background: #ece8e3; color: #332d27; }
-.patientCard::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: url("/branding/sanova-organic-contours.svg"); background-repeat: no-repeat; background-position: center; background-size: cover; opacity: .06; }
-.pcMain { display: flex; align-items: flex-start; gap: 16px; min-width: 0; }
-.pcPortrait { flex: none; width: 80px; height: 80px; }
-.pcPortrait img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+/* Shared with clinical pages: a quiet white card. One accent (the brand green on the status dot), neutral ink everywhere else,
+   and the interface font throughout. */
+.patientCard { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px 40px; padding: 22px 28px; border-radius: 18px; background: #fff; color: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-border), 0 1px 2px rgb(15 23 42 / .04), 0 14px 32px -22px rgb(15 23 42 / .18); }
+.pcMain { display: flex; align-items: center; gap: 20px; min-width: 0; }
+.pcPortrait { flex: none; width: 88px; height: 88px; }
+.pcPortrait img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 4px #fff, 0 0 0 5px var(--color-border); }
 .pcIdentity { min-width: 0; }
-.pcName { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; color: #332d27; font-size: 20px; font-weight: 600; letter-spacing: -.035em; line-height: 1.35; }
-.pcStatus { display: inline-flex; align-items: center; gap: 5px; color: #615a52; font-size: 11px; font-weight: 400; letter-spacing: 0; }
-.pcStatus::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--color-primary-600); }
-.pcMeta { margin: 6px 0 0; color: #615a52; font-size: 13px; line-height: 1.5; }
-.pcBirth { margin: 4px 0 0; color: #615a52; font-size: 12px; line-height: 1.5; }
-.pcLocation { display: flex; align-items: center; gap: 5px; margin: 12px 0 0; color: #615a52; font-size: 12px; }
-.pcLocation svg { flex: none; width: 13px; height: 13px; }
-.pcFacts { display: grid; grid-template-columns: minmax(100px, .65fr) minmax(0, 1.35fr); gap: 12px; margin: 0; }
-.pcFacts > div { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 16px; border: 0; border-radius: 12px; background: #ded9d2; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); min-width: 0; }
-.pcFacts dt { display: flex; align-items: center; gap: 7px; color: #615a52; font-size: 12px; line-height: 1.5; }
+.pcName { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0; color: var(--color-text); font-size: 22px; font-weight: 600; letter-spacing: -.035em; line-height: 1.3; }
+.pcStatus { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px 2px 8px; border-radius: 999px; background: var(--color-primary-50); color: var(--color-primary-700); font-size: 12px; font-weight: 500; letter-spacing: 0; line-height: 1.5; }
+.pcStatus::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary-500); }
+.pcMeta { margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px; line-height: 1.5; }
+.pcBirth { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; margin: 2px 0 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.5; }
+.pcBirth > span { display: inline-flex; align-items: center; gap: 5px; }
+.pcBirth svg { flex: none; width: 13px; height: 13px; }
+.pcFacts { display: flex; margin: 0; }
+.pcFacts > div { display: flex; flex-direction: column; justify-content: center; gap: 6px; min-width: 0; padding: 4px 32px; border-left: 1px solid var(--color-border); }
+.pcFacts > div:last-child { padding-right: 0; }
+.pcFacts dt { display: flex; align-items: center; gap: 7px; color: var(--color-text-muted); font-size: 12.5px; line-height: 1.5; }
 .pcFacts dt svg { flex: none; width: 15px; height: 15px; }
-.pcFacts dd { margin: 0; font-family: var(--font-figure); color: #332d27; font-size: 22px; font-weight: 400; letter-spacing: -.03em; line-height: 1.4; overflow-wrap: anywhere; }
-.pcFacts dd[data-alert] { color: var(--color-coral-700); font-size: 14px; font-weight: 500; letter-spacing: 0; }
-.pcFacts > div[data-alert] dt svg { color: var(--color-coral-700); }
-@container (max-width: 750px) { .patientCard { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px; } }
-@container (max-width: 460px) { .pcMain { gap: 12px; } .pcName { font-size: 18px; } .pcFacts { grid-template-columns: minmax(90px, .65fr) minmax(0, 1.35fr); gap: 10px; } .pcFacts > div { padding: 14px; } }
+.pcFacts dd { margin: 0; color: var(--color-text); font-size: 20px; font-weight: 600; letter-spacing: -.03em; line-height: 1.35; overflow-wrap: anywhere; }
+/* Allergies matter most, so they keep one small signal: a coral icon, with the value in the same ink as everything else. */
+.pcFacts dd[data-alert] { font-size: 15px; letter-spacing: -.01em; }
+.pcFacts > div[data-alert] dt svg { color: var(--color-coral-500); }
+@container (max-width: 750px) { .patientCard { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 20px; } .pcFacts > div:first-child { padding-left: 0; border-left: 0; } }
+@container (max-width: 460px) { .pcMain { gap: 14px; } .pcPortrait { width: 68px; height: 68px; } .pcName { font-size: 19px; } .pcFacts > div { padding: 4px 18px; } }
+
 /* ---------- Workspace ---------- */
 
 .workspace {
@@ -45,36 +49,18 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 22px 24px 6px;
+  padding: 22px 24px 18px;
 }
 
-.workspaceHeading h2 {
-  margin-bottom: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-}
-
-.workspaceHeading p {
-  font-size: 0.8125rem;
-}
-
-.recordCount {
-  flex: none;
-  padding: 5px 12px;
-  border-radius: 8px;
-  background: #f1f5f2;
-  color: var(--color-text-muted);
-  font-size: 12px;
-  font-weight: 500;
-}
+.workspaceHeading h2 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.125rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.3; }
+.recordCount { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 4px; border-radius: 7px; background: var(--color-neutral-100); color: var(--color-text-muted); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0; }
 
 .toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  padding: 16px 24px 20px;
+  padding: 0 24px 20px;
   border-bottom: 1px solid var(--color-neutral-100);
 }
 
@@ -252,7 +238,7 @@
   font-size: 15px;
 }
 
-/* Small, neutral fact tiles with restrained colour in the icons. */
+/* Fact tiles in a flat tint of their own colour: no border, no gradient. */
 .healthFacts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -265,13 +251,13 @@
   flex-direction: column;
   gap: 2px;
   padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: #f8faf8;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--tone-fg) 13%, #fff);
 }
 
 .healthFacts > div > :first-child {
   margin-bottom: 10px;
+  background: #fff;
 }
 
 .healthFacts > div[data-wide] {
@@ -280,7 +266,7 @@
 
 .healthFacts dd {
   margin: 0;
-  color: var(--color-text);
+  color: color-mix(in srgb, var(--tone-strong) 70%, var(--color-neutral-600));
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -288,7 +274,7 @@
 }
 
 .healthFacts dt {
-  color: var(--color-neutral-600);
+  color: var(--color-text);
   font-size: 13px;
 }
 
@@ -455,4 +441,17 @@
   .entry {
     transition: none;
   }
+}
+
+.workspaceHeading { gap: 10px; border-bottom: 1px solid var(--color-neutral-100); }
+.workspaceHeading h2, .headerSearch { flex: 1; min-width: 0; }
+.headerTools { display: flex; align-items: center; gap: 8px; flex: none; }
+.searchToggle { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--color-border); border-radius: 10px; background: white; color: var(--color-text-muted); cursor: pointer; }
+.searchToggle svg { width: 17px; height: 17px; }
+@container (max-width: 520px) {
+  .workspaceHeading { flex-wrap: wrap; gap: 10px; }
+  .workspaceHeading h2, .headerSearch { flex-basis: 100%; }
+  .headerTools { width: 100%; }
+  .headerTools :global(.select) { flex: 1; min-width: 0; }
+  .headerTools :global(.select) select { width: 100%; }
 }

@@ -311,46 +311,46 @@
 /* ---------- Collapsed rail (desktop) ---------- */
 
 @media (min-width: 901px) {
-  .sidebar[data-collapsed] {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) {
     --sidebar-width: 78px;
   }
 
-  .sidebar[data-collapsed] .top {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .top {
     justify-content: center;
     padding: 0;
   }
 
-  .sidebar[data-collapsed] .brandText,
-  .sidebar[data-collapsed] .label,
-  .sidebar[data-collapsed] .profileText,
-  .sidebar[data-collapsed] .logout {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .brandText,
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .label,
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .profileText,
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .logout {
     display: none;
   }
 
-  .sidebar[data-collapsed] .sectionLabel {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .sectionLabel {
     height: 1px;
     margin: var(--space-8) var(--space-12);
     background: var(--color-border);
   }
 
-  .sidebar[data-collapsed] .sectionLabel span {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .sectionLabel span {
     display: none;
   }
 
-  .sidebar[data-collapsed] .section:first-child .sectionLabel {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .section:first-child .sectionLabel {
     display: none;
   }
 
-  .sidebar[data-collapsed] .item {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .item {
     justify-content: center;
     padding: 0;
   }
 
-  .sidebar[data-collapsed] .item[data-active]::before {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .item[data-active]::before {
     left: -14px;
   }
 
-  .sidebar[data-collapsed] .badge {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .badge {
     position: absolute;
     top: 6px;
     right: 8px;
@@ -364,7 +364,7 @@
     font-size: 0;
   }
 
-  .sidebar[data-collapsed] .profile {
+  .sidebar:is([data-collapsed], :global(html[data-sidebar-boot]) *) .profile {
     justify-content: center;
     padding: var(--space-6) 0;
     background: transparent;

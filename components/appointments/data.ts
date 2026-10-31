@@ -227,8 +227,20 @@ export const stats: {
   /** Highlights the tile as the most important figure on the page. */
   featured?: boolean;
 }[] = [
-  { id: "upcoming", label: "Upcoming", value: countStage("Upcoming"), change: "8%", period: "from last week", icon: LuClock, tone: "amber", deltaTone: "success", featured: true },
+  { id: "upcoming", label: "Upcoming", value: countStage("Upcoming"), change: "8%", period: "from last week", icon: LuClock, tone: "amber", deltaTone: "success" },
   { id: "total", label: "Total Appointments", value: month.length, change: "12%", period: "from last month", icon: LuCalendar, tone: "blue", deltaTone: "success" },
   { id: "completed", label: "Completed", value: countStage("Completed"), change: "20%", period: "from last month", icon: LuCircleCheck, tone: "success", deltaTone: "success" },
   { id: "cancelled", label: "Cancelled", value: countStage("Cancelled"), change: "50%", period: "from last month", icon: LuCircleX, tone: "coral", deltaTone: "danger" },
 ];
+
+/** One weekday of the month of `TODAY`, with its visits split by stage. Drives the day-by-day strips on the stat tickets. */
+export type MonthDay = { date: ISODate; Upcoming: number; Completed: number; Cancelled: number };
+
+export const monthDays: MonthDay[] = [];
+for (let date = startOfMonth(TODAY); date <= endOfMonth(TODAY); date = addDays(date, 1)) {
+  const weekday = dayOfWeek(date);
+  if (weekday === 0 || weekday === 6) continue;
+  const day: MonthDay = { date, Upcoming: 0, Completed: 0, Cancelled: 0 };
+  for (const item of month) if (item.date === date) day[stageOf(item.status)]++;
+  monthDays.push(day);
+}
