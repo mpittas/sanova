@@ -6,16 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
-import { SearchInput } from "@/components/ui/search-input";
+import { ListHeading } from "@/components/ui/list-heading";
 import { Select } from "@/components/ui/select";
 import { ToneTile } from "@/components/ui/tone-tile";
-import { statusFilters, statusOfTest, testStatusMeta, type LabTest, type StatusFilter } from "./data";
+import { ranges, statusFilters, statusOfTest, testStatusMeta, type LabTest, type Range, type StatusFilter } from "./data";
 import styles from "./lab-results.module.css";
 
 type LabTestListProps = {
   tests: readonly LabTest[];
   selectedId: string | undefined;
   onSelect: (id: string) => void;
+  range: Range;
+  onRangeChange: (range: Range) => void;
   status: StatusFilter;
   onStatusChange: (status: StatusFilter) => void;
   query: string;
@@ -27,6 +29,8 @@ export function LabTestList({
   tests,
   selectedId,
   onSelect,
+  range,
+  onRangeChange,
   status,
   onStatusChange,
   query,
@@ -39,8 +43,14 @@ export function LabTestList({
       padding="none"
       className={styles.listCard}
     >
-      <header className={styles.listHeader}><h2>Lab tests <span>{tests.length}</span></h2><Select size="sm" aria-label="Filter by result" value={status} options={statusFilters} onChange={onStatusChange} /></header>
-      <div className={styles.search}><SearchInput label="Search lab tests" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search tests or reason…" /></div>
+      <ListHeading
+        title="Lab tests"
+        count={tests.length}
+        search={{ label: "Search lab tests", placeholder: "Search tests or reason…", value: query, onChange: onQueryChange }}
+      >
+        <Select size="md" aria-label="Time range" value={range} options={ranges} onChange={onRangeChange} />
+        <Select size="md" aria-label="Filter by result" value={status} options={statusFilters} onChange={onStatusChange} />
+      </ListHeading>
 
       {tests.length > 0 ? (
         <ul className={styles.tests} aria-label="Lab tests">

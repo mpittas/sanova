@@ -1,0 +1,90 @@
+/* Reports KPI cards: calm white cards, one figure and one line each. Move across a line and the figure shows that month.
+   The tone of a card comes from data-tone and feeds the --c-* colours of its line. */
+
+.grid {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-20);
+  container-type: inline-size;
+}
+@container (max-width: 1040px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (max-width: 520px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+.kpi {
+  --c-100: var(--color-primary-100); --c-500: var(--color-primary-500); --c-600: var(--color-primary-600);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: enter 0.6s var(--ease) backwards;
+  animation-delay: calc(var(--i) * 70ms);
+}
+.kpi[data-tone="blue"] { --c-100: var(--color-blue-100); --c-500: var(--color-blue-500); --c-600: var(--color-blue-600); }
+.kpi[data-tone="violet"] { --c-100: var(--color-violet-100); --c-500: var(--color-violet-500); --c-600: var(--color-violet-600); }
+.kpi[data-tone="amber"] { --c-100: var(--color-amber-100); --c-500: var(--color-amber-500); --c-600: var(--color-amber-600); }
+.grid .kpi.kpi { padding: var(--space-20); }
+@keyframes enter { from { opacity: 0; transform: translateY(10px); } }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); }
+.label { display: inline-flex; align-items: center; gap: var(--space-8); color: var(--color-text-muted); font-size: 0.8125rem; font-weight: 500; }
+/* The icon carries the card's colour; there is no tile around it. */
+.label svg { width: 16px; height: 16px; color: var(--c-600); }
+
+.figure {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-6);
+  margin: var(--space-16) 0 0;
+  color: #333;
+  font-family: var(--font-figure);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.figure small { color: var(--color-text-muted); font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 500; letter-spacing: 0; }
+.caption { margin: var(--space-8) 0 0; color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.5; }
+
+/* ---------- The line ---------- */
+
+.chart {
+  position: relative;
+  height: 76px;
+  margin-top: var(--space-20);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+.chart svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.line {
+  fill: none;
+  stroke: var(--c-500);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.chart:hover .line { stroke: var(--c-600); }
+
+/* A hairline marks the month under the pointer. */
+.guide { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed var(--c-500); opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
+.chart:hover .guide { opacity: 0.45; }
+.dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 3px solid var(--c-600);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--c-100);
+  pointer-events: none;
+  transition: left 0.18s var(--ease), top 0.18s var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi { animation: none; }
+  .dot { transition: none; }
+}

@@ -17,7 +17,7 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
   const profileHref = doctorById(doctor.id) ? `/doctors/${doctor.id}` : null;
 
   return (
-    <article className={styles.card} data-linked={profileHref ? "" : undefined}>
+    <article className={`glass ${styles.card}`} data-linked={profileHref ? "" : undefined}>
       <Button
         variant="ghost"
         size="sm"

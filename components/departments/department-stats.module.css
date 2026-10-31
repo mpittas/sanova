@@ -1,4 +1,4 @@
-/* Department summary tiles: label and icon, figure with a note chip beside it, and a soft area wave, all in the
+/* Department summary tiles: label and icon, figure with a note chip beside it, and a smooth line along the bottom, all in the
    tile's tone (data-tone sets --tone-bg / --tone-fg). */
 
 .tile {
@@ -7,17 +7,6 @@
   gap: var(--space-8);
   padding: var(--space-16) var(--space-20) var(--space-20);
   overflow: hidden;
-}
-
-/* A soft wash of the tone in the top-right corner, behind the icon. */
-.tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(220px 140px at 100% 0%, color-mix(in srgb, var(--tone-bg) 90%, transparent), transparent 70%);
 }
 
 .top {
@@ -99,20 +88,6 @@
   }
 }
 
-/* The wash is revealed left to right in step with the line. */
-.waveWash {
-  animation: reveal var(--wave-draw) var(--wave-ease) both;
-}
-
-@keyframes reveal {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
 /* Rides the tip of the line along the same path, with the same timing, then settles with one soft pulse. */
 .waveDot {
   position: absolute;
@@ -157,7 +132,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .waveLine,
-  .waveWash,
   .waveDot,
   .waveDot::after {
     animation: none;

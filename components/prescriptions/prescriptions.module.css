@@ -5,12 +5,8 @@
 .listCard { display: flex; flex-direction: column; }
 .listFooter { margin-top: auto; }
 .detail { height: 100%; }
-.listHeader { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 22px 24px 18px; }
-.listHeader h2 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.125rem; font-weight: 600; letter-spacing: -0.025em; }
-.listHeader h2 span { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 7px; background: var(--color-neutral-100); font-size: 0.6875rem; color: var(--color-text-muted); }
-.listHeader p { margin: 5px 0 0; color: var(--color-text-muted); font-size: 0.8125rem; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 0 24px 20px; }
-.medications { display: grid; gap: 8px; margin: 0; padding: 0 14px 14px; list-style: none; }
+.medications { display: grid; gap: 8px; margin: 0; padding: 14px 14px 14px; list-style: none; }
 .rx { display: block; width: 100%; padding: 16px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface); color: var(--color-text); font: inherit; text-align: left; cursor: pointer; transition: background-color .15s, border-color .15s; }
 .rx:hover { background: #f7f9f7; border-color: #cbdcd1; }
 .rx[aria-pressed="true"] { background: #f0f2f4; border-color: #e3e7eb; }
@@ -54,7 +50,7 @@
 @container (max-width: 950px) { .workspace { grid-template-columns: minmax(0, 1fr); } }
 @container (max-width: 520px) {
   .workspace { gap: 16px; }
-  .listHeader, .detailHeader { padding-left: 16px; padding-right: 16px; }
+  .detailHeader { padding-left: 16px; padding-right: 16px; }
   .filters { padding-left: 16px; padding-right: 16px; }
   .detailBody { padding: 18px; }
   .rx { padding: 12px; }
@@ -87,15 +83,3 @@
 }
 @media (prefers-reduced-motion: reduce) { .medicationVisual img { transition: none; } }
 
-.listHeader { flex-wrap: nowrap; gap: 10px; }
-.listHeader h2 { flex: 1; min-width: 0; }
-.listTools { display: flex; align-items: center; gap: 8px; flex: none; }
-.searchToggle { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--color-border); border-radius: 10px; background: white; color: var(--color-text-muted); cursor: pointer; }
-.searchToggle svg { width: 17px; height: 17px; }
-.headerSearch { flex: 1; min-width: 0; }
-@container (max-width: 520px) {
-  .listHeader { gap: 6px; }
-  .listTools { gap: 4px; }
-  .listTools :global(.select) select { padding-left: 8px; padding-right: 26px; font-size: 0.75rem; }
-  .searchToggle { width: 38px; height: 40px; }
-}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LuArrowDownToLine, LuCalendarCheck, LuClock3, LuSmile, LuWallet } from "react-icons/lu";
+import { LuArrowDownToLine } from "react-icons/lu";
 import { ChartSummary } from "@/components/dashboard/chart-summary";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,9 @@ import { Card } from "@/components/ui/card";
 import { Delta } from "@/components/ui/delta";
 import { Legend, LegendItem } from "@/components/ui/legend";
 import { Segmented } from "@/components/ui/segmented";
-import { StatGrid, StatTile } from "@/components/ui/stat-tile";
 import { Table, Th } from "@/components/ui/table";
 import { palette } from "@/lib/tokens";
+import { ReportKpis } from "./report-kpis";
 import { DepartmentDonut, QualityChart, RevenueChart, VisitsHeatmap, WeekdayChart, heatRamp } from "./reports-charts";
 import { busiestDays, departmentMix, last, monthly, months, percentChange, rangeLength, ranges, sum, type Range } from "./data";
 import styles from "./reports.module.css";
@@ -41,9 +41,7 @@ export function ReportsView() {
   const satisfaction = last(monthly.satisfaction, length);
   const visits = inPerson.map((value, index) => value + telemedicine[index]);
   const totalVisits = sum(visits);
-  const totalCollected = sum(collected);
   const totalBilled = sum(billed);
-  const since = `since ${labels[0]}`;
   const departmentVisits = departmentMix.map(({ share }) => Math.round((totalVisits * share) / 100));
   const departmentColors = departmentMix.map(({ tone }) => palette[tone][500]);
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => {
@@ -86,12 +84,15 @@ export function ReportsView() {
         }
       />
 
-      <StatGrid>
-        <StatTile label="Patient visits" value={count(totalVisits)} icon={LuCalendarCheck} tone="primary" change={percentChange(visits[0], visits[length - 1])} period={`${since}, per month`} trend={visits} />
-        <StatTile label="Revenue collected" value={thousands(totalCollected)} icon={LuWallet} tone="blue" change={percentChange(collected[0], collected[length - 1])} period={`${since}, per month`} trend={collected} />
-        <StatTile label="Average wait" value={`${wait[length - 1]} min`} icon={LuClock3} tone="amber" period={`Down from ${wait[0]} min ${since}`} trend={wait} />
-        <StatTile label="Satisfaction" value={`${satisfaction[length - 1]}%`} icon={LuSmile} tone="violet" change={`${satisfaction[length - 1] - satisfaction[0]} pts`} period={since} trend={satisfaction} />
-      </StatGrid>
+      <ReportKpis
+        months={labels}
+        visits={visits}
+        collected={collected}
+        wait={wait}
+        satisfaction={satisfaction}
+        visitsChange={percentChange(visits[0], visits[length - 1])}
+        revenueChange={percentChange(collected[0], collected[length - 1])}
+      />
 
       <div className={`${styles.row} ${styles.rowWide}`}>
         <Card title="Visits" description="Visits by weekday and month" action={<Delta value={percentChange(visits[0], visits[length - 1])} variant="chip" />}>

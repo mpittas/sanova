@@ -16,7 +16,9 @@ import { NoResults } from "@/components/ui/no-results";
 import { ResultsFooter } from "@/components/ui/results-footer";
 import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
+import { Tabs, tabId } from "@/components/ui/tabs";
 import { initialSessions, tabs, type CallType, type Session, type SessionTab } from "./data";
+import { ClinicBanner } from "./clinic-banner";
 import { NewSessionModal } from "./new-session-modal";
 import { QuickActions } from "./quick-actions";
 import { SessionDetailsModal } from "./session-details-modal";
@@ -25,6 +27,7 @@ import { WeekCalendar } from "./week-calendar";
 import styles from "./telemedicine.module.css";
 
 const PAGE_SIZE = 5;
+const PANEL_ID = "telemedicine-sessions";
 
 const heading: Record<SessionTab, { title: string; description: string }> = {
   Upcoming: { title: "Upcoming Consultations", description: "Scheduled video and audio visits." },
@@ -113,6 +116,11 @@ export function TelemedicineView() {
     reset();
   };
 
+  const next = useMemo(
+    () => sessions.filter((session) => session.status === "in-progress" || (session.tab === "Upcoming" && session.status === "scheduled")).sort((a, b) => Number(b.status === "in-progress") - Number(a.status === "in-progress") || `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`))[0],
+    [sessions],
+  );
+
   const diary = useMemo(() => sessions.filter((session) => session.tab === "Upcoming" || session.tab === "Past Sessions"), [sessions]);
   /** Everything that already takes up time, for spotting clashes when booking. */
   const busy = useMemo(() => [...appointments.filter((item) => item.status !== "cancelled"), ...diary.filter((session) => session.status !== "cancelled")], [diary]);
@@ -163,15 +171,16 @@ export function TelemedicineView() {
         }
       />
 
-      <section className={styles.summaryStrip} aria-label="Virtual care summary">
-        <div className={styles.summaryTitle}><span className={styles.summaryIcon}><LuVideo aria-hidden /></span><div><strong>Your virtual clinic</strong><span>Care, wherever your patients are.</span></div></div>
-        <dl className={styles.summaryStats}><div><dt>Upcoming</dt><dd>{counts.Upcoming}</dd></div><div><dt>Waiting now</dt><dd>{counts["Instant Consult"]}</dd></div><div><dt>Requests</dt><dd>{counts.Requested}</dd></div></dl>
-      </section>
+      <ClinicBanner counts={counts} next={next} handlers={handlers} onSelectTab={changeTab} />
         <Notice message={notice} onDismiss={() => setNotice(null)} />
       <div className={styles.workspace}>
         <div className={styles.mainColumn}>
         <Card rounded padding="none" className={styles.list}>
-        <header className={styles.listHeader}><h2>{heading[tab].title} <span>{counts[tab]}</span></h2><Select size="sm" aria-label="Session type" value={tab} options={tabs} onChange={changeTab} /></header>
+        <header className={styles.listHeader}>
+          <h2>{heading[tab].title}</h2>
+          <p>{heading[tab].description}</p>
+        </header>
+        <Tabs variant="pill" aria-label="Session type" value={tab} options={tabs} counts={counts} panelId={PANEL_ID} onChange={changeTab} />
         <div className={styles.filters}>
         <FilterBar>
           <SearchInput
@@ -215,6 +224,7 @@ export function TelemedicineView() {
         )}
 
         </div>
+          <div id={PANEL_ID} role="tabpanel" aria-labelledby={tabId(PANEL_ID, tab)}>
           {visible.length > 0 ? (
             <ul className={styles.rows} aria-label={heading[tab].title}>
               {visible.map((session) => (
@@ -237,6 +247,7 @@ export function TelemedicineView() {
               }
             />
           )}
+          </div>
         <div className={styles.listFooter}>
         <ResultsFooter
           firstIndex={firstIndex}

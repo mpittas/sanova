@@ -1,0 +1,76 @@
+/* Telemedicine banner: the same quiet white card as the patient and care-team banners. */
+
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-16) var(--space-32);
+  padding: var(--space-16) var(--space-24);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-border), 0 1px 2px rgb(15 23 42 / 0.04), 0 14px 32px -22px rgb(15 23 42 / 0.18);
+  container-type: inline-size;
+}
+
+.title { display: flex; flex: none; align-items: center; gap: var(--space-12); }
+.icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--color-primary-50); color: var(--color-primary-600); }
+.icon svg { width: 20px; height: 20px; }
+.title h2 { margin: 0; font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+.title p { margin: 2px 0 0; color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.5; }
+
+/* Each count opens its list. */
+.stats { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
+.stats li + li { border-left: 1px solid var(--color-border); }
+.stats button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--space-6) var(--space-24);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.stats li:first-child button { padding-left: 0; }
+.stats button:hover { background: var(--color-neutral-50); }
+.stats li:first-child button:hover { background: transparent; }
+.stats button:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
+.stats b { font-family: var(--font-figure); font-size: 1.75rem; font-weight: 400; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; line-height: 1.1; }
+.stats span { color: var(--color-text-muted); font-size: 0.75rem; }
+/* A count that needs attention (people waiting, requests to answer) is green. */
+.stats [data-hot] b { color: var(--color-primary-600); }
+
+/* The session to start next, on the right: plain content after a divider, not a card of its own. */
+.next {
+  display: flex;
+  flex: 1 1 340px;
+  align-items: center;
+  gap: var(--space-12);
+  min-width: 0;
+  margin-left: auto;
+  padding-left: var(--space-32);
+  border-left: 1px solid var(--color-border);
+}
+.nextText { display: grid; flex: 1; min-width: 0; gap: 1px; }
+.nextLabel { color: var(--color-primary-700); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.nextText strong { overflow: hidden; font-size: 0.875rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.nextVisit { overflow: hidden; color: var(--color-text-muted); font-size: 0.75rem; text-overflow: ellipsis; white-space: nowrap; }
+.nextAction { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-8); }
+
+@container (max-width: 900px) {
+  .next { flex-basis: 100%; margin-left: 0; padding: var(--space-16) 0 0; border-top: 1px solid var(--color-border); border-left: 0; }
+}
+@container (max-width: 560px) {
+  .banner { padding: var(--space-16); }
+  .stats { width: 100%; }
+  .stats li { flex: 1; }
+  .stats button { padding-inline: var(--space-12); }
+  .next { flex-wrap: wrap; }
+  .nextAction { width: 100%; justify-content: flex-start; }
+}

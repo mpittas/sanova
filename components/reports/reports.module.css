@@ -31,16 +31,52 @@ table.summary th:last-child, table.summary td:last-child { padding-right: 0; }
 .facts dd { margin: 0; font-size: 0.875rem; font-weight: 600; color: #333; white-space: nowrap; }
 .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .sparkAxis { display: flex; justify-content: space-between; margin: 6px 0 0; }
-/* Heatmap figures drop in row by row, top to bottom, just after their cells appear. */
+/* ---------- Visits heatmap: plain cells, no grid lines. Rows appear one after another, top to bottom. ---------- */
+
+.heat { --label: 38px; --gap: 6px; display: grid; gap: var(--gap); }
+.heatRow { display: grid; grid-template-columns: var(--label) repeat(var(--cols), minmax(0, 1fr)); align-items: center; gap: var(--gap); }
+.heatDay, .heatMonth { color: #718077; font-size: 0.6875rem; font-weight: 500; }
+.heatMonth { text-align: center; }
+.heatCell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--fill);
+  color: var(--ink);
+  font-family: var(--font-figure);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  cursor: default;
+  transition: filter 0.15s ease;
+}
+.heatCell:hover { filter: brightness(0.94); }
+.heatCell::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 5;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  padding: 3px 8px;
+  border-radius: 7px;
+  background: #1f2937;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.15s ease, transform 0.2s ease;
+}
+.heatCell:hover::after { opacity: 1; transform: translate(-50%, 0); }
 @media (prefers-reduced-motion: no-preference) {
-  .heatChart :global(.apexcharts-heatmap-series .apexcharts-data-labels) { animation: figureIn 340ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(1) .apexcharts-data-labels) { animation-delay: 140ms; }
-  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(2) .apexcharts-data-labels) { animation-delay: 210ms; }
-  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(3) .apexcharts-data-labels) { animation-delay: 280ms; }
-  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(4) .apexcharts-data-labels) { animation-delay: 350ms; }
-  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(5) .apexcharts-data-labels) { animation-delay: 420ms; }
-  .heatChart :global(.apexcharts-heatmap-series:nth-of-type(6) .apexcharts-data-labels) { animation-delay: 490ms; }
-  @keyframes figureIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .heatRow[data-row] { animation: rowIn 520ms cubic-bezier(0.22, 1, 0.36, 1) backwards; animation-delay: calc(var(--r) * 90ms + 80ms); }
+  .heatRow[data-axis] { animation: rowIn 520ms cubic-bezier(0.22, 1, 0.36, 1) backwards; animation-delay: 620ms; }
+  @keyframes rowIn { from { opacity: 0; transform: translateY(-10px); } }
 }
 @container (max-width: 1000px) { .row, .rowWide { grid-template-columns: minmax(0, 1fr); } }
 @container (max-width: 560px) { .visitsBody { grid-template-columns: minmax(0, 1fr); } .facts { grid-template-columns: minmax(0, 1fr); } }

@@ -1,7 +1,6 @@
-import { LuInfo } from "react-icons/lu";
 import type { ReactNode } from "react";
 
-/** Title block at the top of every page: a plain title and one muted line, with optional eyebrow above and actions on the right. */
+/** Title block at the top of every page: a plain title with one muted line under it, an optional eyebrow above and actions on the right. */
 export function PageHeader({
   title,
   description,
@@ -17,9 +16,8 @@ export function PageHeader({
     <div className="page-header">
       <div className="page-header-text">
         {eyebrow}
-        <div className="page-header-heading"><h1 className="page-header-title">{title}</h1>
-          {description && <span className="page-header-info"><button type="button" aria-label="About this page"><LuInfo aria-hidden /></button><span role="tooltip">{description}</span></span>}
-        </div>
+        <h1 className="page-header-title">{title}</h1>
+        {description && <p className="page-header-description">{description}</p>}
       </div>
       {actions && <div className="page-header-actions">{actions}</div>}
     </div>

@@ -11,7 +11,7 @@ type TabsProps<T extends string> = {
   icons?: Partial<Record<T, ReactNode>>;
   /** Optional count badge after a tab's label. */
   counts?: Partial<Record<T, number>>;
-  /** `underline` (default) sits on a divider; `pill` outlines the active tab, for tabs above a table or list inside a card. */
+  /** `underline` (default) sits on a divider; `pill` fills the active tab dark, for tabs above a table or list inside a card. */
   variant?: "underline" | "pill";
   "aria-label": string;
 };
@@ -33,7 +33,7 @@ export function Tabs<T extends string>({ value, options, onChange, panelId, icon
           {icons?.[option]}
           {option}
           {counts?.[option] !== undefined && (
-            <Counter size="sm" tone={option === value ? "primary" : "neutral"} aria-hidden>
+            <Counter size="sm" tone="neutral" aria-hidden>
               {counts[option]}
             </Counter>
           )}

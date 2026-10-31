@@ -8,8 +8,7 @@ import { PatientCrumbs } from "@/components/patient-record/patient-crumbs";
 import { patient } from "@/components/patient-record/data";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Select } from "@/components/ui/select";
-import { labTests, ranges, rangeStart, statusOfTest, type Range, type StatusFilter } from "./data";
+import { labTests, rangeStart, statusOfTest, type Range, type StatusFilter } from "./data";
 import { LabTestDetail } from "./lab-test-detail";
 import { LabTestList } from "./lab-test-list";
 import styles from "./lab-results.module.css";
@@ -53,13 +52,12 @@ export function LabResultsView() {
         eyebrow={<PatientCrumbs current="Lab Results" />}
         title="Lab Results"
         description="View and analyze lab results, track trends, and monitor patient progress."
-        actions={<Select size="md" aria-label="Time range" value={range} options={ranges} onChange={setRange} />}
       />
 
       <PatientBanner />
 
       <div className={styles.workspace}>
-        <LabTestList tests={visible} selectedId={selected?.id} onSelect={select} status={status} onStatusChange={setStatus} query={query} onQueryChange={setQuery} onClear={clearFilters} />
+        <LabTestList tests={visible} selectedId={selected?.id} onSelect={select} range={range} onRangeChange={setRange} status={status} onStatusChange={setStatus} query={query} onQueryChange={setQuery} onClear={clearFilters} />
           <div ref={detailRef} className={styles.detailWrap}>
             {selected ? (
               // Reset the trend parameter when a different test is selected.

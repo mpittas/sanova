@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useState, type CSSProperties, type KeyboardEvent } from "react";
 import styles from "./appointments.module.css";
 
 export type StripDay = {
@@ -19,6 +19,13 @@ export type StripDay = {
  */
 export function DayStrip({ days, label }: { days: readonly StripDay[]; label: string }) {
   const [active, setActive] = useState<number | null>(null);
+  // The bars rise only once the page has mounted and painted. Started earlier, the animation would run its clock
+  // while the page is still busy and its first frames would be skipped.
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => requestAnimationFrame(() => setReady(true)));
+    return () => cancelAnimationFrame(frame);
+  }, []);
   const todayIndex = Math.max(0, days.findIndex((day) => day.today));
   const current = active === null ? null : days[active];
 
@@ -41,6 +48,7 @@ export function DayStrip({ days, label }: { days: readonly StripDay[]; label: st
       aria-label={label}
       tabIndex={0}
       data-active={active !== null || undefined}
+      data-ready={ready || undefined}
       onPointerLeave={() => setActive(null)}
       onBlur={() => setActive(null)}
       onKeyDown={onKeyDown}

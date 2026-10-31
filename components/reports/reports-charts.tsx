@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import type { ApexOptions } from "apexcharts";
 import { Chart } from "@/components/charts/chart";
 import { palette } from "@/lib/tokens";
@@ -29,40 +29,44 @@ const compact = (value: number) => new Intl.NumberFormat("en-US", { notation: "c
 /** Pastel mint deepening to a rich emerald: dark figures on the lighter steps, white on the deepest one. */
 export const heatRamp = ["#E8F6EF", "#C8E9D8", "#9FD9BD", "#5DB892", "#23865F"];
 
-/** Visits as a heatmap: one rounded cell per weekday and month, shaded in five steps of the brand green. */
+/** Visits as a heatmap: one rounded cell per weekday and month, shaded in five steps of the brand green. Plain cells with
+    no grid lines; the rows appear one after another from the top. */
 export function VisitsHeatmap({ months, days, matrix }: { months: readonly string[]; days: readonly string[]; matrix: readonly (readonly number[])[] }) {
   const flat = matrix.flat();
   const low = Math.min(...flat);
   const high = Math.max(...flat);
   const step = (high - low) / heatRamp.length;
-  const options = useMemo<ApexOptions>(() => base({
-    chart: { type: "heatmap", animations: { enabled: true, speed: 260, animateGradually: { enabled: true, delay: 18 }, dynamicAnimation: { enabled: true, speed: 220 } } },
-    dataLabels: {
-      enabled: true,
-      style: {
-        fontSize: "12px",
-        fontWeight: 500,
-        colors: days.map(() => ({ seriesIndex, dataPointIndex }: { seriesIndex: number; dataPointIndex: number }) => (Math.min(Math.floor((matrix.toReversed()[seriesIndex][dataPointIndex] - low) / (step || 1)), heatRamp.length - 1) >= 4 ? "#ffffff" : "#24453a")),
-      },
-    },
-    stroke: { width: 3, colors: ["#fff"] },
-    plotOptions: {
-      heatmap: {
-        radius: 10,
-        enableShades: false,
-        useFillColorAsStroke: false,
-        colorScale: { ranges: heatRamp.map((color, index) => ({ from: index === 0 ? 0 : Math.round(low + step * index), to: index === heatRamp.length - 1 ? high + 1 : Math.round(low + step * (index + 1)) - 1, color })) },
-      },
-    },
-    grid: { padding: { top: -6, right: 6, bottom: -6, left: 8 } },
-    xaxis: { type: "category", categories: [...months], position: "bottom", axisBorder: { show: false }, axisTicks: { show: false }, labels: axisLabels, tooltip: { enabled: false } },
-    yaxis: { labels: { ...axisLabels, minWidth: 34, offsetX: 0 } },
-    tooltip: { theme: "light", shared: false, intersect: true, y: { formatter: (value) => `${value} visits` } },
-  }), [months, days, matrix, low, high, step]);
-  const series = useMemo(() => days.map((name, index) => ({ name, data: [...matrix[index]] })).toReversed(), [days, matrix]);
+  const level = (value: number) => Math.min(Math.floor((value - low) / (step || 1)), heatRamp.length - 1);
+
   return (
-    <div className={styles.heatChart}>
-      <Chart type="heatmap" height={250} options={options} series={series} />
+    // Keyed by the number of months, so switching the range plays the reveal again.
+    <div key={months.length} className={styles.heat} role="table" aria-label="Visits by weekday and month" style={{ "--cols": months.length } as CSSProperties}>
+      {days.map((day, row) => (
+        <div key={day} className={styles.heatRow} role="row" data-row style={{ "--r": row } as CSSProperties}>
+          <span className={styles.heatDay} role="rowheader">{day}</span>
+          {months.map((month, column) => {
+            const value = matrix[row][column];
+            const step5 = level(value);
+            return (
+              <span
+                key={month}
+                className={styles.heatCell}
+                role="cell"
+                data-tip={`${day} · ${month} · ${value} visits`}
+                style={{ "--fill": heatRamp[step5], "--ink": step5 >= 4 ? "#ffffff" : "#24453a" } as CSSProperties}
+              >
+                {value}
+              </span>
+            );
+          })}
+        </div>
+      ))}
+      <div className={styles.heatRow} role="row" data-axis>
+        <span />
+        {months.map((month) => (
+          <span key={month} className={styles.heatMonth} role="columnheader">{month}</span>
+        ))}
+      </div>
     </div>
   );
 }

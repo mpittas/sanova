@@ -174,7 +174,7 @@
   line-height: 1.3;
 }
 
-/* One bar per weekday of the month, drawn from the schedule. The bars rise in a wave when the page loads; hover or focus
+/* One bar per weekday of the month, drawn from the schedule. The bars rise together when the page loads; hover or focus
    one to read that day while the rest dim. A dot under the bar marks today. */
 .strip {
   position: relative;
@@ -219,18 +219,42 @@
   gap: 1px;
   width: 100%;
   height: calc(18% + var(--h) * 82%);
-  border-radius: 3px;
-  overflow: hidden;
   transform-origin: bottom;
   transition:
     opacity var(--duration-base) var(--ease-standard),
     transform var(--duration-base) var(--ease-standard);
-  animation: barRise 620ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: calc(var(--i) * 22ms + 120ms);
+}
+
+/* The whole strip rises as one piece, from its baseline, once it is ready: four animated layers on the page instead of
+   one per bar (about ninety), which is what made the load stutter. Only transform and opacity change, and will-change puts
+   the strip on its own layer before the animation starts, so nothing has to be painted when it begins. */
+.strip {
+  transform-origin: bottom;
+  will-change: transform, opacity;
+}
+
+.strip:not([data-ready]) {
+  opacity: 0;
+  transform: scaleY(0);
+}
+
+.strip[data-ready] {
+  animation: barRise 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.bar i:first-child { border-radius: 0 0 3px 3px; }
+.bar i:last-child { border-radius: 3px 3px 0 0; }
+.bar i:only-child { border-radius: 3px; }
+
+/* The ticket's glass blur sits behind a card that is almost opaque; animating bars over a live blur costs a repaint of it every frame. */
+.ticket.ticket {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .day[data-empty] .bar {
   height: 3px;
+  border-radius: 3px;
   background: var(--color-neutral-200);
 }
 
@@ -310,7 +334,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bar {
+  .strip[data-ready] {
     animation: none;
   }
 

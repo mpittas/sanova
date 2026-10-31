@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type SyntheticEvent } from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import type { IconType } from "react-icons";
 import {
   LuBuilding2,
@@ -83,22 +83,59 @@ function NavItem({
   onNavigate: () => void;
 }) {
   const { label, icon: Icon, href, badge } = entry;
-  const [tip, setTip] = useState<{ top: number; left: number } | null>(null);
+  const [tip, setTip] = useState<{ top: number; left: number; source: "pointer" | "focus"; item: HTMLElement } | null>(null);
 
-  const showTip = (event: SyntheticEvent<HTMLElement>) => {
+  // The rail opening or closing moves the items without any mouse event, so a tip from before is not shown again later.
+  const [wasCollapsed, setWasCollapsed] = useState(collapsed);
+  if (wasCollapsed !== collapsed) {
+    setWasCollapsed(collapsed);
+    setTip(null);
+  }
+
+  const showTip = (source: "pointer" | "focus") => (event: SyntheticEvent<HTMLElement>) => {
+    // Touch has no hover: a tap would leave the tip stuck, since no pointer ever leaves. Keyboard focus only counts when it is visible focus, not the focus a click leaves behind.
+    if (source === "pointer" && (event as unknown as PointerEvent).pointerType !== "mouse") return;
+    if (source === "focus" && !event.currentTarget.matches(":focus-visible")) return;
     const rect = event.currentTarget.getBoundingClientRect();
-    setTip({ top: rect.top + rect.height / 2, left: rect.right + 12 });
+    setTip({ top: rect.top + rect.height / 2, left: rect.right + 12, source, item: event.currentTarget });
   };
   const hideTip = () => setTip(null);
+
+  // Safety net while a tip is up: it can miss a "leave" (the item moved or scrolled under a still pointer, the window lost
+  // focus), and a fixed tip would then hang on screen. Any of these takes it down.
+  const source = tip?.source;
+  const item = tip?.item;
+  useEffect(() => {
+    if (!source) return;
+    const hide = () => setTip(null);
+    const onMove = (event: PointerEvent) => {
+      if (source === "pointer" && !item?.contains(event.target as Node)) hide();
+    };
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && hide();
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("scroll", hide, true);
+    document.addEventListener("keydown", onKey);
+    window.addEventListener("resize", hide);
+    window.addEventListener("blur", hide);
+    return () => {
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("scroll", hide, true);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", hide);
+      window.removeEventListener("blur", hide);
+    };
+  }, [source, item]);
 
   const shared = {
     className: styles.item,
     "aria-current": active ? ("page" as const) : undefined,
     "aria-label": collapsed ? label : undefined,
     "data-active": active || undefined,
-    onMouseEnter: showTip,
-    onMouseLeave: hideTip,
-    onFocus: showTip,
+    onPointerEnter: showTip("pointer"),
+    onPointerLeave: hideTip,
+    onPointerCancel: hideTip,
+    onPointerDown: hideTip,
+    onFocus: showTip("focus"),
     onBlur: hideTip,
   };
 

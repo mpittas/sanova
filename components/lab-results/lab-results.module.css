@@ -1,17 +1,12 @@
 /* Lab workspace: compact reports, restrained colour and shared card surfaces. */
-.workspace { --color-text-muted: #59697f; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); align-items: start; gap: 24px; --font-numeric: var(--font-sans); }
+.workspace { --color-text-muted: #59697f; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; gap: 24px; --font-numeric: var(--font-sans); }
 .workspace :global(.num) { font-stretch: normal; }
 .detailWrap { min-width: 0; scroll-margin-top: 88px; }
 .listCard, .detail { overflow: hidden; }
-.listHeader { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 22px 20px 18px; }
-.listHeader h2 { display: flex; align-items: center; gap: 8px; font-size: 1.125rem; font-weight: 600; letter-spacing: -.025em; }
-.listHeader h2 span { display: grid; place-items: center; min-width: 22px; height: 22px; border-radius: 7px; background: var(--color-neutral-100); color: var(--color-text-muted); font-size: .6875rem; }
-.listHeader p { margin-top: 5px; font-size: .8125rem; color: var(--color-text-muted); }
-.search { padding: 0 20px 18px; }
-.tests { display: grid; gap: 8px; margin: 0; padding: 0 12px 14px; list-style: none; }
+.tests { display: grid; gap: 8px; margin: 0; padding: 14px 14px 14px; list-style: none; }
 .test { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 16px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface); color: var(--color-text); font: inherit; text-align: left; cursor: pointer; transition: border-color .15s, background-color .15s; }
 .test:hover { border-color: #cbdcd1; background: #f8faf8; }
-.test[aria-pressed="true"] { border-color: #ddefe5; background: #ddefe5; }
+.test[aria-pressed="true"] { border-color: #e3e7eb; background: #f0f2f4; }
 .test:focus-visible { outline: 2px solid var(--color-primary-600); outline-offset: 3px; }
 .testText { display: grid; gap: 5px; min-width: 0; }
 .testText strong { font-size: .8125rem; font-weight: 600; letter-spacing: -.015em; line-height: 1.45; }
@@ -73,8 +68,7 @@
 @container (max-width: 950px) { .workspace { grid-template-columns: minmax(0, 1fr); } }
 @container (max-width: 520px) {
  .workspace { gap: 16px; }
- .listHeader, .reportBar { padding-left: 16px; padding-right: 16px; }
- .search { padding-left: 16px; padding-right: 16px; }
+ .reportBar { padding-left: 16px; padding-right: 16px; }
  .detailHead { padding: 18px 16px 0; }
  .panel { padding: 18px 16px; }
  .test { padding: 12px; }
