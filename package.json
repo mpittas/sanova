@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "figma:sync": "node scripts/figma-sync.mjs sync",
+    "figma:check": "node scripts/figma-sync.mjs check",
+    "figma:mark": "node scripts/figma-sync.mjs mark"
   },
   "dependencies": {
     "apexcharts": "^8.2.0",

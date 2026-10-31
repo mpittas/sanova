@@ -1,0 +1,425 @@
+{
+  "$comment": "Source of truth for the code-to-Figma mapping. Edit this file, then run `npm run figma:sync`. status: figma = exists in the Design System page, local = built locally in a screen/holder, missing = not in Figma yet. `file` may be a path or a list of paths (extra files are hashed too).",
+  "figmaFile": "kh9tzGfOy87OHDkuoNekJ3",
+  "tokens": {
+    "file": "lib/tokens.ts",
+    "styles": "app/ui.css",
+    "figma": {
+      "colorCollection": "Color",
+      "radiusCollection": "Radius",
+      "spacingCollection": "Spacing",
+      "textStyles": "Text/*",
+      "effectStyles": "Shadow/*"
+    },
+    "note": "80 palette hex values; figma variables mirror palette, semantic, radius, space, typeScale and shadow exports."
+  },
+  "components": [
+    {
+      "react": "Button",
+      "file": "components/ui/button.tsx",
+      "status": "figma",
+      "figma": "Button",
+      "variants": "Variant (Primary, Secondary, Soft, Ghost, Danger) x Size (Sm, Md, Lg) x State (Default, Hover, Disabled)",
+      "notes": "Icon-only buttons use 'Icon Button'."
+    },
+    {
+      "react": "Button (icon only)",
+      "file": "components/ui/button.tsx",
+      "status": "figma",
+      "figma": "Icon Button"
+    },
+    {
+      "react": "Chip",
+      "file": "components/ui/chip.tsx",
+      "status": "figma",
+      "figma": "Chip",
+      "variants": "Tone x Variant x Size"
+    },
+    {
+      "react": "Counter",
+      "file": "components/ui/counter.tsx",
+      "status": "figma",
+      "figma": "Counter",
+      "variants": "Tone x Size",
+      "notes": "Tabs counts are always the neutral tone now (the primary tone on the active tab was removed)."
+    },
+    {
+      "react": "Delta",
+      "file": "components/ui/delta.tsx",
+      "status": "figma",
+      "figma": "Delta",
+      "variants": "Style x Tone x Direction"
+    },
+    {
+      "react": "Avatar",
+      "file": "components/ui/avatar.tsx",
+      "status": "figma",
+      "figma": "Avatar / Avatar Rounded",
+      "variants": "Tint x Size"
+    },
+    {
+      "react": "ToneTile",
+      "file": "components/ui/tone-tile.tsx",
+      "status": "figma",
+      "figma": "Tone Tile"
+    },
+    {
+      "react": "SearchInput",
+      "file": "components/ui/search-input.tsx",
+      "status": "figma",
+      "figma": "Search Input"
+    },
+    {
+      "react": "TextInput",
+      "file": "components/ui/text-input.tsx",
+      "status": "figma",
+      "figma": "Text Input",
+      "variants": "Show icon x Size x State"
+    },
+    {
+      "react": "TextArea",
+      "file": "components/ui/text-input.tsx",
+      "status": "local",
+      "figma": "TextArea"
+    },
+    {
+      "react": "Select",
+      "file": "components/ui/select.tsx",
+      "status": "figma",
+      "figma": "Select / Select Field"
+    },
+    {
+      "react": "Listbox",
+      "file": "components/ui/listbox.tsx",
+      "status": "missing",
+      "figma": "Listbox (closed trigger + open panel)",
+      "notes": "Custom dropdown used in the booking flow and filter bars."
+    },
+    {
+      "react": "Checkbox",
+      "file": "components/ui/checkbox.tsx",
+      "status": "figma",
+      "figma": "Checkbox"
+    },
+    {
+      "react": "Switch",
+      "file": "components/ui/switch.tsx",
+      "status": "missing",
+      "figma": "Switch (On, Off, Disabled)",
+      "notes": "Used on Settings."
+    },
+    {
+      "react": "Segmented",
+      "file": "components/ui/segmented.tsx",
+      "status": "figma",
+      "figma": "Segmented",
+      "drift": "Active segment is now neutral/900 fill with white text (was primary/50 with primary/600 text)."
+    },
+    {
+      "react": "Tabs",
+      "file": "components/ui/tabs.tsx",
+      "status": "figma",
+      "figma": "Tabs",
+      "drift": "Underline variant: active text and 2px bar are neutral/900 (was primary). Pill variant: active tab is a filled neutral/900 pill with white text (was outlined). Counts are neutral."
+    },
+    {
+      "react": "FilterChips",
+      "file": "components/ui/filter-chips.tsx",
+      "status": "figma",
+      "figma": "Filter Chip"
+    },
+    {
+      "react": "ChoiceChips",
+      "file": "components/ui/filter-chips.tsx",
+      "status": "figma",
+      "figma": "Choice Chip"
+    },
+    {
+      "react": "ProgressBar",
+      "file": "components/ui/progress-bar.tsx",
+      "status": "figma",
+      "figma": "Progress Bar",
+      "variants": "Tone x Size"
+    },
+    {
+      "react": "Legend",
+      "file": "components/ui/legend.tsx",
+      "status": "figma",
+      "figma": "Legend Item"
+    },
+    {
+      "react": "Card",
+      "file": "components/ui/card.tsx",
+      "status": "figma",
+      "figma": "Card",
+      "variants": "Show header x Show description x Padding x Rounded",
+      "notes": "No content slot: build content as a local auto-layout frame."
+    },
+    {
+      "react": "StatTile",
+      "file": "components/ui/stat-tile.tsx",
+      "status": "figma",
+      "figma": "Stat Tile",
+      "variants": "Tone x Delta"
+    },
+    {
+      "react": "InfoTile",
+      "file": "components/ui/info-tile.tsx",
+      "status": "figma",
+      "figma": "Info Tile",
+      "variants": "Tone x Style"
+    },
+    {
+      "react": "ActionTile",
+      "file": "components/ui/action-tile.tsx",
+      "status": "figma",
+      "figma": "Action Tile",
+      "variants": "Tone x State"
+    },
+    {
+      "react": "DetailItem",
+      "file": "components/ui/detail-list.tsx",
+      "status": "figma",
+      "figma": "Detail Item",
+      "variants": "Style"
+    },
+    {
+      "react": "Person",
+      "file": "components/ui/person.tsx",
+      "status": "local",
+      "figma": "Person"
+    },
+    {
+      "react": "Table",
+      "file": "components/ui/table.tsx",
+      "status": "figma",
+      "figma": "Table Header Cell + Table / Banded or Table / Simple"
+    },
+    {
+      "react": "Pagination",
+      "file": "components/ui/pagination.tsx",
+      "status": "figma",
+      "figma": "Pagination + Page Button"
+    },
+    {
+      "react": "EmptyState / NoResults",
+      "file": [
+        "components/ui/empty-state.tsx",
+        "components/ui/no-results.tsx"
+      ],
+      "status": "figma",
+      "figma": "Empty State"
+    },
+    {
+      "react": "Field",
+      "file": "components/ui/field.tsx",
+      "status": "figma",
+      "figma": "Field",
+      "variants": "State x Required"
+    },
+    {
+      "react": "Stepper",
+      "file": "components/ui/stepper.tsx",
+      "status": "figma",
+      "figma": "Stepper Step"
+    },
+    {
+      "react": "ImageUpload",
+      "file": "components/ui/image-upload.tsx",
+      "status": "figma",
+      "figma": "Image Upload"
+    },
+    {
+      "react": "SplitLayout",
+      "file": "components/layout/split-layout.tsx",
+      "status": "figma",
+      "figma": "Split Layout",
+      "variants": "Side"
+    },
+    {
+      "react": "Notice",
+      "file": "components/ui/notice.tsx",
+      "status": "figma",
+      "figma": "Notice"
+    },
+    {
+      "react": "Modal (+ ModalPanel/Header/Body/Footer/Form)",
+      "file": "components/ui/modal.tsx",
+      "status": "figma",
+      "figma": "Modal",
+      "notes": "Parts ModalPanel, ModalHeader, ModalBody, ModalFooter, ModalForm are built locally."
+    },
+    {
+      "react": "Drawer",
+      "file": "components/ui/drawer.tsx",
+      "status": "missing",
+      "figma": "Drawer",
+      "notes": "Patient drawer on Patients."
+    },
+    {
+      "react": "Popover",
+      "file": "components/ui/popover.tsx",
+      "status": "missing",
+      "figma": "Popover / Notification Popover",
+      "notes": "Header notification and profile menus (see menu-item, menu-profile, notif)."
+    },
+    {
+      "react": "SettingsGroup",
+      "file": "components/ui/settings-group.tsx",
+      "status": "missing",
+      "figma": "Settings Group + Setting Row",
+      "notes": "Settings page."
+    },
+    {
+      "react": "ListHeading",
+      "file": "components/ui/list-heading.tsx",
+      "status": "missing",
+      "figma": "List Heading",
+      "notes": "NEW. Title + neutral/100 count badge on the left; search toggle (44px square, radius/control) and 150px-wide medium Selects on the right. Used by Patients, Prescriptions, Lab Results lists. Closed and search-open states."
+    },
+    {
+      "react": "PageBanner",
+      "file": "components/ui/page-banner.tsx",
+      "status": "figma",
+      "figma": "Page Banner"
+    },
+    {
+      "react": "FilterBar",
+      "file": "components/ui/filter-bar.tsx",
+      "status": "figma",
+      "figma": "Filter Bar",
+      "notes": "FilterPanel and FilterField are built locally."
+    },
+    {
+      "react": "ResultsFooter",
+      "file": "components/ui/results-footer.tsx",
+      "status": "figma",
+      "figma": "Results Footer"
+    },
+    {
+      "react": "PageHeader",
+      "file": "components/layout/page-header.tsx",
+      "status": "figma",
+      "figma": "Page Header",
+      "drift": "The info icon with tooltip is gone. The description is now a visible muted 13px line under the title (page-header-description). Figma still has 2 actions max."
+    },
+    {
+      "react": "Sidebar / AppShell / PageContent",
+      "file": "components/layout/sidebar.tsx",
+      "status": "local",
+      "figma": "Sidebar, AppShell, PageContent",
+      "notes": "Shell is cloned from the 1600px Appointments wrapper (see memory figma-page-width-1600). Collapsed-rail tooltips are code-only behaviour."
+    },
+    {
+      "react": "AppHeader / HeaderActions / CommandPalette",
+      "file": "components/dashboard/app-header.tsx",
+      "status": "local",
+      "figma": "App Header"
+    },
+    {
+      "react": "KpiCards (dashboard)",
+      "file": "components/dashboard/kpi-cards.tsx",
+      "status": "local",
+      "figma": "KPI Card",
+      "notes": "Page-level component: used by Dashboard."
+    },
+    {
+      "react": "ReportKpis",
+      "file": "components/reports/report-kpis.tsx",
+      "status": "local",
+      "figma": "Report KPI Card",
+      "notes": "NEW. White Card, 16px tone-coloured icon + label, Delta chip, 40px Geist figure (tabular nums), caption, full-width area line in the tone's 500 with 22%-to-0 gradient. 4-up at 1296 width."
+    },
+    {
+      "react": "ClinicBanner",
+      "file": "components/telemedicine/clinic-banner.tsx",
+      "status": "local",
+      "figma": "Clinic Banner",
+      "notes": "NEW. Quiet white card banner for Telemedicine: title block, three count buttons, Up-next row."
+    },
+    {
+      "react": "CareTeam banners / PatientBanner",
+      "file": "components/doctors/care-team-banners.tsx",
+      "status": "local",
+      "figma": "Care Team Banner, Patient Banner",
+      "notes": "Quiet white card banners shared by Doctors and patient record pages."
+    }
+  ],
+  "pages": [
+    {
+      "name": "Dashboard",
+      "route": "/",
+      "entry": "app/page.tsx"
+    },
+    {
+      "name": "Appointments",
+      "route": "/appointments",
+      "entry": "app/appointments/page.tsx"
+    },
+    {
+      "name": "Patients",
+      "route": "/patients",
+      "entry": "app/patients/page.tsx"
+    },
+    {
+      "name": "Doctors",
+      "route": "/doctors",
+      "entry": "app/doctors/page.tsx"
+    },
+    {
+      "name": "Doctor Profile",
+      "route": "/doctors/[id]",
+      "entry": "app/doctors/[id]/page.tsx"
+    },
+    {
+      "name": "Departments",
+      "route": "/departments",
+      "entry": "app/departments/page.tsx"
+    },
+    {
+      "name": "Telemedicine",
+      "route": "/telemedicine",
+      "entry": "app/telemedicine/page.tsx"
+    },
+    {
+      "name": "Medical Records",
+      "route": "/medical-records",
+      "entry": "app/medical-records/page.tsx"
+    },
+    {
+      "name": "Lab Results",
+      "route": "/lab-results",
+      "entry": "app/lab-results/page.tsx"
+    },
+    {
+      "name": "Prescriptions",
+      "route": "/prescriptions",
+      "entry": "app/prescriptions/page.tsx"
+    },
+    {
+      "name": "Messages",
+      "route": "/messages",
+      "entry": "app/messages/page.tsx"
+    },
+    {
+      "name": "Billing",
+      "route": "/billing",
+      "entry": "app/billing/page.tsx"
+    },
+    {
+      "name": "Reports",
+      "route": "/reports",
+      "entry": "app/reports/page.tsx"
+    },
+    {
+      "name": "Settings",
+      "route": "/settings",
+      "entry": "app/settings/page.tsx"
+    },
+    {
+      "name": "Help",
+      "route": "/help",
+      "entry": "app/help/page.tsx"
+    }
+  ]
+}
