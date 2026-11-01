@@ -23,7 +23,7 @@
 .name:hover { color: var(--color-primary-700); }
 .visit { font-size: .8125rem; color: var(--color-text-muted); }
 .status { flex: none; align-self: flex-start; }
-.sessionSummary { margin: 16px 0 18px; font-size: .8125rem; line-height: 1.6; color: var(--color-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sessionSummary { margin: 16px 0 18px; font-size: .8125rem; line-height: 1.6; color: var(--color-text-muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .rowBottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; }
 .facts { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; padding: 0; list-style: none; font-size: .75rem; color: var(--color-text-muted); }
 .facts li { display: flex; align-items: center; gap: 6px; }

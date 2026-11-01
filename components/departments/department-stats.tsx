@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { IconType } from "react-icons";
 import { LuCalendarDays, LuLayoutGrid, LuSmile, LuStethoscope } from "react-icons/lu";
 import { smoothPath } from "@/components/charts/hyper";
@@ -105,6 +105,7 @@ function Tile({ label, icon: Icon, tone, value, unit, note, wave }: TileProps) {
  */
 function Wave({ name, data }: { name: string; data: readonly number[] }) {
   const ref = useRef<HTMLDivElement>(null);
+  const gradient = useId();
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
@@ -129,6 +130,13 @@ function Wave({ name, data }: { name: string; data: readonly number[] }) {
       {width > 0 && (
         <>
           <svg width={width} height={WAVE_HEIGHT} aria-hidden>
+            <defs>
+              <linearGradient id={gradient} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="currentColor" stopOpacity="0.22" />
+                <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path d={`${line} L${end},${WAVE_HEIGHT} L0,${WAVE_HEIGHT} Z`} fill={`url(#${gradient})`} className={styles.waveFill} />
             <path d={line} className={styles.waveLine} pathLength={1} />
           </svg>
           <span className={styles.waveDot} style={{ offsetPath: `path("${line}")` } as CSSProperties} />

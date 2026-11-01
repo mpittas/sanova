@@ -1,0 +1,10 @@
+{
+  "components": {},
+  "pages": {
+    "Dashboard": "5db468c07e",
+    "Appointments": "67839f1c2f",
+    "Patients": "cb925a2e6e",
+    "Doctors": "53714c4d3b",
+    "Departments": "6001884486"
+  }
+}

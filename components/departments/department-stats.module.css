@@ -73,6 +73,17 @@
   overflow: visible;
 }
 
+/* Soft tone-coloured wash under the line, fading in as the line draws. */
+.waveFill {
+  animation: fade var(--wave-draw) var(--wave-ease) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
 .waveLine {
   fill: none;
   stroke: currentColor;
@@ -131,6 +142,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .waveFill,
   .waveLine,
   .waveDot,
   .waveDot::after {
