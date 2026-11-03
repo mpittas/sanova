@@ -1,0 +1,358 @@
+{
+  "defaults": {
+    "accent": "#139A68",
+    "blurAmount": 4,
+    "canvas": {
+      "width": 2560,
+      "height": 1600
+    }
+  },
+  "snapshots": [
+    {
+      "name": "01-upcoming-appointments",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/dash--upcoming.png",
+          "radius": 32
+        }
+      ],
+      "blurAngle": 180,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "02-appointments-calendar",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/dash--calendar.png",
+          "radius": 32
+        }
+      ],
+      "blurAngle": 150,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "03-departments-donut",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/reports--departments.png",
+          "radius": 28
+        }
+      ],
+      "blurAngle": 210,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "04-appointment-trends",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/dash--trends.png",
+          "radius": 32
+        }
+      ],
+      "blurAngle": 135,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "05-demographics",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/dash--demographics.png",
+          "radius": 32
+        }
+      ],
+      "blurAngle": 225,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "06-visits-chart",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/reports--visits.png",
+          "radius": 28
+        }
+      ],
+      "blurAngle": 165,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "07-revenue",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/reports--revenue.png",
+          "radius": 28
+        }
+      ],
+      "blurAngle": 195,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "08-patient-experience",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/reports--experience.png",
+          "radius": 28
+        }
+      ],
+      "blurAngle": 120,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "09-billing-trend",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/billing--trend.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 240,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "10-follow-ups",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/billing--followups.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 180,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "11-billing-total",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/billing--total.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 200,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "center": true
+    },
+    {
+      "name": "12-doctor-schedules",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/doctors--schedules.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 155,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "13-specialty-distribution",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/doctors--specialty.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 215,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "14-telemedicine-upcoming",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/tele--upcoming.png",
+          "radius": 48,
+          "crop": {
+            "x": 20,
+            "y": 372,
+            "w": 1504,
+            "h": 890
+          }
+        }
+      ],
+      "blurAngle": 140,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "15-telemedicine-schedule",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/tele--schedule.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 230,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "16-department-activity",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/depts--activity.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 175,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "center": true
+    },
+    {
+      "name": "17-appointment-detail",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/appts--detail.png",
+          "radius": 32
+        }
+      ],
+      "blurAngle": 180,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "18-lab-results",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/labs--list.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 150,
+      "canvas": {
+        "width": 2560,
+        "height": 1920
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    },
+    {
+      "name": "19-invoices",
+      "mode": "section",
+      "tilt": 0,
+      "items": [
+        {
+          "image": "captures/billing--invoices.png",
+          "radius": 48
+        }
+      ],
+      "blurAngle": 210,
+      "canvas": {
+        "width": 2560,
+        "height": 1440
+      },
+      "fill": true,
+      "minWidthShare": 0.7
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "scale": 2
+  },
+  "waitMs": 2500,
+  "hide": [
+    "nextjs-portal",
+    "[data-next-badge-root]"
+  ],
+  "pages": [
+    {
+      "name": "dash",
+      "path": "/",
+      "sections": [
+        {
+          "name": "kpi-patients",
+          "selector": ".card",
+          "index": 0
+        },
+        {
+          "name": "kpi-appts",
+          "selector": ".card",
+          "index": 1
+        },
+        {
+          "name": "kpi-revenue",
+          "selector": ".card",
+          "index": 3
+        },
+        {
+          "name": "upcoming",
+          "selector": ".card",
+          "index": 4
+        },
+        {
+          "name": "trends",
+          "selector": ".card",
+          "index": 5
+        },
+        {
+          "name": "demographics",
+          "selector": ".card",
+          "index": 6
+        },
+        {
+          "name": "calendar",
+          "selector": ".card",
+          "index": 7
+        },
+        {
+          "name": "departments",
+          "selector": ".card",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "name": "reports",
+      "path": "/reports",
+      "sections": [
+        {
+          "name": "kpi-visits",
+          "selector": ".card",
+          "index": 0
+        },
+        {
+          "name": "kpi-revenue",
+          "selector": ".card",
+          "index": 1
+        },
+        {
+          "name": "kpi-wait",
+          "selector": ".card",
+          "index": 2
+        },
+        {
+          "name": "visits",
+          "selector": ".card",
+          "index": 4
+        },
+        {
+          "name": "departments",
+          "selector": ".card",
+          "index": 5
+        },
+        {
+          "name": "revenue",
+          "selector": ".card",
+          "index": 6
+        },
+        {
+          "name": "experience",
+          "selector": ".card",
+          "index": 7
+        },
+        {
+          "name": "busiest",
+          "selector": ".card",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "name": "billing",
+      "path": "/billing",
+      "sections": [
+        {
+          "name": "total",
+          "selector": ".card",
+          "index": 0
+        },
+        {
+          "name": "trend",
+          "selector": ".card",
+          "index": 1
+        },
+        {
+          "name": "followups",
+          "selector": ".card",
+          "index": 2
+        },
+        {
+          "name": "invoices",
+          "selector": ".card",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "name": "doctors",
+      "path": "/doctors",
+      "sections": [
+        {
+          "name": "overview",
+          "selector": ".card",
+          "index": 0
+        },
+        {
+          "name": "schedules",
+          "selector": ".card",
+          "index": 1
+        },
+        {
+          "name": "specialty",
+          "selector": ".card",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "name": "tele",
+      "path": "/telemedicine",
+      "sections": [
+        {
+          "name": "upcoming",
+          "selector": ".card",
+          "index": 0
+        },
+        {
+          "name": "schedule",
+          "selector": ".card",
+          "index": 1
+        },
+        {
+          "name": "actions",
+          "selector": ".card",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "name": "depts",
+      "path": "/departments",
+      "sections": [
+        {
+          "name": "activity",
+          "selector": ".card",
+          "index": 4
+        },
+        {
+          "name": "updates",
+          "selector": ".card",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "name": "appts",
+      "path": "/appointments",
+      "sections": [
+        {
+          "name": "calendar",
+          "selector": ".card",
+          "index": 5
+        },
+        {
+          "name": "detail",
+          "selector": ".card",
+          "index": 6
+        },
+        {
+          "name": "schedule",
+          "selector": ".card",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "name": "labs",
+      "path": "/lab-results",
+      "sections": [
+        {
+          "name": "list",
+          "selector": ".card",
+          "index": 0
+        },
+        {
+          "name": "cbc",
+          "selector": ".card",
+          "index": 1
+        }
+      ]
+    }
+  ]
+}

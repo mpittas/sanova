@@ -1,0 +1,21 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "viewport": { "width": 1440, "height": 900, "scale": 2 },
+  "waitMs": 3000,
+  "hide": ["nextjs-portal", "[data-next-badge-root]", ".cookie-banner"],
+  "pages": [
+    {
+      "name": "dashboard",
+      "path": "/",
+      "sections": [
+        { "name": "stats", "selector": ".stat-grid" },
+        { "name": "appointments", "selector": ".card:nth-of-type(2)", "pad": 0 }
+      ]
+    },
+    {
+      "name": "settings",
+      "path": "/settings",
+      "actions": [{ "click": "button[role=tab]:nth-of-type(2)" }, { "wait": 400 }]
+    }
+  ]
+}

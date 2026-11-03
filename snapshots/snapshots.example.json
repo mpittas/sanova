@@ -1,0 +1,33 @@
+{
+  "defaults": {
+    "accent": "#139A68",
+    "tilt": 0.6,
+    "blur": "bottom",
+    "blurAmount": 4,
+    "bleed": 80
+  },
+  "snapshots": [
+    {
+      "name": "dashboard-stats",
+      "mode": "section",
+      "items": [{ "image": "captures/dashboard--stats.png", "radius": 44 }]
+    },
+    {
+      "name": "dashboard-page",
+      "mode": "screen",
+      "tilt": 0,
+      "items": [{ "image": "captures/dashboard.png" }]
+    },
+    {
+      "name": "mobile-row",
+      "mode": "screen",
+      "blurAmount": 6,
+      "items": [{ "image": "captures/home.png", "radius": 150 }, { "image": "captures/search.png", "radius": 150 }, { "image": "captures/profile.png", "radius": 150 }]
+    },
+    {
+      "name": "manual-crop",
+      "mode": "section",
+      "items": [{ "image": "captures/dashboard.png", "crop": { "x": 400, "y": 600, "w": 1800, "h": 900 }, "radius": 44 }]
+    }
+  ]
+}
